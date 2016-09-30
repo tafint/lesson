@@ -50,7 +50,7 @@ public function match(array $server = [], array $post){
     $requestUri    = $server['REQUEST_URI'];
 
     $restMethod = $this->getRestfullMethod($post); 
-    var_dump($requestMethod);
+    var_dump($post);
     #@TODO: Implement REST method. 
 
     if (!$restMethod && !in_array($requestMethod, array_keys($this->routes))) {

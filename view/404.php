@@ -1,1 +1,1 @@
-<p>Not Found</p>
+<h3 class="alert alert-warning">Error 404: Not Found Page</h3>
