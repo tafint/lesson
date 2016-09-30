@@ -1,0 +1,112 @@
+html, body {
+	height: 100%;
+}
+a {
+	cursor: pointer;
+}
+.wrapper {
+	margin-bottom: 30px;
+}
+.main-body {
+	margin: 20px auto;
+}
+.number-list li {
+	list-style: decimal;
+}
+.chat-show {
+	height: 200px;
+	overflow-y: scroll;
+}
+.chat-box {
+	border: 1px #dddddd solid;
+	padding: 10px;
+	border-radius: 5px;
+}
+.m-b-10 {
+	margin-bottom:10px;
+}
+.m-t-0 {
+	margin-top: 0;
+}
+.table>tbody>tr>td {
+	vertical-align: middle;
+}
+.next-message {
+	padding-left: 60px;
+}
+.nav-tabs,.nav-pills {
+	margin-bottom: 15px;
+}
+.picture-block {
+	height: 218px;
+	border: 1px solid #cccccc;
+	border-radius: 5px;
+}
+.picture-block-friend {
+	height: 260px;
+}
+.picture-block-owner {
+	height: 300px;
+}
+.picture-thumbnail {
+	display: block;
+	height: 175px;
+	background-position: center;
+	background-size: cover;
+}
+#image-upload {
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+}
+#image-upload:hover {
+	cursor: pointer;
+}
+.upload-block {
+	background-color: #eff5f5;
+	background-image: url("../images/upload.png");
+	background-size: 60%;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+#map {
+	width: 100%;
+	height: 500px;
+}
+.friend-block .thumbnail {
+	max-width: 100%;
+	height: 100px;
+}
+.friend-block .thumbnail img {
+	height: 100%;
+	width: 100%;
+}
+.friend-block .friend-name,.friend-block .friend-action {
+	padding-top: 30px
+}
+.picture-thumbnail i {
+	display: none;
+	font-size: 20px;
+	color: #444444;
+    background-color: #ffffff;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 24px;
+}
+.picture-selected i {
+	display: block;
+}
+.profile-avatar {
+	position: relative;
+	height: 240px;
+}
+.profile-avatar img {
+	widows: 100%;
+	height: 100%;
+}
+.profile-avatar a {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
