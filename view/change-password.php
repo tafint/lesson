@@ -1,6 +1,6 @@
 <div>
 	<?php if (isset($page)) : ?>
-		<p class="pull-left"><a href="/lesson1/home">Home::<?php echo $page; ?></a></p>
+		<p class="pull-left"><a href="/lesson/user/home">Home::<?php echo $page; ?></a></p>
 	<?php endif; ?>
 	<p class="pull-right"><a href="#">Hello <?php echo isset($user) ? $user['fullname'] : ''; ?></a></p>
 	<div class="clearfix"></div>
@@ -9,7 +9,7 @@
 	<div class="panel-heading">Change password</div>
   <div class="panel-body">
   	<div></div>
-     <form id="change-password-form" class="form-horizontal" method="POST" action="/lesson1/change-password">
+     <form id="change-password-form" class="form-horizontal" method="POST" action="/lesson/user/changepassword">
  		<?php
  		if (isset($message)) :
  		?>

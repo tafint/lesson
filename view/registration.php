@@ -1,7 +1,7 @@
 <div class="panel panel-default">
 	<div class="panel-heading">Registration form</div>
   <div class="panel-body">
-     <form id="register-form" class="form-horizontal" method="POST" action="/lesson1/registration">
+     <form id="register-form" class="form-horizontal" method="POST" action="/lesson/user/registration">
  		<?php
  		if (isset($message)) :
  		?>
@@ -80,7 +80,7 @@
  		<div class="form-group">
  			<label class="col-md-6">Security check</label>
  			<div class="col-md-6 text-center">		
- 				<img id="capcha-image" src="/lesson1/public/libs/capcha/capcha.php" />
+ 				<img id="capcha-image" src="/lesson/public/libs/capcha/capcha.php" />
  			</div>
  		</div>
  		<div class="form-group">
@@ -95,7 +95,7 @@
  		<div class="form-group">
  			<div class="col-md-6 col-md-offset-6 text-center">		
  				<a id="submit-register" class="btn btn-default">Register</a>
- 				<a href="/lesson1/" class="btn btn-default">Cancel</a>
+ 				<a href="/lesson/" class="btn btn-default">Cancel</a>
  			</div>
  		</div>
      </form>

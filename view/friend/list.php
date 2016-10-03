@@ -15,7 +15,7 @@
 				<td><?php echo ($friend['user']['sex'] == 1) ? 'Male' : 'Female'; ?></td>
 				<td><?php echo $friend['user']['birthday']; ?></td>
 				<td><?php echo $friend['user']['address']; ?></td>
-				<td><a class="btn btn-default" href="/lesson1/view-friend/<?php echo $friend['user']['id']; ?>">View</a></td>
+				<td><a class="btn btn-default" href="/lesson/friend/view/<?php echo $friend['user']['id']; ?>">View</a></td>
 			</tr>
 	<?php  endforeach; ?>
 	

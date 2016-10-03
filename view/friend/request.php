@@ -10,7 +10,7 @@
 		</tr>
 		<?php  foreach ($users as $user) : ?>
 			<tr>
-				<td><a href="/lesson1/view-friend/<?php echo $user['user_info']['id']; ?>"><?php echo $user['user_info']['fullname']; ?></a></td>
+				<td><a href="/lesson/friend/view/<?php echo $user['user_info']['id']; ?>"><?php echo $user['user_info']['fullname']; ?></a></td>
 				<td><?php echo ($user['user_info']['sex'] == 1) ? 'Male' : 'Female'; ?></td>
 				<td><?php echo $user['user_info']['birthday']; ?></td>
 				<td><?php echo $user['user_info']['address']; ?></td>

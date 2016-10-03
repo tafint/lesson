@@ -39,7 +39,7 @@ class ImageController extends Controller
      * api upload image
      *
      */
-	public function upload_image()
+	public function upload()
 	{	
 		try {
 			if (!isset($_SESSION['user_id'])) {
@@ -100,7 +100,7 @@ class ImageController extends Controller
      * api delete image
      *
      */
-	public function delete_image()
+	public function delete()
 	{	
 		try {
 			$data = $this->_data;
@@ -141,7 +141,7 @@ class ImageController extends Controller
      * api like image
      *
      */
-	public function like_image()
+	public function like()
 	{	
 		try {
 			$data = $this->_data;
@@ -188,7 +188,7 @@ class ImageController extends Controller
      * api unlike image
      *
      */
-	public function unlike_image()
+	public function unlike()
 	{	
 		try {
 			$data = $this->_data;
@@ -229,7 +229,7 @@ class ImageController extends Controller
      * api view image
      *
      */
-	public function view_image()
+	public function view()
 	{	
 		try {
 			$data = $this->_data;

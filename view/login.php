@@ -1,7 +1,7 @@
 <div class="panel panel-default">
 	<div class="panel-heading">Login form</div>
   <div class="panel-body">
-     <form class="form-horizontal" method="POST" action="/lesson1/login">
+     <form class="form-horizontal" method="POST" action="/lesson/user/login">
  		<?php
  		if (isset($message)) :
  		?>
@@ -33,7 +33,7 @@
  		<div class="form-group">
  			<div class="col-md-12 text-right">		
  				<button type="submit" class="btn btn-default">Login</button>
- 				<a href="/lesson1" class="btn btn-default">Cancel</a>
+ 				<a href="/lesson/" class="btn btn-default">Cancel</a>
  			</div>
  		</div>
      </form>

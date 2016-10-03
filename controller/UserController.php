@@ -22,7 +22,10 @@ class UserController extends Controller
 		$this->_model->load('friend_list');
 		$this->_model->load('friend_request');
 		$this->_model->load('image_like');
+		$this->_model->load('group');
+		$this->_model->load('message_log');
 		$this->_helper->load('functions');
+		$this->_helper->load('exception');
 		
 		// check session and get user info 
 		if (isset($_SESSION['user_id'])) {
@@ -30,6 +33,15 @@ class UserController extends Controller
 			if($user) {
 				$this->_data['user'] = $user ;
 			}
+			$this->_data['user'] = $user ;
+			$data = $this->_data;
+			$data['navbar'] = true;
+			$data['count_friend'] = $this->friend_list->count_all($data['user']['id']);
+			$data['count_request'] = $this->friend_request->count_all($data['user']['id']);
+			$data['count_message'] = $this->message_log->count_all($data['user']['id']);
+			
+			$this->load_template_before('header', $data);
+			$this->load_template_after('footer');
 		}
 
 		$this->load_template_before('header');
@@ -171,7 +183,7 @@ class UserController extends Controller
 						 	if ($this->token->insert($data_token)) {
 						 		//send mail
 						 		$header = mail_header();
-							    $content_email = "Click <a href='http://dev.lampart.com.vn/lesson1/*****&key=$token_code'>here</a> to active account in <a href='http://dev.lampart.com.vn'>http://dev.lampart.com.vn</a> \n ";
+							    $content_email = "Click <a href='http://dev.lampart.com.vn/user/confirm/$token_code'>here</a> to active account in <a href='http://dev.lampart.com.vn'>http://dev.lampart.com.vn</a> \n ";
 							    mail('thanh_tai@lampart-vn.com', 'Active account', $content_email, $header);
 						 	} 
 
@@ -186,7 +198,7 @@ class UserController extends Controller
 
 			$this->_view->load_content('registration', $data);
 		} catch (Exception $e) {
-			redirect('/home');
+			redirect('/user/home');
 		}
 	}
 
@@ -205,7 +217,7 @@ class UserController extends Controller
 
 			$this->_view->load_content('successful');
 		} catch (Exception $e) {
-			redirect('/home');
+			redirect('/user/home');
 		}
 	}
 
@@ -245,7 +257,7 @@ class UserController extends Controller
 					//save session if login success
 					$_SESSION['user_id'] = $user['id'];
 					
-					redirect('/home');
+					redirect('/friend/index');
 				} catch (Exception $e) {
 					$data['message'][]= $e->getMessage();
 				}
@@ -253,7 +265,7 @@ class UserController extends Controller
 			
 			$this->_view->load_content('login', $data);
 		} catch (Exception $e) {
-			redirect('/home');
+			redirect('/user/home');
 		}
 	}
 
@@ -261,7 +273,7 @@ class UserController extends Controller
      * action profile
      *
      */
-	public function profile()
+	public function profile($params)
 	{	
 		if (!isset($_SESSION['user_id'])) {
 			redirect();
@@ -374,7 +386,7 @@ class UserController extends Controller
 				    
 				    // send mail
 				    $header = mail_header();
-				    $content_email = "Click <a href='http://dev.lampart.com.vn/lesson1/*****&key=$token_code'>here</a> to agree change email to $email \n ";
+				    $content_email = "Click <a href='http://dev.lampart.com.vn/lesson/user/confirm/$token_code'>here</a> to agree change email to $email \n ";
 				    mail('thanh_tai@lampart-vn.com', 'Change email', $content_email, $header);
 			    } catch (Exception $e) {
 			    	$data['message'][] = $e->getMessage();
@@ -456,7 +468,7 @@ class UserController extends Controller
      * api edit profile
      *
      */
-	public function edit_profile()
+	public function update()
 	{	
 		try {
 			if(!isset($_SESSION['user_id'])) {
@@ -551,7 +563,7 @@ class UserController extends Controller
      * action delete user
      *
      */
-	public function delete()
+	public function delete($params)
 	{	
 		try {
 			if(!isset($_SESSION['user_id'])) {
@@ -565,7 +577,7 @@ class UserController extends Controller
 			}
 			
 			// check user id
-			$id = $_POST['user_id'];
+			$id = $params[0];
 			$user = $this->user->find_id($id);
 
 			if (!$user) {
@@ -600,7 +612,7 @@ class UserController extends Controller
      * action confirm
      *
      */
-	public function confirm()
+	public function confirm($params)
 	{	
 		$data = $this->_data;
 		try {
@@ -655,7 +667,7 @@ class UserController extends Controller
      * api user_info
      *
      */
-	public function user_info()
+	public function info($params)
 	{	
 		try {
 			if (!isset($_SESSION['user_id'])) {
@@ -663,7 +675,7 @@ class UserController extends Controller
 			} 
 			
 			$data = $this->_data;
-			$user_id = $_GET['id'];
+			$user_id = $params[0];
 			
 			if (($data['user']['group_id'] != 1) && ($data['user']['id'] != $user_id)) {
 			    throw new Exception("Not have permisson");
@@ -689,7 +701,7 @@ class UserController extends Controller
      * api dynamic edit profile
      *
      */
-	public function dynamic_user_edit()
+	public function dynamicupdate()
 	{	
 		try {
 			if(!isset($_SESSION['user_id'])) {
@@ -781,7 +793,7 @@ class UserController extends Controller
 				    
 				    // send mail
 				    $header = mail_header();
-				    $content_email = "Click <a href='http://dev.lampart.com.vn/lesson1/*****&key=$token_code'>here</a> to agree change email to $email \n ";
+				    $content_email = "Click <a href='http://dev.lampart.com.vn/lesson/user/confirm/$token_code'>here</a> to agree change email to $email \n ";
 				    mail('thanh_tai@lampart-vn.com', 'Change email', $content_email, $header);
 					break;	
 
@@ -809,4 +821,127 @@ class UserController extends Controller
 		echo json_encode($result);
 	}
 
+	/**
+     * api change group_id
+     *
+     */
+	public function change_group()
+	{	
+		try {
+			$data = $this->_data;
+			
+			if (isset($data['error'])) {
+				throw new Exception("Please login");
+			}
+			
+			if ($this->_data['user']['group_id'] != 1) {
+				throw new Exception("Not have permisson");
+			}
+			
+			$data = $this->_data;
+			$id = $_POST['user_id'];
+			$group_id = $_POST['group_id'];
+			
+			$user = $this->user->find_id($id);
+
+			if (!$user) {
+				throw new Exception("Not exist user");
+			}	
+			//get array group level and check input in this array
+			$groups = $this->group->get();
+			$group_array= array();
+			
+			foreach ($groups as $group) {
+				$group_array[] = $group['level'];
+			}
+			
+			if (!in_array($group_id, $group_array)) {
+				throw new Exception("Not have this group");
+			}
+			
+			$user_change = $this->user->update_id($id, array('group_id' => $group_id));
+			$result = array('error' => false);
+		} catch (Exception $e) {
+			$result = array('error' => true, 'message' => $e->getMessage());
+		}
+		
+		$this->_view->reset();
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	/**
+     * action management users
+     *
+     */
+	public function manage()
+	{	
+		try {
+			$data = $this->_data;
+			
+			if (isset($data['error'])) {
+				throw new UserException("Please login");
+			}
+			
+			if ($this->_data['user']['group_id'] !=1) {
+				throw new CheckException("Error group permisson");
+			}
+			
+			$users = $this->user->get();
+			
+			if ($users) {
+			    $data['users'] = $users;
+			    $groups = $this->group->get();
+			    $data['groups'] = $groups;
+			} else {
+				$data['message'][] = 'Not have user';
+			}
+		} catch (CheckException $e) {
+			redirect('/friend/index');
+		} catch (UserException $e) {
+			redirect();
+		}
+	    
+	    $this->_view->load_content('management', $data);
+	}
+
+	/**
+     * action search user
+     *
+     */
+	public function search()
+	{	
+		$data = $this->_data;
+		try {
+			
+			if (isset($data['error'])) {
+				throw new UserException("Please login");
+			}
+			
+			if (!isset($_POST['s'])) {
+				throw new CheckException("Not have content search");
+			}
+			
+			$id = $data['user']['id'];
+			$content = htmlspecialchars($_POST['s']);
+			$data['search_content'] = $content;
+            $result = $this->user->search_not_friend($id, $content);
+            
+            if (!$result) {
+            	throw new CheckException("Not found");
+            }
+        	
+        	foreach ($result as $key => $value) {	
+        		$user_request = $this->friend_request->have_request($id, $value['id']);
+        		$value['request_status'] = $user_request ? true : false;
+        		$data['users'][$key] = $value;
+        	}
+		} catch (CheckException $e) {
+			$data['message'][]=$e->getMessage();
+		} catch (UserException $e) {
+			redirect();
+		}
+		
+		$this->_view->load_content('friend.search', $data);
+	}
 }

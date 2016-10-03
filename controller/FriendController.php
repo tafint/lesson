@@ -89,7 +89,7 @@ class FriendController extends Controller
      * action view friend detail
      *
      */
-	public function view(array $param )
+	public function view($params)
 	{	
 		$data = $this->_data;
 		try {
@@ -98,8 +98,8 @@ class FriendController extends Controller
 				throw new UserException("Please login");
 			}
 			
-			if (isset($param[0])) {
-				$id = $param[0];
+			if (isset($params[0])) {
+				$id = $params[0];
 				$data['permisson'] = false;
 				
 				// get info
@@ -227,46 +227,6 @@ class FriendController extends Controller
 	}
 
 	/**
-     * action search user
-     *
-     */
-	public function search()
-	{	
-		$data = $this->_data;
-		try {
-			
-			if (isset($data['error'])) {
-				throw new UserException("Please login");
-			}
-			
-			if (!isset($_POST['s'])) {
-				throw new CheckException("Not have content search");
-			}
-			
-			$id = $data['user']['id'];
-			$content = htmlspecialchars($_POST['s']);
-			$data['search_content'] = $content;
-            $result = $this->user->search_not_friend($id, $content);
-            
-            if (!$result) {
-            	throw new CheckException("Not found");
-            }
-        	
-        	foreach ($result as $key => $value) {	
-        		$user_request = $this->friend_request->have_request($id, $value['id']);
-        		$value['request_status'] = $user_request ? true : false;
-        		$data['users'][$key] = $value;
-        	}
-		} catch (CheckException $e) {
-			$data['message'][]=$e->getMessage();
-		} catch (UserException $e) {
-			redirect();
-		}
-		
-		$this->_view->load_content('friend.search', $data);
-	}
-
-	/**
      * action suggest user
      *
      */
@@ -303,7 +263,7 @@ class FriendController extends Controller
      * api send to friend request
      *
      */
-	public function add_friend()
+	public function add()
 	{	
 		try {
 			$data = $this->_data;
@@ -361,7 +321,7 @@ class FriendController extends Controller
      * api handle friend request
      *
      */
-	public function handle_request()
+	public function handle()
 	{	
 		try {
 			$data = $this->_data;
@@ -429,7 +389,7 @@ class FriendController extends Controller
      * api unfriend
      *
      */
-	public function unfriend()
+	public function remove()
 	{	
 		try {
 			$data = $this->_data;
@@ -477,7 +437,7 @@ class FriendController extends Controller
      * action view all friend request
      *
      */
-	public function request_friend()
+	public function request()
 	{
 		$data = $this->_data;
 		try {
@@ -509,223 +469,5 @@ class FriendController extends Controller
 
 	}
 
-	/**
-     * action view message in inbox
-     *
-     */
-	public function message()
-	{
-		$data = $this->_data;
-		try {
-			if (isset($data['error'])) {
-				throw new UserException("Please login");
-			}
-			
-			$messages = $this->message_log->get_all_message($data['user']['id']);
-			
-			if (!$messages) {
-				throw new CheckException("Not have message");
-				
-			}
-			
-			$data['data_messages'] = $messages;
-		} catch (CheckException $e) {
-			$data['message'][] = $e->getMessage();
-		} catch (UserException $e) {
-			redirect();
-		}
-	    
-	    $this->_view->load_content('friend.message', $data);
 
-	}
-
-	/**
-     * api create new message
-     *
-     */
-	public function create_message()
-	{	
-		try {
-			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
-			$user_id_to = $_POST['user_id_to'];
-			$user_to = $this->user->find_id($user_id_to);
-			
-			if(!$user_to) {
-				throw new Exception("Not exist user");	
-			}
-			
-			if(($user_to['group_id'] == 1) && ($data['user']['group_id'] != 1)) {
-				throw new Exception("Not send message to admin");
-			}
-			
-			$is_friend = $this->friend_list->is_friend($data['user']['id'], $user_to['id']);
-			
-			if (!$is_friend && ($data['user']['group_id']) != 1) {
-				throw new Exception("Not have permisson");
-			}
-			
-			$message = htmlspecialchars($_POST['message']);
-			$current_message = htmlspecialchars($_POST['current_message']);
-			$message_data = array(
-	                        'user_id' => $data['user']['id'],
-	                        'user_id_to' => $user_id_to,
-	                        'message' => $message
-				            );
-			$new_message = $this->message_log->insert($message_data);
-			
-			if (!$new_message) {
-				throw new Exception("Error when insert");
-			}
-			
-			$new_message = $this->message_log->get_message_user($data['user']['id'], $user_id_to, $current_message);
-			
-			foreach ($new_message as $message) {
-				$user = $this->user->find_id($message['user_id']);
-				$message['fullname'] = $user['fullname'];
-				$result['data'][] = $message;
-			}
-			
-			$result['error'] = false;
-		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
-		}
-		
-		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
-
-	/**
-     * api load message
-     *
-     */
-	public function load_message()
-	{	
-		try {
-			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
-			$user_id = $_POST['user_id'];
-			$user_id_to = $_POST['user_id_to'];
-			
-			if (($this->_data['user']['id'] != $user_id_to) && ($this->_data['user']['id'] != $user_id) && ($data['user']['group_id'] != 1)) {
-				throw new Exception("Not have permisson");
-			}
-			
-			$user = $this->user->find_id($user_id);
-
-			if (!$user) {
-				throw new Exception("Not exist user");
-			}
-
-			$current_message = htmlspecialchars($_POST['current_message']);
-			$new_message = $this->message_log->get_message_user($user_id, $user_id_to, $current_message);
-			
-			foreach ($new_message as $message) {
-				$user = $this->user->find_id($message['user_id']);
-				$message['fullname'] = $user['fullname'];
-				$result['data'][] = $message;
-			}
-			
-			$result['error'] = false;
-		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
-		}
-		
-		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
-
-	/**
-     * action management users
-     *
-     */
-	public function manage()
-	{	
-		try {
-			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new UserException("Please login");
-			}
-			
-			if ($this->_data['user']['group_id'] !=1) {
-				throw new CheckException("Error group permisson");
-			}
-			
-			$users = $this->user->get();
-			
-			if ($users) {
-			    $data['users'] = $users;
-			    $groups = $this->group->get();
-			    $data['groups'] = $groups;
-			} else {
-				$data['message'][] = 'Not have user';
-			}
-		} catch (CheckException $e) {
-			redirect('/friend-list');
-		} catch (UserException $e) {
-			redirect();
-		}
-	    
-	    $this->_view->load_content('management', $data);
-	}
-
-	/**
-     * api change group_id
-     *
-     */
-	public function change_group()
-	{	
-		try {
-			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
-			if ($this->_data['user']['group_id'] != 1) {
-				throw new Exception("Not have permisson");
-			}
-			
-			$data = $this->_data;
-			$id = $_POST['user_id'];
-			$group_id = $_POST['group_id'];
-			
-			$user = $this->user->find_id($id);
-
-			if (!$user) {
-				throw new Exception("Not exist user");
-			}	
-			//get array group level and check input in this array
-			$groups = $this->group->get();
-			$group_array= array();
-			
-			foreach ($groups as $group) {
-				$group_array[] = $group['level'];
-			}
-			
-			if (!in_array($group_id, $group_array)) {
-				throw new Exception("Not have this group");
-			}
-			
-			$user_change = $this->user->update_id($id, array('group_id' => $group_id));
-			$result = array('error' => false);
-		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
-		}
-		
-		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
 }

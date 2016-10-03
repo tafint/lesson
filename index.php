@@ -22,6 +22,7 @@ if ($app ===null) {
 	$action = $app['method'];
 	$args = $app['args'];
 }
+
 function get_instance(){
 	global $controller;
 	return $controller::get_instance();

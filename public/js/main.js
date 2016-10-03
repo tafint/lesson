@@ -164,7 +164,7 @@ $( document ).ready(function() {
         var value = add_btn.attr("id-value");
 
         $.ajax({
-            url: "/lesson1/friend/add",
+            url: "/lesson/friend/add",
             type: "POST",
             data: {
                 user_id_to: value,
@@ -187,7 +187,7 @@ $( document ).ready(function() {
         var value = $(this).attr("id-value");
 
         $.ajax({
-            url: "/lesson1/friend/handle",
+            url: "/lesson/friend/handle",
             type: "POST",
             data: {
                 id: value,
@@ -210,7 +210,7 @@ $( document ).ready(function() {
         var delete_btn = $(this);
         var value = delete_btn.attr("id-value");
         $.ajax({
-            url: "/lesson1/friend/handle",
+            url: "/lesson/friend/handle",
             type: "POST",
             data: {
                 id: value,
@@ -248,7 +248,7 @@ $( document ).ready(function() {
             chat_form.find("[type=submit]").prop("disabled", true);
 
             $.ajax({
-                url: "/lesson1/message/create",
+                url: "/lesson/message/create",
                 type: "POST",
                 data: {
                     user_id_to: user_id_to,
@@ -302,7 +302,7 @@ $( document ).ready(function() {
         var user_id = change.attr("id-value");
 
         $.ajax({
-            url: "/lesson1/group/change",
+            url: "/lesson/user/changegroup",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -329,11 +329,8 @@ $( document ).ready(function() {
            var user_id = delete_btn.attr("id-value");
 
             $.ajax({
-                url: "/lesson1/user/delete",
-                type: "POST",
-                data: {
-                    user_id: user_id
-                },
+                url: "/lesson/user/delete/" + user_id,
+                type: "DELETE",
                 success: function(result){
 
                     if (result.error == false) {
@@ -370,7 +367,7 @@ $( document ).ready(function() {
 
             if (chat_status == false) {
                 $.ajax({
-                    url: "/lesson1/message/load",
+                    url: "/lesson/message/load",
                     type: "POST",
                     data: {
                         user_id: USER_ID,
@@ -422,7 +419,7 @@ $( document ).ready(function() {
         var fullname = conversation_btn.attr("fullname-value");
 
         $.ajax({
-            url: "/lesson1/message/load",
+            url: "/lesson/message/load",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -459,7 +456,7 @@ $( document ).ready(function() {
         var user_id = $(this).attr("id-value");
          
         $.ajax({
-            url: '/lesson1/user/info/'+user_id,
+            url: '/lesson/user/info/' + user_id,
             type: 'GET',
             success: function(result){
 
@@ -496,7 +493,7 @@ $( document ).ready(function() {
         var user_id = edit_form.find("[name=user-id]").val();
         
         $.ajax({
-            url: "/lesson1/user/edit",
+            url: "/lesson/user/update",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -510,7 +507,7 @@ $( document ).ready(function() {
                 if (result.error == false) {
                     var manage_table = $("#management-table");
 
-                    manage_table.find("tr[id-value="+user_id+"] td:nth(0)").html("<a href='view-friend/" + user_id + "'>" + fullname + "</a>");
+                    manage_table.find("tr[id-value="+user_id+"] td:nth(0)").html("<a href='/lesson/friend/view/" + user_id + "'>" + fullname + "</a>");
                     manage_table.find("tr[id-value="+user_id+"] td:nth(1)").html((sex == 1) ? "Male" : "Female");
                     manage_table.find("tr[id-value="+user_id+"] td:nth(2)").html(birthday);
                     manage_table.find("tr[id-value="+user_id+"] td:nth(3)").html(escape_html(address));
@@ -537,7 +534,7 @@ $( document ).ready(function() {
             var formData = new FormData($(".upload-block")[0]);
 
             $.ajax({
-                url: '/lesson1/upload',  //Server script to process data
+                url: '/lesson/image/upload',  //Server script to process data
                 type: 'POST',
                 xhr: function() {  // Custom XMLHttpRequest
                     var myXhr = $.ajaxSettings.xhr();
@@ -574,7 +571,7 @@ $( document ).ready(function() {
         if (e.error == false) {
             var html = '<div class="m-b-10 col-md-3">'
                         +'<div class="picture-block">'
-                        +'<div class="picture-thumbnail" style="background-image:url(/lesson1/'+e.path+')"></div>'
+                        +'<div class="picture-thumbnail" style="background-image:url(/lesson/'+e.path+')"></div>'
                         +'<ul class="list-group text-center">'
                         +'<li class="list-group-item"><a href="#">Delete</a></li>'
                         +'<li class="list-group-item"><a href="#">View (0)</a></li>'
@@ -660,7 +657,7 @@ $( document ).ready(function() {
         if (flag) {
 
             $.ajax({
-                url: "/lesson1/user/dynamicedit",
+                url: "/lesson/user/dynamicupdate",
                 type: "POST",
                 data: {
                     type: name_part,
@@ -686,34 +683,34 @@ $( document ).ready(function() {
     var confirm_location = $("#confirm-location");
 
     //google map
-    // if ($("#map").length>0){
-    //     var lng_input = location_tab.find("[name=lng]");
-    //     var lat_input = location_tab.find("[name=lat]");
-    //     var lng_val = lng_input.val();
-    //     var lat_val = lat_input.val();
-    //     var lng =  (lng_val != "") ? lng_val : '106.7470984';
-    //     var lat =  (lat_val != "") ? lat_val : '10.7884951';
-    //     var center = new google.maps.LatLng(lat, lng);
-    //     var myOptions = {
-    //         zoom: 14,
-    //         center: center,
-    //         mapTypeId: google.maps.MapTypeId.ROADMAP
-    //     };
-    //     map = new google.maps.Map(document.getElementById("map"), myOptions);
-    //     addMarker(center);
-    //     google.maps.event.trigger(map, "resize"); 
-    //     $("a[href='#location']").on("shown.bs.tab", function(e) {
-    //         var center = map.getCenter();
-    //         google.maps.event.trigger(map, "resize");
-    //         map.setCenter(center);
-    //     });
-    //     map.addListener("click", function(e) {
-    //         lng_input.val(e.latLng.lng());
-    //         lat_input.val(e.latLng.lat());
-    //         confirm_location.modal("show");
-    //         latLng=e.latLng;
-    //     });
-    // }
+    if ($("#map").length>0){
+        var lng_input = location_tab.find("[name=lng]");
+        var lat_input = location_tab.find("[name=lat]");
+        var lng_val = lng_input.val();
+        var lat_val = lat_input.val();
+        var lng =  (lng_val != "") ? lng_val : '106.7470984';
+        var lat =  (lat_val != "") ? lat_val : '10.7884951';
+        var center = new google.maps.LatLng(lat, lng);
+        var myOptions = {
+            zoom: 14,
+            center: center,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+        addMarker(center);
+        google.maps.event.trigger(map, "resize"); 
+        $("a[href='#location']").on("shown.bs.tab", function(e) {
+            var center = map.getCenter();
+            google.maps.event.trigger(map, "resize");
+            map.setCenter(center);
+        });
+        map.addListener("click", function(e) {
+            lng_input.val(e.latLng.lng());
+            lat_input.val(e.latLng.lat());
+            confirm_location.modal("show");
+            latLng=e.latLng;
+        });
+    }
 
     function addMarker(location) {
         var marker = new google.maps.Marker({
@@ -737,7 +734,7 @@ $( document ).ready(function() {
         var user_id = confirm_location.find("[name=user-id]").val();
 
         $.ajax({
-            url: "/lesson1/user/edit",
+            url: "/lesson/user/update",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -763,7 +760,7 @@ $( document ).ready(function() {
         var addfriend_btn = $(".addfriend-btn[id-value="+user_id+"]");
 
         $.ajax({
-            url: "/lesson1/friend/remove",
+            url: "/lesson/friend/remove",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -788,7 +785,7 @@ $( document ).ready(function() {
         var request_btn = $(".request-status[id-value="+user_id+"]");
 
         $.ajax({
-            url: "/lesson1/friend/add",
+            url: "/lesson/friend/add",
             type: "POST",
             data: {
                 user_id_to: user_id,
@@ -814,7 +811,7 @@ $( document ).ready(function() {
 
         if (r === true) {
             $.ajax({
-                url: "/lesson1/image/delete",
+                url: "/lesson/image/delete",
                 type: "POST",
                 data: {
                     image_id: image_id
@@ -840,7 +837,7 @@ $( document ).ready(function() {
         var unlike_btn =  $(".unlike-btn[id-value="+image_id+"]");
 
         $.ajax({
-            url: "/lesson1/image/like",
+            url: "/lesson/image/like",
             type: "POST",
             data: {
                 image_id: image_id
@@ -864,7 +861,7 @@ $( document ).ready(function() {
         var like_btn =  $(".like-btn[id-value="+image_id+"]");
 
         $.ajax({
-            url: "/lesson1/image/unlike",
+            url: "/lesson/image/unlike",
             type: "POST",
             data: {
                 image_id: image_id
@@ -890,7 +887,7 @@ $( document ).ready(function() {
         var href = $(".picture-thumbnail[id-value="+image_id+"]").attr("source-image");
         
         $.ajax({
-            url: "/lesson1/image/view",
+            url: "/lesson/image/view",
             type: "POST",
             data: {
                 image_id: image_id
@@ -913,7 +910,7 @@ $( document ).ready(function() {
         var unfav_btn = $('.unfavorite-btn[id-value='+user_id+']');
 
         $.ajax({
-            url: "/lesson1/favorite/add",
+            url: "/lesson/favorite/add",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -938,7 +935,7 @@ $( document ).ready(function() {
         var addfav_btn = $('.addfavorite-btn[id-value='+user_id+']');
 
         $.ajax({
-            url: "/lesson1/favorite/remove",
+            url: "/lesson/favorite/remove",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -961,7 +958,7 @@ $( document ).ready(function() {
         var user_id = $(this).attr("id-value");
 
         $.ajax({
-            url: "/lesson1/follow/add",
+            url: "/lesson/follow/add",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -983,7 +980,7 @@ $( document ).ready(function() {
         var user_id = $(this).attr("id-value");
 
         $.ajax({
-            url: "/lesson1/follow/remove",
+            url: "/lesson/follow/remove",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -1004,7 +1001,7 @@ $( document ).ready(function() {
     $(".p-addfavorite-btn").on("click", function(){
         var user_id = $(this).attr("id-value");
         $.ajax({
-            url: "/lesson1/favorite/add",
+            url: "/lesson/favorite/add",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -1026,7 +1023,7 @@ $( document ).ready(function() {
         var user_id = $(this).attr('id-value');
 
         $.ajax({
-            url: "/lesson1/favorite/remove",
+            url: "/lesson/favorite/remove",
             type: "POST",
             data: {
                 user_id: user_id,
@@ -1047,7 +1044,7 @@ $( document ).ready(function() {
         var user_id = $(this).attr("id-value");
 
         $.ajax({
-            url: "/lesson1/friend/add",
+            url: "/lesson/friend/add",
             type: "POST",
             data: {
                 user_id_to: user_id,
@@ -1068,7 +1065,7 @@ $( document ).ready(function() {
     $(".p-unfriend-btn").on("click", function(){
         var user_id = $(this).attr("id-value");
         $.ajax({
-            url: "/lesson1/friend/remove",
+            url: "/lesson/friend/remove",
             type: "POST",
             data: {
                 user_id_to: user_id,
@@ -1109,7 +1106,7 @@ $( document ).ready(function() {
             notification("Please select image", "error");
         } else {
             $.ajax({
-                url: "/lesson1/user/dynamicedit",
+                url: "/lesson/user/dynamicupdate",
                 type: "POST",
                 data: {
                     type: "avatar",

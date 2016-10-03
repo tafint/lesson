@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-md-3 text-center">
 			<div class="thumbnail profile-avatar">
-				<img class="img-rounded" src="<?php echo ($profile['avatar'] != '') ? ('/lesson1/'.$profile['avatar']) : '/lesson1/public/images/avatar.png'?>" alt="avatar">
+				<img class="img-rounded" src="<?php echo ($profile['avatar'] != '') ? ('/lesson/'.$profile['avatar']) : '/lesson/public/images/avatar.png'?>" alt="avatar">
 
 			<?php if ($is_owner && false): ?>
 				<a >Change</a>
@@ -189,7 +189,7 @@
 <?php endif; ?>
 	<!-- TAB  -->
 
-<?php if (false): ?>
+<?php if (true): ?>
 	<div>
 	  	<ul class="nav nav-tabs" role="tablist">
 	    	<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
@@ -246,7 +246,7 @@
 					    <?php foreach ($images as $image): ?>	    	
 					    	<div class="m-b-10 col-md-3">
 					    		<div class="picture-block <?php echo $is_friend ? 'picture-block-friend' : ''; ?> <?php echo $is_owner ? 'picture-block-owner' : ''; ?>">
-					    			<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson1/<?php echo $image['path'] ?>" style="background-image:url('/lesson1/<?php echo $image['path'] ?>')"></div>
+					    			<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>" style="background-image:url('/lesson/<?php echo $image['path'] ?>')"></div>
 					    			<ul class="list-group text-center">
 
 					    			<?php if ($is_owner): ?>
@@ -288,8 +288,8 @@
 		    	<?php foreach ($friends as $friend): ?>
 		    		<div class="col-md-6 friend-block">
 		    			<div class="row">
-		    				<div class="col-xs-4 friend-name"><a href="/lesson1/view-friend/<?php echo $friend['user_info']['id']; ?>"><?php echo $friend['user_info']['fullname']; ?></a></div>
-		    				<div class="col-xs-2 thumbnail"><img src="<?php echo ($friend['user_info']['avatar'] != '') ? ('/lesson1/'.$friend['user_info']['avatar']) : '/lesson1/public/images/avatar.png'?>"></div>
+		    				<div class="col-xs-4 friend-name"><a href="/lesson/friend/view-/<?php echo $friend['user_info']['id']; ?>"><?php echo $friend['user_info']['fullname']; ?></a></div>
+		    				<div class="col-xs-2 thumbnail"><img src="<?php echo ($friend['user_info']['avatar'] != '') ? ('/lesson/'.$friend['user_info']['avatar']) : '/lesson/public/images/avatar.png'?>"></div>
 		    				<div class="col-xs-6 friend-action">
 		    					<?php if ($friend['user_info']['id'] != $user['id']): ?>
 		    						<a class="unfriend-btn <?php echo $friend['is_friend'] ? '' : 'hide'; ?>" id-value="<?php echo $friend['user_info']['id'] ?>">Unfriend</a> 
@@ -312,11 +312,11 @@
 			    	<div class="col-md-6 friend-block">
 						<div class="row">
 							<div class="col-xs-4 friend-name">
-								<a href="/lesson1/view-friend/<?php echo $favorite['user_info']['id']; ?>">
+								<a href="/lesson/friend/view/<?php echo $favorite['user_info']['id']; ?>">
 									<?php echo $favorite['user_info']['fullname']; ?>
 								</a>
 							</div>
-							<div class="col-xs-2 thumbnail"><img src="/lesson1/public/images/avatar.png"></div>
+							<div class="col-xs-2 thumbnail"><img src="/lesson/public/images/avatar.png"></div>
 							<div class="col-xs-6 friend-action">
 
 							<?php if ($favorite['user_info']['id'] != $user['id']): ?>
@@ -392,7 +392,7 @@
 
 			    	<?php foreach ($images as $image): ?>	    	
 				    	<div class="m-b-10 col-md-6">
-				    		<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson1/<?php echo $image['path'] ?>" style="background-image:url('/lesson1/<?php echo $image['path'] ?>')">
+				    		<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>" style="background-image:url('/lesson/<?php echo $image['path'] ?>')">
 				    			<i class="glyphicon glyphicon-ok"></i>
 				    		</div>
 				    	</div>

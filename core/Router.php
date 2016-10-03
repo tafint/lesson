@@ -7,7 +7,6 @@ class Router{
 protected $routes = [
 				    'GET'    => [],
 					'POST'   => [],
-					'ANY'    => [],
 				    'PUT'    => [],
 					'DELETE' => [],   
 					];
@@ -22,26 +21,29 @@ public $patterns = [
 const REGVAL = '/({:.+?})/';    
 
 public function any($path, $handler){
-    $this->addRoute('ANY', $path, $handler);
+    $this->add_route('GET', $path, $handler);
+    $this->add_route('POST', $path, $handler);
+    $this->add_route('PUT', $path, $handler);
+    $this->add_route('DELETE', $path, $handler);
 }
 
 public function get($path, $handler){
-    $this->addRoute('GET', $path, $handler);
+    $this->add_route('GET', $path, $handler);
 }
 
 public function post($path, $handler){
-    $this->addRoute('POST', $path, $handler);
+    $this->add_route('POST', $path, $handler);
 }
 
 public function put($path, $handler){
-    $this->addRoute('PUT', $path, $handler);
+    $this->add_route('PUT', $path, $handler);
 }
 
 public function delete($path, $handler){
-    $this->addRoute('DELETE', $path, $handler);
+    $this->add_route('DELETE', $path, $handler);
 }
 
-protected function addRoute($method, $path, $handler){
+protected function add_route($method, $path, $handler){
     array_push($this->routes[$method], [$path => $handler]);
 }
 
@@ -49,8 +51,8 @@ public function match(array $server = [], array $post){
     $requestMethod = $server['REQUEST_METHOD'];
     $requestUri    = $server['REQUEST_URI'];
 
-    $restMethod = $this->getRestfullMethod($post); 
-    var_dump($post);
+    $restMethod = $this->get_restfull_method($post); 
+
     #@TODO: Implement REST method. 
 
     if (!$restMethod && !in_array($requestMethod, array_keys($this->routes))) {
@@ -66,7 +68,7 @@ public function match(array $server = [], array $post){
         $handler = reset($resource);
 
         if(preg_match(self::REGVAL, $route)){
-            list($args, $uri, $route) = $this->parseRegexRoute($requestUri, $route);  
+            list($args, $uri, $route) = $this->parse_regex_route($requestUri, $route);  
         }
        
         if(!preg_match("#^$route$#", $requestUri)){
@@ -83,7 +85,6 @@ public function match(array $server = [], array $post){
             return $handler(); 
         }
 
-        #TODO: pass app by func array_push($args, $this);
          return call_user_func_array($handler, $args);
 
       }
@@ -91,7 +92,7 @@ public function match(array $server = [], array $post){
       header('HTTP/1.1 404');
  }
 
-protected function getRestfullMethod($postVar){
+protected function get_restfull_method($postVar){
     if(array_key_exists('_method', $postVar)){
         if(in_array($method, array_keys($this->routes))){
             return $method;
@@ -99,7 +100,7 @@ protected function getRestfullMethod($postVar){
     }
 } 
 
-protected function parseRegexRoute($requestUri, $resource){
+protected function parse_regex_route($requestUri, $resource){
     $route = preg_replace_callback(self::REGVAL, function($matches) {
         $patterns = $this->patterns; 
         $matches[0] = str_replace(['{', '}'], '', $matches[0]);

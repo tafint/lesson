@@ -13,7 +13,7 @@
 		foreach ($users as $user) :
 	?>
 			<tr id-value="<?php echo $user['id']; ?>">
-				<td><a href="/lesson1/view-friend/<?php echo $user['id']; ?>"><?php echo $user['fullname']; ?></a></td>
+				<td><a href="/lesson/friend/view/<?php echo $user['id']; ?>"><?php echo $user['fullname']; ?></a></td>
 				<td><?php echo ($user['sex'] == 1) ? 'Male' : 'Female'; ?></td>
 				<td><?php echo $user['birthday']; ?></td>
 				<td><?php echo $user['address']; ?></td>

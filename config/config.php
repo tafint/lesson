@@ -1,2 +1,2 @@
 <?php 
-define('HOST', 'http://dev.lampart.com.vn/lesson1/');
+define('HOST', 'http://dev.lampart.com.vn/lesson/');

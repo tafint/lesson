@@ -31,7 +31,7 @@ class IndexController extends Controller
 	public function index()
 	{	
 		if (isset($_SESSION['user_id'])) {
-			redirect('/home');
+			redirect('/user/home');
 		}
 		
 		$this->_view->load_content('index');

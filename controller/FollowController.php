@@ -69,10 +69,10 @@ class FollowController extends Controller
 	    $this->_view->load_content('follow', $data);
 	}
 	/**
-     * api delete image
+     * api add follow
      *
      */
-	public function add_follow()
+	public function add()
 	{	
 		try {
 			$data = $this->_data;
@@ -116,7 +116,7 @@ class FollowController extends Controller
      * api delete image
      *
      */
-	public function unfollow()
+	public function remove()
 	{	
 		try {
 			$data = $this->_data;

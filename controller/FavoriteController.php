@@ -37,7 +37,7 @@ class FavoriteController extends Controller
      * api delete image
      *
      */
-	public function add_favorite()
+	public function add()
 	{	
 		try {
 			$data = $this->_data;
@@ -80,7 +80,7 @@ class FavoriteController extends Controller
      * api delete image
      *
      */
-	public function unfavorite()
+	public function remove()
 	{	
 		try {
 			$data = $this->_data;
