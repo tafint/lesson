@@ -11,7 +11,7 @@ require_once 'route.php';
 
 $server = $_SERVER;
 $server['REQUEST_URI'] = str_replace("/lesson","",$server['REQUEST_URI']);
-$app = $router->match($server,$_REQUEST);
+$app = $router->match($server);
 
 if ($app ===null) {
 	$controller = "IndexController";

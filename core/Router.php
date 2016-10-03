@@ -47,19 +47,15 @@ protected function add_route($method, $path, $handler){
     array_push($this->routes[$method], [$path => $handler]);
 }
 
-public function match(array $server = [], array $post){
+public function match(array $server = []){
     $requestMethod = $server['REQUEST_METHOD'];
     $requestUri    = $server['REQUEST_URI'];
 
-    $restMethod = $this->get_restfull_method($post); 
-
-    #@TODO: Implement REST method. 
-
-    if (!$restMethod && !in_array($requestMethod, array_keys($this->routes))) {
+    if (!in_array($requestMethod, array_keys($this->routes))) {
         return FALSE;
     }
 
-    $method = $restMethod ?: $requestMethod;
+    $method = $requestMethod;
 
     foreach ($this->routes[$method]  as $resource) {
 
@@ -91,14 +87,6 @@ public function match(array $server = [], array $post){
 
       header('HTTP/1.1 404');
  }
-
-protected function get_restfull_method($postVar){
-    if(array_key_exists('_method', $postVar)){
-        if(in_array($method, array_keys($this->routes))){
-            return $method;
-        }
-    }
-} 
 
 protected function parse_regex_route($requestUri, $resource){
     $route = preg_replace_callback(self::REGVAL, function($matches) {
