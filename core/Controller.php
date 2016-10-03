@@ -19,11 +19,6 @@ class Controller
     {	
         self::$_instance =& $this;
 
-        // load all class config, view, model ad helper
-        require_once PATH.'/core/Config.php';
-        $this->_config = new Config;
-        $this->_config->load('config');
-
         require_once PATH . '/core/View.php';
         $this->_view = new View;
 

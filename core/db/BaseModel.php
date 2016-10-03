@@ -1,6 +1,6 @@
 <?php
 /**
- * This is a class DBModel
+ * This is a class BaseModel
  */
 class BaseModel
 {	

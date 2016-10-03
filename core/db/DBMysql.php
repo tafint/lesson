@@ -1,6 +1,6 @@
 <?php 
 /**
- * This is a interface Mysqli
+ * This is a class DBMysql inplements DB
  */
 class DBMysql implements DB
 {

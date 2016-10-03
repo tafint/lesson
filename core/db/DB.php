@@ -1,6 +1,6 @@
 <?php 
 /**
- * This is a interface Controller
+ * This is a interface DB
  */
 interface DB
 {
