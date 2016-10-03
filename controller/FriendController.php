@@ -22,7 +22,8 @@ class FriendController extends Controller
 		$this->_model->load('user_log');
 		$this->_helper->load('functions');
 		$this->_helper->load('exception');
-		//check if exist session user_id, redirect to index page if not exist session
+		
+		//check session
 		try {
 			if (!isset($_SESSION['user_id'])) {
 				throw new Exception("Error");

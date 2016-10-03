@@ -28,7 +28,7 @@ class UserController extends Controller
 		$this->_helper->load('functions');
 		$this->_helper->load('exception');
 		
-		// check session and get user info 
+		//check session
 		if (isset($_SESSION['user_id'])) {
 			$user = $this->user->find_id($_SESSION['user_id']);
 			if($user) {

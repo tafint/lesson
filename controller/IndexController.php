@@ -15,6 +15,7 @@ class IndexController extends Controller
 		$this->load_template_before('header');
 		$this->load_template_after('footer');
 		
+		//check session
 		if (isset($_SESSION['user_id'])) {
 			$user = new User;
 			$user = $user->find_id($_SESSION['user_id']);
