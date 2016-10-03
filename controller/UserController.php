@@ -926,6 +926,9 @@ class UserController extends Controller
 			
 			$id = $data['user']['id'];
 			$content = htmlspecialchars($_POST['s']);
+			if ($content == "") {
+				throw new CheckException("Not have content search");
+			}
 			$data['search_content'] = $content;
             $result = $this->user->search_not_friend($id, $content);
             

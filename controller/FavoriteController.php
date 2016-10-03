@@ -54,6 +54,10 @@ class FavoriteController extends Controller
 				throw new Exception("User not exist");
 			} 
 
+			if ($user_id == $data['user']['id']) {
+				throw new Exception("Not follow yourself");
+			} 
+			
 			$is_favorite = $this->favorite->is_favorite($data['user']['id'], $user_id);
 			
 			if ($is_favorite) {

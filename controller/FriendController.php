@@ -20,6 +20,7 @@ class FriendController extends Controller
 		$this->_model->load('favorite');
 		$this->_model->load('follow');
 		$this->_model->load('user_log');
+		
 		$this->_helper->load('functions');
 		$this->_helper->load('exception');
 		

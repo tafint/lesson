@@ -91,6 +91,10 @@ class FollowController extends Controller
 			if (!$user) {
 				throw new Exception("User not exist");
 			} 
+
+			if ($user_id == $data['user']['id']) {
+				throw new Exception("Not follow yourself");
+			} 
 			
 			$is_follow = $this->follow->is_follow($data['user']['id'], $user_id);
 			
