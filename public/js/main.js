@@ -581,7 +581,7 @@ $( document ).ready(function() {
                         +'</div>';
             $('#picture>.row>.col-md-3:nth-child(1)').after(html);
         } else {
-            notification(result.message, 'error');
+            notification(e.message, 'error');
         }
     }
 

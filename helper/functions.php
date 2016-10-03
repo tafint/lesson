@@ -69,7 +69,7 @@ function validate($string, $type, $min_length = 0, $max_length = 0)
   */
 function redirect($url = '')
 {	
-	$url = HOST.ltrim($url,'/');
+	$url = 'http://dev.lampart.com.vn/lesson/'.ltrim($url,'/');
 	header("Location: $url");
 }
 

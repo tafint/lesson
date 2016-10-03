@@ -17,8 +17,7 @@ class IndexController extends Controller
 		
 		//check session
 		if (isset($_SESSION['user_id'])) {
-			$user = new User;
-			$user = $user->find_id($_SESSION['user_id']);
+			$user = $this->user->find_id($_SESSION['user_id']);
 			if($user) {
 				$this->_data['user'] = $user ;
 			}

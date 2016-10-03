@@ -4,12 +4,12 @@
 			<div class="thumbnail profile-avatar">
 				<img class="img-rounded" src="<?php echo ($profile['avatar'] != '') ? ('/lesson/'.$profile['avatar']) : '/lesson/public/images/avatar.png'?>" alt="avatar">
 
-			<?php if ($is_owner && false): ?>
+			<?php if ($is_owner && true): ?>
 				<a >Change</a>
 			<?php endif; ?>
 			</div>
 
-		<?php if (($user['id'] != $profile['id']) && false): ?>
+		<?php if (($user['id'] != $profile['id']) && true): ?>
 			<p class="text-center">
 				<button class="btn btn-sm btn-default p-addfriend-btn <?php echo $is_friend ? 'hide' : ($is_request ? 'hide' : '') ?>" id-value="<?php echo $profile['id'] ?>">Friend</button>
 				<button class="btn btn-sm btn-default p-unfriend-btn <?php echo $is_friend ? '' : 'hide' ?>" id-value="<?php echo $profile['id'] ?>">Unfriend</button>
@@ -26,7 +26,7 @@
 				<h3 class="info-output" name-part="fullname">
 					<span><?php echo $profile['fullname']; ?></span>
 
-				<?php if ($is_owner && false): ?>
+				<?php if ($is_owner && true): ?>
 					<a class="open-edit" href="#"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 				<?php endif ?>
 
@@ -44,7 +44,7 @@
 					<div class="info-output" name-part="email">
 						<span><?php echo $profile['email']; ?></span>
 
-					<?php if ($is_owner && false): ?>
+					<?php if ($is_owner && true): ?>
 						<a class="open-edit"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 					<?php endif ?>
 
@@ -64,7 +64,7 @@
 					<div class="info-output" name-part="birthday">
 						<span><?php echo $profile['birthday']; ?></span>
 						
-					<?php if ($is_owner && false): ?>
+					<?php if ($is_owner && true): ?>
 						<a class="open-edit"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 					<?php endif ?>
 
@@ -89,7 +89,7 @@
 					<div class="info-output" name-part="sex">
 						<span><?php echo ($profile['sex'] == 1) ? 'Male' : 'Female'; ?></span>
 						
-					<?php if ($is_owner && false): ?>
+					<?php if ($is_owner && true): ?>
 						<a class="open-edit"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 					<?php endif ?>
 
@@ -109,7 +109,7 @@
 					<div class="info-output" name-part="address">
 						<span><?php echo $profile['address']; ?></span>
 
-					<?php if ($is_owner && false): ?>
+					<?php if ($is_owner && true): ?>
 						<a class="open-edit"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 					<?php endif ?>
 

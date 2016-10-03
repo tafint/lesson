@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Lession Training</title>
+	<title>Lesson Training</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="/lesson/public/libs/bootstrap-3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/lesson/public/libs/fancybox/fancybox.css">
@@ -54,7 +54,7 @@
 				   		<li><a href="/lesson/user/manage">Management users</a></li> 
 				    <?php } ?>
 				        <li><a href="/lesson/user/logout">Logout</a></li>
-				        <li><a href="#">Hi <?php echo $user['fullname']; ?></a></li>
+				        <li><a href="/lesson/friend/view/<?php echo $user['id'] ?>">Hi <?php echo $user['fullname']; ?></a></li>
 				    </ul>
 			    </div>
 			</div><!-- /.navbar-collapse -->

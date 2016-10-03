@@ -5,13 +5,14 @@ session_start();
 define('PATH', __DIR__);
 
 // init router
-require_once PATH . 'core/Router.php';
+require_once PATH . '/core/Router.php';
 $router = new Router;
 
 require_once PATH . '/config/route.php';
 
 // parse controller and method from uri
 $server = $_SERVER;
+
 $server['REQUEST_URI'] = str_replace("/lesson","",$server['REQUEST_URI']);
 $app = $router->match($server);
 

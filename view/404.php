@@ -1,1 +1,1 @@
-<h3 class="alert alert-warning">Error 404: Not Found Page</h3>
+<h3 class="alert alert-warning"><i class="glyphicon glyphicon-remove-circle"></i> 404: Not Found</h3>
