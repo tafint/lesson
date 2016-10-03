@@ -47,7 +47,7 @@
 				        <li><a href="/lesson/friend/suggest">Friend suggestion</a></li>
 				    <?php endif; ?>
 				    <?php if (false) : ?>
-				        <li><a href="/lesson/follow/index">Follow list</a></li>
+				        <li><a href="/lesson/follow/index">Follow list (<?php echo isset($count_follow) ? $count_follow : 0; ?>)</a></li>
 				    <?php endif; ?>
 				        <li><a href="/lesson/message/index">Message (<?php echo isset($count_message) ? $count_message : 0; ?>)</a></li>
 				    <?php if ($user['group_id'] ==1) { ?>

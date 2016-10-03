@@ -38,6 +38,7 @@ class MessageController extends Controller
 			$data['count_friend'] = $this->friend_list->count_all($data['user']['id']);
 			$data['count_request'] = $this->friend_request->count_all($data['user']['id']);
 			$data['count_message'] = $this->message_log->count_all($data['user']['id']);
+			$data['count_follow'] = $this->follow->count_all($data['user']['id']);
 			
 			$this->load_template_before('header', $data);
 			$this->load_template_after('footer');
@@ -45,7 +46,7 @@ class MessageController extends Controller
 			$this->_data['error'] = true;
 		}
 	}
-	
+
 
 	/**
      * action view message in inbox

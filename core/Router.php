@@ -48,14 +48,14 @@ protected function add_route($method, $path, $handler){
 }
 
 public function match(array $server = []){
-    $requestMethod = $server['REQUEST_METHOD'];
-    $requestUri    = $server['REQUEST_URI'];
+    $request_method = $server['REQUEST_METHOD'];
+    $request_uri    = $server['REQUEST_URI'];
 
-    if (!in_array($requestMethod, array_keys($this->routes))) {
+    if (!in_array($request_method, array_keys($this->routes))) {
         return FALSE;
     }
 
-    $method = $requestMethod;
+    $method = $request_method;
 
     foreach ($this->routes[$method]  as $resource) {
 
@@ -64,10 +64,10 @@ public function match(array $server = []){
         $handler = reset($resource);
 
         if(preg_match(self::REGVAL, $route)){
-            list($args, $uri, $route) = $this->parse_regex_route($requestUri, $route);  
+            list($args, $uri, $route) = $this->parse_regex_route($request_uri, $route);  
         }
        
-        if(!preg_match("#^$route$#", $requestUri)){
+        if(!preg_match("#^$route$#", $request_uri)){
             unset($this->routes[$method]);
             continue ;
         } 
@@ -88,7 +88,7 @@ public function match(array $server = []){
       header('HTTP/1.1 404');
  }
 
-protected function parse_regex_route($requestUri, $resource){
+protected function parse_regex_route($request_uri, $resource){
     $route = preg_replace_callback(self::REGVAL, function($matches) {
         $patterns = $this->patterns; 
         $matches[0] = str_replace(['{', '}'], '', $matches[0]);
@@ -100,12 +100,12 @@ protected function parse_regex_route($requestUri, $resource){
     }, $resource);
 
 
-    $regUri = explode('/', $resource); 
+    $reg_uri = explode('/', $resource); 
 
     $args = array_diff(
-                array_replace($regUri, 
-                explode('/', $requestUri)
-            ), $regUri
+                array_replace($reg_uri, 
+                explode('/', $request_uri)
+            ), $reg_uri
         );  
 
     return [array_values($args), $resource, $route]; 

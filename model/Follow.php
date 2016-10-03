@@ -35,7 +35,7 @@ class Follow extends Model
      */
 	public function count_all($id) 
 	{
-        return $this->where('user_id', $id)->or_where('user_id_to', $id)->count();
+        return $this->where('user_id', $id)->count();
 	}
 
 	/**

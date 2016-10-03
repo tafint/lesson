@@ -15,6 +15,7 @@ class FollowController extends Controller
 		$this->_model->load('friend_list');
 		$this->_model->load('friend_request');
 		$this->_model->load('message_log');
+		$this->_model->load('follow');
 		//check if exist session user_id, redirect to index page if not exist session
 		try {
 
@@ -35,6 +36,7 @@ class FollowController extends Controller
 			$data['count_friend'] = $this->friend_list->count_all($data['user']['id']);
 			$data['count_request'] = $this->friend_request->count_all($data['user']['id']);
 			$data['count_message'] = $this->message_log->count_all($data['user']['id']);
+			$data['count_follow'] = $this->follow->count_all($data['user']['id']);
 			
 			$this->load_template_before('header', $data);
 			$this->load_template_after('footer');
