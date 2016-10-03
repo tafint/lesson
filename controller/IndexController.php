@@ -34,7 +34,7 @@ class IndexController extends Controller
 			redirect('/user/home');
 		}
 		
-		$this->_view->load_content('index');
+		$this->_view->load_content('wellcome');
 	}
 
 	public function error_404()

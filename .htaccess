@@ -6,6 +6,6 @@ php_flag  log_errors on
 RewriteEngine On
 RewriteBase /lesson/
 RewriteCond %{SCRIPT_FILENAME} !-f
-RewriteCond %{SCRIPT_FILENAME} !-d
+#RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [L]
 </IfModule>
