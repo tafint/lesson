@@ -2,11 +2,11 @@
 /**
  * This is a class UserLog
  */
-class UserLog extends Model
+class UserLog extends BaseModel
 
 {
-	public function __construct(){
-		parent::__construct();
+	public function __construct(DB $db){
+		parent::__construct($db);
 		// set table
 		$this->_table = 'user_log';
 	}

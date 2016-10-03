@@ -2,11 +2,11 @@
 /**
  * This is a class User
  */
-class User extends Model
+class User extends BaseModel
 
 {
-	public function __construct(){
-		parent::__construct();
+	public function __construct(DB $db){
+		parent::__construct($db);
 		//set table
 		$this->_table = 'user';
 	}

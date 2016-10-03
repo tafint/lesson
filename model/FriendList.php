@@ -2,12 +2,12 @@
 /**
  * This is a class FriendList
  */
-class FriendList extends Model
+class FriendList extends BaseModel
 
 {
-	public function __construct()
+	public function __construct(DB $db)
 	{
-		parent::__construct();
+		parent::__construct($db);
 		// set table
 		$this->_table = 'friend_relation';
 	}

@@ -2,12 +2,12 @@
 /**
  * This is a class FriendRequest
  */
-class FriendRequest extends Model
+class FriendRequest extends BaseModel
 
 {
-	public function __construct()
+	public function __construct(DB $db)
 	{
-		parent::__construct();
+		parent::__construct($db);
 		// set table
 		$this->_table = 'friend_request';
 	}

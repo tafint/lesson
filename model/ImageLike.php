@@ -2,12 +2,12 @@
 /**
  * This is a class ImageLike
  */
-class ImageLike extends Model
+class ImageLike extends BaseModel
 
 {
-	public function __construct()
+	public function __construct(DB $db)
 	{
-		parent::__construct();
+		parent::__construct($db);
 		// set table
 		$this->_table = 'image_like';
 	}

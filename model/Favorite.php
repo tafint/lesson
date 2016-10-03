@@ -2,12 +2,12 @@
 /**
  * This is a class Favorite
  */
-class Favorite extends Model
+class Favorite extends BaseModel
 
 {
-	public function __construct()
+	public function __construct(DB $db)
 	{
-		parent::__construct();
+		parent::__construct($db);
 		// set table
 		$this->_table = 'favorite';
 	}

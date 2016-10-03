@@ -28,12 +28,19 @@ function get_instance(){
 	return $controller::get_instance();
 }
 
-require_once PATH . '/core/Controller.php';
+require_once PATH . "/core/Controller.php";
+
+require_once PATH . "/core/DB.php";
+require_once PATH . "/core/DBMysql.php";
+require_once PATH . "/core/BaseModel.php";
+require_once PATH . "/config/db.php";
+$db = new DBMysql();
+$db->connect("mysql:host=" . DB_HOST . ";dbname=". DB_NAME, DB_USER, DB_PASS);
 
 if (file_exists(PATH . '/controller/' . $controller .'.php')) {
 	require_once PATH . '/controller/' . $controller .'.php';
 
-	$ctrl= new $controller;
+	$ctrl= new $controller();
 
 	if (count($args) == 0) {
 		$ctrl->{$action}();
@@ -43,3 +50,19 @@ if (file_exists(PATH . '/controller/' . $controller .'.php')) {
 } else {
 	die("Error");
 }
+
+die;
+
+// if (file_exists(PATH . '/controller/' . $controller .'.php')) {
+// 	require_once PATH . '/controller/' . $controller .'.php';
+
+// 	$ctrl= new $controller();
+
+// 	if (count($args) == 0) {
+// 		$ctrl->{$action}();
+// 	} else {
+// 		$ctrl->{$action}($args);
+// 	}
+// } else {
+// 	die("Error");
+// }

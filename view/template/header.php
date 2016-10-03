@@ -50,7 +50,7 @@
 				        <li><a href="/lesson/follow/index">Follow list (<?php echo isset($count_follow) ? $count_follow : 0; ?>)</a></li>
 				    <?php endif; ?>
 				        <li><a href="/lesson/message/index">Message (<?php echo isset($count_message) ? $count_message : 0; ?>)</a></li>
-				    <?php if ($user['group_id'] ==1) { ?>
+				    <?php if (($user['group_id'] ==1) && true) { ?>
 				   		<li><a href="/lesson/user/manage">Management users</a></li> 
 				    <?php } ?>
 				        <li><a href="/lesson/user/logout">Logout</a></li>

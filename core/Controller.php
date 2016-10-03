@@ -27,8 +27,9 @@ class Controller
         require_once PATH . '/core/View.php';
         $this->_view = new View;
 
+        global $db;
         require_once PATH . '/core/Model.php';
-        $this->_model = new Model();
+        $this->_model = new Model($db);
 
         require_once PATH . '/core/Helper.php';
         $this->_helper = new Helper;

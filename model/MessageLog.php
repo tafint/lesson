@@ -2,11 +2,11 @@
 /**
  * This is a class MessageLog
  */
-class MessageLog extends Model
+class MessageLog extends BaseModel
 
 {
-	public function __construct(){
-		parent::__construct();
+	public function __construct(DB $db){
+		parent::__construct($db);
 		// set table
 		$this->_table = 'message_log';
 	}

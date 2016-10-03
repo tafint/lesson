@@ -2,12 +2,12 @@
 /**
  * This is a class Follow
  */
-class Follow extends Model
+class Follow extends BaseModel
 
 {
-	public function __construct()
+	public function __construct(DB $db)
 	{
-		parent::__construct();
+		parent::__construct($db);
 		// set table
 		$this->_table = 'follow';
 	}
