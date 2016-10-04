@@ -134,7 +134,7 @@
 			</div>
 		</div>
 	</div>
-<?php if ($permisson && !$is_owner): ?>
+<?php if ($permisson && !$is_owner && true): ?>
 	<div class="row">
 		<div class="col-md-6">
 

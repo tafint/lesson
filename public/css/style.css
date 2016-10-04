@@ -13,6 +13,9 @@ a {
 .number-list li {
 	list-style: decimal;
 }
+#main-menu input {
+	width: 150px;
+}
 .chat-show {
 	height: 200px;
 	overflow-y: scroll;
