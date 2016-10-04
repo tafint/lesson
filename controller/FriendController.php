@@ -128,6 +128,9 @@ class FriendController extends Controller
 				} elseif ($data['user']['group_id'] ==1) {
 					$data['is_friend'] = false;
 					$data['permisson'] = true;
+				} elseif (($data['user']['group_id'] == $data['profile']['group_id']) && ($data['profile']['id'] != $data['user']['id'])) {
+					$data['permisson'] = true;
+					$data['is_friend'] = false;
 				} else {
 					$data['is_friend'] = false;
 				}
@@ -190,7 +193,7 @@ class FriendController extends Controller
 				}
 				
 				// get conversation
-				if (($data['user']['group_id'] == 1) && ($data['user']['id'] != $data['profile']['id'])) {
+				if (($data['user']['group_id'] == 1) && ($data['user']['id'] != $data['profile']['id']) && ($data['profile']['group_id'] != 1)) {
 					$conversations = $this->message_log->get_all_con($data['profile']['id']);
 					
 					foreach ($conversations as $key => $value) {

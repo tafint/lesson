@@ -5,7 +5,7 @@
 				<img class="img-rounded" src="<?php echo ($profile['avatar'] != '') ? ('/lesson/'.$profile['avatar']) : '/lesson/public/images/avatar.png'?>" alt="avatar">
 
 			<?php if ($is_owner && true): ?>
-				<a >Change</a>
+				<a class="btn btn-sm btn-info">Change</a>
 			<?php endif; ?>
 			</div>
 
@@ -172,7 +172,7 @@
 				<input type="hidden" name="current-message" value="<?php echo isset($current_msg) ? $current_msg : 0; ?>"/>
 				<input class="form-control" name="user-id-to" type="hidden" value="<?php echo $profile['id']; ?>"/>
 			
-			<?php if (($user['group_id'] == 1) || ($user['group_id'] == $profile['group_id'])): ?>
+			<?php if (($user['group_id'] == 1) || ($user['group_id'] == $profile['group_id']) || $is_friend): ?>
 				<div class="input-group">
 					<input class="form-control" name="message-content" type="text"/>
 					
@@ -288,7 +288,7 @@
 		    	<?php foreach ($friends as $friend): ?>
 		    		<div class="col-md-6 friend-block">
 		    			<div class="row">
-		    				<div class="col-xs-4 friend-name"><a href="/lesson/friend/view-/<?php echo $friend['user_info']['id']; ?>"><?php echo $friend['user_info']['fullname']; ?></a></div>
+		    				<div class="col-xs-4 friend-name"><a href="/lesson/friend/view/<?php echo $friend['user_info']['id']; ?>"><?php echo $friend['user_info']['fullname']; ?></a></div>
 		    				<div class="col-xs-2 thumbnail"><img src="<?php echo ($friend['user_info']['avatar'] != '') ? ('/lesson/'.$friend['user_info']['avatar']) : '/lesson/public/images/avatar.png'?>"></div>
 		    				<div class="col-xs-6 friend-action">
 		    					<?php if ($friend['user_info']['id'] != $user['id']): ?>

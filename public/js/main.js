@@ -171,7 +171,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                     add_btn.attr("disabled",true);
                 } else {
                     notification(result.message, "error");
@@ -195,7 +195,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                     accept_btn.parent().parent().hide();
                 } else {
                     notification(result.message, "error");
@@ -217,7 +217,7 @@ $( document ).ready(function() {
                 type: 2
             },
             success: function(result){
-                if (result.error == false) {
+                if (result.error === false) {
                     delete_btn.parent().parent().hide();
                 } else {
                     notification(result.message, "error");
@@ -257,7 +257,7 @@ $( document ).ready(function() {
                 },
                 success: function(result){
                     
-                    if (result.error == false) {
+                    if (result.error === false) {
 
                         if (result.data) {
                             var current_user_id = chat_box.find("p").last().attr("user-id-value");
@@ -286,7 +286,7 @@ $( document ).ready(function() {
                         chat_form.find("[type=submit]").prop("disabled", false);
                     } else {
                         notification(result.message, "error");
-                        location.reload();
+                        setTimeout(function(){ location.reload(); }, 2000);
                     }
                 }
             })
@@ -310,7 +310,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                     notification("Change group success", "success");
                 } else {
                     notification(result.message, "error");
@@ -333,7 +333,7 @@ $( document ).ready(function() {
                 type: "DELETE",
                 success: function(result){
 
-                    if (result.error == false) {
+                    if (result.error === false) {
                        delete_btn.parent().parent().hide();
                        notification("Delete user success", "success");
                     } else {
@@ -376,7 +376,7 @@ $( document ).ready(function() {
                     },
                     success: function(result){
 
-                        if (result.error == false) {
+                        if (result.error === false) {
 
                             if (result.data) {
                                 var current_user_id = chat_box.find("p").last().attr("user-id-value");
@@ -428,7 +428,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                     var html = "";
 
                     if (result.data) { 
@@ -443,6 +443,8 @@ $( document ).ready(function() {
                 }
                 else {
                     notification(result.message, "error");
+                    setTimeout(function(){ location.reload(); }, 2000);
+
                 }
             }
         })
@@ -460,7 +462,7 @@ $( document ).ready(function() {
             type: 'GET',
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                     var birthday = new Date(result.data.birthday);
 
                     edit_modal.find("[name=user-id]").val(user_id);
@@ -504,7 +506,7 @@ $( document ).ready(function() {
             },
             success: function(result){
                 
-                if (result.error == false) {
+                if (result.error === false) {
                     var manage_table = $("#management-table");
 
                     manage_table.find("tr[id-value="+user_id+"] td:nth(0)").html("<a href='/lesson/friend/view/" + user_id + "'>" + fullname + "</a>");
@@ -665,7 +667,7 @@ $( document ).ready(function() {
                 },
                 success: function(result){
 
-                    if (result.error == false) {
+                    if (result.error === false) {
                         location.reload();
                     } else {
                         notification(result.message, "error");
@@ -767,7 +769,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                     unfriend_btn.addClass("hide");
                     addfriend_btn.removeClass("hide");
                 } else {
@@ -792,7 +794,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    addfriend_btn.addClass("hide");
                    request_btn.removeClass("hide");
                 } else {
@@ -894,7 +896,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    view_btn.find("span").html("("+result.view+")");
                 }
 
@@ -917,7 +919,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                     unfav_btn.removeClass("hide");
                     addfav_btn.addClass("hide");
                 } else {
@@ -942,7 +944,7 @@ $( document ).ready(function() {
             },
             success : function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    addfav_btn.removeClass("hide");
                    unfav_btn.addClass("hide");
                 } else {
@@ -965,7 +967,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    location.reload();
                 } else {
                     notification(result.message, "error");
@@ -987,7 +989,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    location.reload();
                 } else {
                     notification(result.message, "error");
@@ -1008,7 +1010,7 @@ $( document ).ready(function() {
             },
             success : function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    location.reload();
                 } else {
                     notification(result.message, "error");
@@ -1030,7 +1032,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    location.reload();
                 } else {
                     notification(result.message, "error");
@@ -1051,7 +1053,7 @@ $( document ).ready(function() {
             },
             success: function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    location.reload();
                 } else {
                     notification(result.message, "error");
@@ -1072,7 +1074,7 @@ $( document ).ready(function() {
             },
             success : function(result){
 
-                if (result.error == false) {
+                if (result.error === false) {
                    location.reload();
                 } else {
                     notification(result.message, "error");

@@ -100,15 +100,15 @@ class MessageController extends Controller
 				throw new Exception("Not exist user");	
 			}
 			
-			if(($user_to['group_id'] == 1) && ($data['user']['group_id'] != 1)) {
-				throw new Exception("Not send message to admin");
-			}
-			
 			$is_friend = $this->friend_list->is_friend($data['user']['id'], $user_to['id']);
 			
-			if (!$is_friend && ($data['user']['group_id']) != 1) {
+			if ((!$is_friend && ($data['user']['group_id']) != 1) && ($data['user']['group_id'] != $user_to['group_id'])) {
 				throw new Exception("Not have permisson");
 			}
+
+			// if(($user_to['group_id'] == 1) && ($data['user']['group_id'] != 1)) {
+			// 	throw new Exception("Not send message to admin");
+			// }
 			
 			$message = htmlspecialchars($_POST['message']);
 			$current_message = htmlspecialchars($_POST['current_message']);
@@ -156,15 +156,15 @@ class MessageController extends Controller
 			
 			$user_id = $_POST['user_id'];
 			$user_id_to = $_POST['user_id_to'];
-			
-			if (($this->_data['user']['id'] != $user_id_to) && ($this->_data['user']['id'] != $user_id) && ($data['user']['group_id'] != 1)) {
-				throw new Exception("Not have permisson");
-			}
-			
 			$user = $this->user->find_id($user_id);
-
+			$user_to = $this->user->find_id($user_id_to);
+			
 			if (!$user) {
 				throw new Exception("Not exist user");
+			}
+
+			if (($this->_data['user']['id'] != $user_id_to) && ($this->_data['user']['id'] != $user_id) && (($data['user']['group_id'] != 1) || ($user_to['group_id'] == 1))) {
+				throw new Exception("Not have permisson");
 			}
 
 			$current_message = htmlspecialchars($_POST['current_message']);

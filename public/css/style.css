@@ -38,9 +38,13 @@ a {
 	margin-bottom: 15px;
 }
 .picture-block {
-	height: 218px;
+	height: 280px;
 	border: 1px solid #cccccc;
 	border-radius: 5px;
+}
+#picture  .progress {
+
+	margin-bottom: 0;
 }
 .picture-block-friend {
 	height: 260px;
