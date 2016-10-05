@@ -582,10 +582,10 @@ $( document ).ready(function() {
             for (var i=0; i < e.images_data.length; i++) {
                 var html = '<div class="m-b-10 col-md-3">'
                             +'<div class="picture-block picture-block-owner">'
-                            +'<div class="picture-thumbnail" id-value="' + e.images_data[i].id + '" source-image="/lesson/' + e.images_data[i].path + '"><img src="/lesson/' + e.images_data[i].thumbnail + '"></div>'
+                            +'<div class="picture-thumbnail fancybox" data-fancybox-group="galery1" id-value="' + e.images_data[i].id + '" source-image="/lesson/' + e.images_data[i].path + '"><img src="/lesson/' + e.images_data[i].thumbnail + '"></div>'
                             +'<ul class="list-group text-center">'
                             +'<li class="list-group-item" ><a class="delete-image-btn" id-value="' + e.images_data[i].id + '">Delete</a></li>'
-                            +'<li class="list-group-item" ><a class="view-btn" id-value="' + e.images_data[i].id + '">View <span>(0)</span></a></li>'
+                            +'<li class="list-group-item" ><a class="view-btn fancybox" data-fancybox-group="galery2" id-value="' + e.images_data[i].id + '">View <span>(0)</span></a></li>'
                             +'<li class="list-group-item" ><a class="like-btn ready-btn" id-value="' + e.images_data[i].id + '">Like <span>(0)</span></a><a class="unlike-btn ready-btn hide" id-value="' + e.images_data[i].id + '">Unlike <span>(0)</span></a></li>'
                             +'</ul>'
                             +'</div>'
@@ -968,50 +968,79 @@ $( document ).ready(function() {
     });
 
     // view image
-    $("#picture").delegate(".view-btn", "click", function(){
-        var view_btn = $(this);
-        var image_id = view_btn.attr('id-value');
-        var href = $(".picture-thumbnail[id-value="+image_id+"]").attr("source-image");
+    // $("#picture").delegate(".view-btn", "click", function(){
+    //     var view_btn = $(this);
+    //     var image_id = view_btn.attr('id-value');
+    //     var href = $(".picture-thumbnail[id-value="+image_id+"]").attr("source-image");
         
-        $.ajax({
-            url: "/lesson/image/view",
-            type: "POST",
-            data: {
-                image_id: image_id
-            },
-            success: function(result){
+    //     $.ajax({
+    //         url: "/lesson/image/view",
+    //         type: "POST",
+    //         data: {
+    //             image_id: image_id
+    //         },
+    //         success: function(result){
 
-                if (result.error === false) {
-                   view_btn.find("span").html("("+result.view+")");
-                }
+    //             if (result.error === false) {
+    //                view_btn.find("span").html("("+result.view+")");
+    //             }
 
-            }
-        })
-        $.fancybox([{href:href}]);
-    });
+    //         }
+    //     })
+    //     $.fancybox([{href:href}]);
+    // });
 
-    $("#picture").delegate(".picture-block .picture-thumbnail", "click", function(){
-        var picture = $(this);
-        var image_id = picture.attr('id-value');
-        var view_btn = $(".view-btn[id-value=" + image_id + "]");
-        var href =picture.attr("source-image");
+    // $("#picture").delegate(".picture-block .picture-thumbnail", "click", function(){
+    //     var picture = $(this);
+    //     var image_id = picture.attr('id-value');
+    //     var view_btn = $(".view-btn[id-value=" + image_id + "]");
+    //     var href =picture.attr("source-image");
         
-        $.ajax({
-            url: "/lesson/image/view",
-            type: "POST",
-            data: {
-                image_id: image_id
-            },
-            success: function(result){
+    //     $.ajax({
+    //         url: "/lesson/image/view",
+    //         type: "POST",
+    //         data: {
+    //             image_id: image_id
+    //         },
+    //         success: function(result){
 
-                if (result.error === false) {
-                   view_btn.find("span").html("("+result.view+")");
+    //             if (result.error === false) {
+    //                view_btn.find("span").html("("+result.view+")");
+    //             }
+
+    //         }
+    //     })
+    //     $.fancybox([{href:href}]);
+    // });
+
+    // use fancybox to show album image
+    $(".fancybox").fancybox({
+        autoScale: true,
+        autoSize    : true,
+        type: 'image',
+        padding: 0,
+        closeClick: false,
+        // other options
+        beforeLoad: function () {
+            var image_id = $(this.element).attr("id-value");
+            var view_btn = $(".view-btn[id-value=" + image_id + "]");
+            var url = $(".picture-thumbnail[id-value="+image_id+"]").attr("source-image");
+            $.ajax({
+                url: "/lesson/image/view",
+                type: "POST",
+                data: {
+                    image_id: image_id
+                },
+                success: function(result){
+                    if (result.error === false) {
+                       view_btn.find("span").html("("+result.view+")");
+                    }
+
                 }
-
-            }
-        })
-        $.fancybox([{href:href}]);
-    });
+            });
+            this.href = url;
+        }
+    }); 
 
     // favorite
     $(".addfavorite-btn").on("click", function(){

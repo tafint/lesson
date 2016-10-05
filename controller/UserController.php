@@ -83,7 +83,7 @@ class UserController extends Controller
 			if (isset($_POST['fullname'])) {
 				$data = array(
 						    'code' => htmlspecialchars($_POST['code']),
-						    'fullname' => htmlspecialchars($_POST['fullname']),
+						    'fullname' => trim(htmlspecialchars($_POST['fullname'])),
 						    'username' => htmlspecialchars($_POST['username']),
 						    'email' => htmlspecialchars($_POST['email']),
 						    'password' => htmlspecialchars($_POST['password']),
@@ -101,7 +101,7 @@ class UserController extends Controller
 					$data['message'][] = 'Fullname a-Z, length 4-30';
 				}
 
-				if (!validate($data['username'], 'alp_number_under', 4 , 30)) {
+				if (!validate($data['username'], 'user_name')) {
 					$data['error'] = true;
 					$data['message'][] = 'Username a-Z0-9 and underscore, length 4-30';
 				}
@@ -111,7 +111,7 @@ class UserController extends Controller
 					$data['message'][] = 'Email invalid';
 				}
 
-				if (!validate($data['password'], 'password', 3, 20)) {
+				if (!validate($data['password'], 'password')) {
 					$data['error'] = true;
 					$data['message'][] = 'Password a-Z0-9, special characters !@#$%, length 3-20';
 				}
@@ -241,7 +241,7 @@ class UserController extends Controller
 				
 				try {
 					//validate
-					if(!(validate($data['username'], 'alp_number') && validate($data['password'], 'password'))) {
+					if(!(validate($data['username'], 'username') && validate($data['password'], 'password'))) {
 						throw new Exception("Username or password invalid");
 					}
 
@@ -295,7 +295,7 @@ class UserController extends Controller
 	                             'sex' => $_POST['sex']
 							 );
 				// validate
-				if (!validate($edit_data['fullname'], 'alphabet' , 4, 30)) {
+				if (!validate($edit_data['fullname'], 'fullname')) {
 					$data['edit_status'] = true;
 					$data['message'][] = 'Fullname a-Z, length 4-30';
 				}
@@ -412,12 +412,14 @@ class UserController extends Controller
 			if (!isset($_SESSION['user_id'])) {
 				throw new Exception("Error");
 			}
+
 			$data = $this->_data;
 		    $data['page'] = 'Change password';
 		    $data['edit_status'] = true;
 		    
 		    if (isset($_POST['password'])) {
 		    	try {
+		    		
 		    		$data['edit_status'] = false;
 			    	$id = $this->_data['user']['id'];
 			    	
@@ -430,7 +432,7 @@ class UserController extends Controller
 			    	    throw new Exception("Please enter all fields");
 			    	}
 			    	
-			    	if (!(validate($password, 'password', 3, 20) && validate($new_password, 'password', 3, 20))) {
+			    	if (!(validate($password, 'password') && validate($new_password, 'password'))) {
 			    		throw new Exception("Password a-Z0-9, special characters !@#$%, length 3-20");
 			    	}
 			    	
@@ -473,6 +475,7 @@ class UserController extends Controller
 	public function update()
 	{	
 		try {
+
 			if(!isset($_SESSION['user_id'])) {
 				throw new Exception("Please login");
 			}
@@ -620,7 +623,7 @@ class UserController extends Controller
 		try {
 			$key = $_GET['key'];
 			
-			if (!validate($key, 'alp_number', 32, 32)) {
+			if (!validate($key, 'token')) {
 				throw new Exception("Token invalid");
 			}
 	        

@@ -244,7 +244,7 @@
 					    <?php foreach ($images as $image): ?>	    	
 					    	<div class="m-b-10 col-md-3">
 					    		<div class="picture-block <?php echo $is_friend ? 'picture-block-friend' : ''; ?> <?php echo $is_owner ? 'picture-block-owner' : ''; ?>">
-					    			<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>" >
+					    			<div class="picture-thumbnail fancybox" data-fancybox-group="galery1" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>" >
 					    				<img src="/lesson/<?php echo $image['thumbnail']; ?>">
 					    			</div>
 					    			<ul class="list-group text-center">
@@ -253,7 +253,7 @@
 						    			<li class="list-group-item"><a class="delete-image-btn" id-value="<?php echo $image['id']; ?>">Delete</a></li>
 						    		<?php endif ?>
 
-						    			<li class="list-group-item"><a class="view-btn" id-value="<?php echo $image['id']; ?>">View <span>(<?php echo $image['view']; ?>)</span></a></li>
+						    			<li class="list-group-item"><a class="view-btn fancybox" data-fancybox-group="galery2" id-value="<?php echo $image['id']; ?>">View <span>(<?php echo $image['view']; ?>)</span></a></li>
 						    		
 						    		<?php if ($is_friend || $is_owner): ?>
 						    			<li class="list-group-item">

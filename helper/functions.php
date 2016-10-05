@@ -3,74 +3,47 @@
 /**
   * function validate
   *
-  * @param string $min_length and $max_length default =0 will not check.
+  * @param string $string and $type
   *
-  * @return void
+  * @return true or false
   */
-function validate($string, $type, $min_length = 0, $max_length = 0)
+function validate($string, $type)
 {	
-	$result = false ;
 	switch ($type) {
 
 		case 'fullname' :  
-		$pattern = '/^[a-zA-Z\s]+$/';
-		if (preg_match($pattern, $string)) {
-			$result = true;
-			$min = (strlen($string) >= 4) ? true : false;
-			$max = (strlen($string) <= 30) ? true : false;
-			if ($min && $max) {
-				$result = true;
-			}
-		}
-		break;
+		    $pattern = '/^[a-zA-Z\s]+$/';
+		    if (preg_match($pattern, $string)) {
+			    return ((strlen($string) >= 4) && (strlen($string) <= 30)) ? true : false;
+		    }
+		    break;
 
-		case 'alphabet' :  
-		$pattern = '/^[a-zA-Z]+$/';
-		if (preg_match($pattern, $string)) {
-			$min = ($min_length != 0) ? ((strlen($string) >= $min_length) ? true :false) : true;
-			$max = ($max_length != 0) ? ((strlen($string) <= $max_length) ? true :false) : true;
-			if ($min && $max) {
-				$result = true;
-			}
-		}
-		break;
+		case 'username' :  
+		    $pattern = '/^([a-zA-Z0-9]+)([a-zA-Z0-9\_]*)([a-zA-Z0-9]+)$/';
+		    if (preg_match($pattern, $string)) {
+			    return ((strlen($string) >= 4) && (strlen($string) <= 30)) ? true : false;
+		    }
+		    break;
 
-		case 'alp_number' :
-		$pattern = '/^[a-zA-Z0-9]+$/';
-		if (preg_match($pattern, $string)) {
-			$min = ($min_length != 0) ? ((strlen($string) >= $min_length) ? true :false) : true;
-			$max = ($max_length != 0) ? ((strlen($string) <= $max_length) ? true :false) : true;
-			if ($min && $max) {
-				$result = true;
-			}
-		}
-		break;
-		case 'alp_number_under' :
-		$pattern = '/^([a-zA-Z0-9]+)([a-zA-Z0-9\_]*)([a-zA-Z0-9]+)$/';
-		if (preg_match($pattern, $string)) {
-			$min = ($min_length != 0) ? ((strlen($string) >= $min_length) ? true :false) : true;
-			$max = ($max_length != 0) ? ((strlen($string) <= $max_length) ? true :false) : true;
-			if ($min && $max) {
-				$result = true;
-			}
-		}
-		break;
+		case 'token' :
+		    $pattern = '/^[a-zA-Z0-9]+$/';
+		    if (preg_match($pattern, $string)) {
+			    return (strlen($string) == 32) ? true : false;
+		    }
+		    break;
 
 		case 'password' :
-		$pattern = '/^[a-zA-Z0-9\@\#\$\%\!]+$/';
-		if (preg_match($pattern, $string)) {
-			$min = ($min_length != 0) ? ((strlen($string) >= $min_length) ? true :false) : true;
-			$max = ($max_length != 0) ? ((strlen($string) <= $max_length) ? true :false) : true;
-			if ($min && $max) {
-				$result = true;
-			}
-		}
-		break;
+		    $pattern = '/^[a-zA-Z0-9\@\#\$\%\!]+$/';
+		    if (preg_match($pattern, $string)) {
+			    return ((strlen($string) >= 3) && (strlen($string) <= 20)) ? true : false;
+		    }
+		    break;
 
 		default : 
-		break;
+			return false;
+		    break;
 	}
-	return $result;
+	return false;
 }
 
 /**
