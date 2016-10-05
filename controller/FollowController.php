@@ -15,6 +15,8 @@ class FollowController extends Controller
 		$this->_model->load('friend_list');
 		$this->_model->load('friend_request');
 		$this->_model->load('message_log');
+		$this->_model->load('user_log');
+		$this->_model->load('user_log_view');
 		$this->_model->load('follow');
 		
 		//check session
@@ -60,9 +62,14 @@ class FollowController extends Controller
 			}
 
 			$follows = $this->follow->get_all($data['user']['id']);
-			
-			if ($follows) {
-				$data['follows'] = $follows;
+			foreach ($follows as $follow) {
+				if ($this->user_log_view->is_view($data['user']['id'], $follow['log_id'])) {
+					$follow['is_view'] = true;
+				} else {
+					$follow['is_view'] = false;
+					$this->user_log_view->insert(array("user_id" => $data['user']['id'], "log_id" => $follow['log_id']));
+				}
+				$data['follows'][] = $follow;
 			}
 			
 		} catch (UserException $e) {
@@ -120,7 +127,7 @@ class FollowController extends Controller
 	}
 
 	/**
-     * api delete image
+     * api unfollow
      *
      */
 	public function remove()
@@ -146,6 +153,57 @@ class FollowController extends Controller
 				throw new Exception("Delete error");
 			}
 			
+			$result = array('error' => false);
+			
+		} catch (Exception $e) {
+			$result = array('error' => true, 'message' => $e->getMessage());
+		}
+
+		$this->_view->reset();
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	/**
+     * api view user log
+     *
+     */
+	public function read()
+	{	
+		try {
+			$data = $this->_data;
+
+			if (isset($data['error'])) {
+				throw new Exception("Please login");
+			}
+
+			$data = $this->_data;
+			$log_id = $_POST['log_id'];
+			$log = $this->user_log->where('id', $log_id)->first();
+
+			// check exist user log action
+			if (!$log) {
+				throw new Exception("This action not exist");
+			}
+
+			// check is friend
+			$follow = $this->follow->is_follow($data['user']['id'], $log['user_id']);
+			
+			if (!$follow) {
+				throw new Exception("Follow user not exist");
+			} 
+			
+			$is_read = $this->user_log_view->is_view($data['user']['id'], $log_id);
+
+			if ($is_read) {
+				throw new Exception("Have read");
+			}
+			
+			$read = $this->user_log_view->insert(array("user_id" => $data["user"]["id"], "log_id" => $log_id));
+
+			if (!$read) {
+				throw new Exception("Insert error");
+			}
 			$result = array('error' => false);
 			
 		} catch (Exception $e) {

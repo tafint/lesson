@@ -96,7 +96,7 @@ class UserController extends Controller
 					    );
 
 				//validate
-				if (!validate($data['fullname'], 'alphabet' , 4, 30)) {
+				if (!validate($data['fullname'], 'fullname')) {
 					$data['error'] = true;
 					$data['message'][] = 'Fullname a-Z, length 4-30';
 				}
@@ -496,7 +496,7 @@ class UserController extends Controller
 			if (isset($_POST['fullname'])) {
 				$edit_data['fullname'] =  htmlspecialchars($_POST['fullname']);
 				
-				if (!validate($edit_data['fullname'], 'alphabet' , 4, 30)) {
+				if (!validate($_POST['fullname'], 'fullname')) {
 					throw new Exception("Fullname a-Z, length 4-30");
 				}
 			}
@@ -712,7 +712,7 @@ class UserController extends Controller
 			
 			$data = $this->_data;
 			$type = $_POST['type'];
-			$content = htmlspecialchars($_POST['content']);
+			$content = trim(htmlspecialchars($_POST['content']));
 			$edit_data = array('key' =>'', 'value' =>$content);
 			
 			switch ($type) {
@@ -722,7 +722,7 @@ class UserController extends Controller
 					break;
 
 				case 'fullname':
-					if (!validate($content, 'alphabet' , 4, 30)) {
+					if (!validate($content, 'fullname')) {
 						throw new Exception("Fullname a-Z, length 4-30");
 					}
 					
@@ -772,31 +772,11 @@ class UserController extends Controller
 				    	throw new Exception("Email fomat invalid");
 				    }
 				    
-				    $check_email = $this->user->where('email', $email)->first ();
+				    $check_email = $this->user->where('email', $email)->where('id',$data['user']['id'],'!=')->first ();
 				    
 				    if ($check_email) {
 					    throw new Exception("Email is exist");
 					} 
-					
-					// create token
-				    $token_code = md5(time());
-				    $data_token = array(
-                                      'token' => $token_code,
-                                      'user_id' => $data['user']['id'],
-                                      'content' => $email,
-                                      'type' => 2,
-                                      'status' => 0
-				    	          );
-				    $token = $this->token->insert($data_token);
-				    
-				    if (!$token){
-				    	throw new Exception("Change email have error");
-				    }
-				    
-				    // send mail
-				    $header = mail_header();
-				    $content_email = "Click <a href='http://dev.lampart.com.vn/lesson/user/confirm/$token_code'>here</a> to agree change email to $email \n ";
-				    mail('thanh_tai@lampart-vn.com', 'Change email', $content_email, $header);
 					break;	
 
 				default:
@@ -804,16 +784,15 @@ class UserController extends Controller
 					break;
 			}
 
-			if ($edit_data['key'] != 'email') {
-				$result_update = $this->user->update_id($data['user']['id'],array($edit_data['key'] => $edit_data['value'] ));
-				
-				if (!$result_update) {
-					throw new Exception("Update error");
-				}
+			$result_update = $this->user->update_id($data['user']['id'],array($edit_data['key'] => $edit_data['value'] ));
+			
+			if (!$result_update) {
+				throw new Exception("Update error");
 			}
 
 			$result['data'] = $content;
 			$result['error'] = false;
+			$result['value'] = $edit_data['value'];
 		} catch (Exception $e) {
 			$result = array('error' => true, 'message' => $e->getMessage());
 		}

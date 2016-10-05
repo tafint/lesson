@@ -73,7 +73,7 @@ class BaseModel
         	if ($result) {
                 $this->_insert_status = true;
                 $this->_result = array();
-        		array_push($this->_result, $this->_conn->insert_id);
+        		array_push($this->_result, $this->_conn->lastInsertId());
 
         		return true;
         	} else {
@@ -90,6 +90,7 @@ class BaseModel
      */
     public function get_insert()
     {   
+
         if($this->_insert_status) {
             $this->_insert_status = false;
             $result = $this->where('id', $this->_result[0])->first();
@@ -284,7 +285,7 @@ class BaseModel
         }
     }
 
-     public function query($query = "", $type = "select")
+    public function query($query = "", $type = "select")
     {   
         $result = $this->_conn->query($query);
         $this->reset();
@@ -297,16 +298,27 @@ class BaseModel
                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                         $data[] = $row;
                     }
+                    return $data;
                     break;
                 
                 default:
-                    $data = true;
+                    return true;
                     break;
             }
-
-            return $data;
         } else {
             return false;
+        }
+    }
+
+    public function count_raw($query = "")
+    {   
+        $result = $this->_conn->query($query);
+        $this->reset();
+
+        if ($result) {
+            return $result->fetchColumn();
+        } else {
+            return 0;
         }
     }
 

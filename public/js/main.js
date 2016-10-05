@@ -527,7 +527,7 @@ $( document ).ready(function() {
     var picture = $("#picture");
     // upload image
     $("#image-upload").on("change", function() {
-        
+        //console.log(this.files);
         picture.find(".progress").removeClass('hide');
         picture.find(".progress-bar").css('width', 0);
         picture.find(".progress-bar").html("");
@@ -571,17 +571,27 @@ $( document ).ready(function() {
 
     function completeHandler(e){
         if (e.error == false) {
-            var html = '<div class="m-b-10 col-md-3">'
-                        +'<div class="picture-block">'
-                        +'<div class="picture-thumbnail" style="background-image:url(/lesson/'+e.path+')"></div>'
-                        +'<ul class="list-group text-center">'
-                        +'<li class="list-group-item"><a href="#">Delete</a></li>'
-                        +'<li class="list-group-item"><a href="#">View (0)</a></li>'
-                        +'<li class="list-group-item"><a href="#">Like (0)</a></li>'
-                        +'</ul>'
-                        +'</div>'
-                        +'</div>';
-            $('#picture>.row>.col-md-3:nth-child(1)').after(html);
+            for (var i=0; i < e.msg_success.length; i++) {
+                notification(e.msg_success[i], 'success');
+            }
+
+            for (var i=0; i < e.msg_error.length; i++) {
+                notification(e.msg_error[i], 'error');
+            }
+
+            for (var i=0; i < e.images_data.length; i++) {
+                var html = '<div class="m-b-10 col-md-3">'
+                            +'<div class="picture-block picture-block-owner">'
+                            +'<div class="picture-thumbnail" id-value="' + e.images_data[i].id + '" source-image="/lesson/' + e.images_data[i].path + '"><img src="/lesson/' + e.images_data[i].thumbnail + '"></div>'
+                            +'<ul class="list-group text-center">'
+                            +'<li class="list-group-item" ><a class="delete-image-btn" id-value="' + e.images_data[i].id + '">Delete</a></li>'
+                            +'<li class="list-group-item" ><a class="view-btn" id-value="' + e.images_data[i].id + '">View <span>(0)</span></a></li>'
+                            +'<li class="list-group-item" ><a class="like-btn ready-btn" id-value="' + e.images_data[i].id + '">Like <span>(0)</span></a><a class="unlike-btn ready-btn hide" id-value="' + e.images_data[i].id + '">Unlike <span>(0)</span></a></li>'
+                            +'</ul>'
+                            +'</div>'
+                            +'</div>';
+                $('#picture>.row>.col-md-3:nth-child(1)').after(html);
+            }
         } else {
             notification(e.message, 'error');
         }
@@ -617,7 +627,7 @@ $( document ).ready(function() {
         var content = "";
         var flag = false;
 
-        switch (name_part){
+        switch (name_part) {
 
             case "introduction":
                 content = $("form[name-part=introduction] textarea").val();
@@ -668,7 +678,46 @@ $( document ).ready(function() {
                 success: function(result){
 
                     if (result.error === false) {
-                        location.reload();
+                        switch (name_part) {
+                             case "introduction":
+                                $('.info-output[name-part=introduction] span').html(result.data);
+                                $("form[name-part=introduction] textarea").val($("<div/>").html(result.data).text());
+                                break;
+
+                            case "fullname":
+                                $('.info-output[name-part=fullname] span').html(result.data);
+                                $("form[name-part=fullname] input").val(escape_html(result.data));
+                                break;
+
+                            case 'birthday':
+                                // input_date.val();
+                                // input_month.val();
+                                // input_year.val(result.data.split("-")[0]);
+                                $("#birthday input[name=birthday]").val(result.data);
+                                $('.info-output[name-part=birthday] span').html(result.data);
+                                break;
+
+                            case "sex":
+                                $('.info-output[name-part=sex] span').html(result.data == 1 ? 'Male' : 'Female');
+                                break;
+
+                            case "address":
+                                $('.info-output[name-part=address] span').html(result.data);
+                                $("form[name-part=address] input").val($("<div/>").html(result.data).text());
+                                break;
+
+                            case "email":
+                                $('.info-output[name-part=email] span').html(result.data);
+                                break;
+                            
+                            default: 
+                                break;
+                        }
+
+                        $('.info-input[name-part='+name_part+']').addClass('hide');
+                        $('.info-output[name-part='+name_part+']').removeClass('hide');
+                        notification("Update success", "success");
+                        //location.reload();
                     } else {
                         notification(result.message, "error");
                     }
@@ -706,11 +755,26 @@ $( document ).ready(function() {
             google.maps.event.trigger(map, "resize");
             map.setCenter(center);
         });
+        var geocoder = new google.maps.Geocoder();
         map.addListener("click", function(e) {
             lng_input.val(e.latLng.lng());
             lat_input.val(e.latLng.lat());
-            confirm_location.modal("show");
-            latLng=e.latLng;
+            $.ajax({
+                url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+ e.latLng.lat() + "," + e.latLng.lng(),
+                type: "GET",
+                success: function(result){
+                    console.log(result);
+                    if (result.results.length > 0) {
+                        confirm_location.find("span.new-address").html(result.results[0]["formatted_address"]);
+                    } else {
+                        confirm_location.find("span.new-address").html("lat: " + e.latLng.lat() + ", long: " + e.latLng.lng());
+                    }
+                    
+                    confirm_location.modal("show");
+                    latLng=e.latLng;
+                }
+            })
+            
         });
     }
 
@@ -749,6 +813,9 @@ $( document ).ready(function() {
                     setMapOnAll(null);
                     addMarker(latLng,map);
                     confirm_location.modal("hide");
+                    notification("Change location success", "success");
+                } else {
+                    notification("Change location error", "error");
                 }
 
             }
@@ -806,13 +873,21 @@ $( document ).ready(function() {
     });
 
     // delete image
-    $(".delete-image-btn").on("click", function(){
+    $("#picture").delegate(".delete-image-btn", "click", function(){
         var del_btn = $(this);
         var image_id = del_btn.attr('id-value');
-        var r = confirm("Are you sure?");
+        var confirm_image = $("#confirm-image");
+        confirm_image.find("form input[name=image-id]").val(image_id);
+        confirm_image.modal("show");
+    });
 
-        if (r === true) {
-            $.ajax({
+    // submit delete image
+     $("#confirm-image .submit-image").on("click", function(e){
+        e.preventDefault();
+        var confirm_image = $("#confirm-image");
+        var image_id = confirm_image.find("form input[name=image-id]").val();
+        if (image_id > 0) {
+             $.ajax({
                 url: "/lesson/image/delete",
                 type: "POST",
                 data: {
@@ -821,22 +896,28 @@ $( document ).ready(function() {
                 success: function(result){
 
                     if (result.error === false) {
-                       del_btn.parent().parent().parent().parent().hide();
+                        var image_thumbnail = $(".picture-block .picture-thumbnail[id-value=" + image_id + "]");
+                        image_thumbnail.parent().parent().hide();
+                        $("#image-album .picture-thumbnail[id-value=" +image_id+ "]").parent().hide();
+                        notification("Delete image success", "success");
                     } else {
                         notification(result.message, "error");
                     }
-
+                    confirm_image.modal("hide");
                 }
             })
+        } else {
+            notification("Not exist image id", "error");
         }
+     })
 
-    });
-
-    // like image 
-    $(".like-btn").on("click", function(){
+    $("#picture").delegate(".like-btn.ready-btn","click", function(){
+        console.log($(this));
         var like_btn = $(this);
+        like_btn.removeClass("ready-btn");
         var image_id = like_btn.attr('id-value');
         var unlike_btn =  $(".unlike-btn[id-value="+image_id+"]");
+        console.log(image_id);
 
         $.ajax({
             url: "/lesson/image/like",
@@ -848,6 +929,7 @@ $( document ).ready(function() {
 
                 if (result.error === false) {
                     unlike_btn.find("span").html("("+result.like+")");
+                    like_btn.addClass("ready-btn");
                     like_btn.addClass("hide");
                     unlike_btn.removeClass("hide");
                 }
@@ -857,10 +939,12 @@ $( document ).ready(function() {
     });
 
     // unlike image 
-    $(".unlike-btn").on("click", function(){
+    $("#picture").delegate(".unlike-btn.ready-btn","click", function(){
         var unlike_btn = $(this);
+        $(this).removeClass("ready-btn");
         var image_id = unlike_btn.attr('id-value');
         var like_btn =  $(".like-btn[id-value="+image_id+"]");
+       
 
         $.ajax({
             url: "/lesson/image/unlike",
@@ -872,6 +956,7 @@ $( document ).ready(function() {
 
                 if (result.error === false) {
                     like_btn.find("span").html("("+result.like+")");
+                    unlike_btn.addClass("ready-btn");
                     unlike_btn.addClass("hide");
                     like_btn.removeClass("hide");
                 } else {
@@ -883,10 +968,33 @@ $( document ).ready(function() {
     });
 
     // view image
-    $(".view-btn").on("click", function(){
+    $("#picture").delegate(".view-btn", "click", function(){
         var view_btn = $(this);
         var image_id = view_btn.attr('id-value');
         var href = $(".picture-thumbnail[id-value="+image_id+"]").attr("source-image");
+        
+        $.ajax({
+            url: "/lesson/image/view",
+            type: "POST",
+            data: {
+                image_id: image_id
+            },
+            success: function(result){
+
+                if (result.error === false) {
+                   view_btn.find("span").html("("+result.view+")");
+                }
+
+            }
+        })
+        $.fancybox([{href:href}]);
+    });
+
+    $("#picture").delegate(".picture-block .picture-thumbnail", "click", function(){
+        var picture = $(this);
+        var image_id = picture.attr('id-value');
+        var view_btn = $(".view-btn[id-value=" + image_id + "]");
+        var href =picture.attr("source-image");
         
         $.ajax({
             url: "/lesson/image/view",
@@ -1103,7 +1211,7 @@ $( document ).ready(function() {
     $("#image-album .submit-avatar").on("click", function(){
         var image_album =  $("#image-album");
         var image_id = image_album.find("input[name=image-value]").val();
-
+        var profile_avatar = $(".profile-avatar");
         if (image_id == 0) {
             notification("Please select image", "error");
         } else {
@@ -1117,7 +1225,9 @@ $( document ).ready(function() {
                 success: function(result){
 
                     if (result.error === false) {
-                       location.reload();
+                        profile_avatar.find('img').attr("src", "/lesson/" + result.value);
+                        notification("Update avatar success", "success");
+                        image_album.modal("hide");
                     } else {
                         notification(result.message, "error");
                     }

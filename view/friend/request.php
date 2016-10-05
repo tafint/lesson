@@ -14,7 +14,7 @@
 				<td><?php echo ($user['user_info']['sex'] == 1) ? 'Male' : 'Female'; ?></td>
 				<td><?php echo $user['user_info']['birthday']; ?></td>
 				<td><?php echo $user['user_info']['address']; ?></td>
-				<td><a class="btn btn-default accept-button" id-value="<?php echo $user['id']; ?>" <?php echo $user['request_status'] ? 'disabled' : ''; ?>>Accept</a> <a class="btn btn-default delete-button" id-value="<?php echo $user['id']; ?>" <?php echo $user['request_status'] ? 'disabled' : ''; ?>>Delete</a></td>
+				<td style="width: 160px;"><a class="btn btn-default accept-button" id-value="<?php echo $user['id']; ?>" <?php echo $user['request_status'] ? 'disabled' : ''; ?>>Accept</a> <a class="btn btn-default delete-button" id-value="<?php echo $user['id']; ?>" <?php echo $user['request_status'] ? 'disabled' : ''; ?>>Delete</a></td>
 			</tr>
 		<?php endforeach; ?>
 	</table>

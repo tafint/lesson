@@ -349,6 +349,7 @@ class FriendController extends Controller
 			}
 			
 			$user = $this->user->find_id($user_request['user_id']);
+
 			if (!$user) {
 				throw new Exception("User not exist");
 			}
@@ -404,13 +405,18 @@ class FriendController extends Controller
 				throw new Exception("Please login");
 			}
 			
-			$user_id = $_POST['user_id'];
+			$user_id = $_POST['user_id_to'];
+
 			$user = $this->user->find_id($user_id);
 			
 			if (!$user) {
 				throw new Exception("User not exist");
 			}
 			
+			if ($user['id'] == $data['user']['id']) {
+				throw new Exception("Not remove friend yourself");
+			}
+
 			$friend = $this->friend_list->friend($data['user']['id'], $user_id);
 			
 			if (!$friend) {

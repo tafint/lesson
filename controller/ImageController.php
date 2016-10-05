@@ -14,7 +14,7 @@ class ImageController extends Controller
 		$this->_model->load('friend_list');
 		$this->_model->load('image');
 		$this->_model->load('image_like');
-		
+		$this->_helper->load('functions');
 		//check session
 		try {
 			if (!isset($_SESSION['user_id'])) {
@@ -47,46 +47,82 @@ class ImageController extends Controller
 			} 
 			
 			$data = $this->_data;
-			$check = getimagesize($_FILES['image-upload']['tmp_name']);
-			
-			if(!$check) {
-				throw new Exception("Image not exist");
+
+			$msg_success = array();
+			$msg_error = array();
+			$images_data = array();
+			$flag = false;
+
+			for ($i = 0; $i < sizeof($_FILES["image-upload"]["name"]); $i++) {
+
+				try {
+
+					$check= getimagesize($_FILES['image-upload']['tmp_name'][$i]);
+
+					if(!$check) {
+						throw new Exception($_FILES["image-upload"]["name"][$i] . " not is image");
+					}
+					
+					$target_dir_original = 'public/data/'.date('Ymd').'/original';
+					$target_dir_resize = 'public/data/'.date('Ymd').'/resize';
+					$extension = pathinfo( $_FILES['image-upload']['name'][$i],PATHINFO_EXTENSION);
+					$target_name = time().'_'.rand(100,500).'.'.$extension;
+					$target_file_origin = $target_dir_original.'/'.$target_name;
+					$target_file_resize = $target_dir_resize.'/'.$target_name;
+					
+					// validate image
+					if(($extension != "jpg") && ($extension != "png") && ($extension != "jpeg") && ($extension != "gif")) {
+						throw new Exception($_FILES["image-upload"]["name"][$i] . " type invalid");
+					}
+					
+					if ($_FILES["image-upload"]["size"][$i] > 10485760) {
+					    throw new Exception($_FILES["image-upload"]["name"][$i] . " too large");
+					}
+					
+					// create new dir 
+					if(!file_exists($target_dir_original)) {
+						mkdir($target_dir_original,0777);
+					}
+					
+					// move file
+					if (!move_uploaded_file($_FILES["image-upload"]["tmp_name"][$i], $target_file_origin)) {
+						throw new Exception("Upload " . $_FILES["image-upload"]["name"][$i] . " error");
+					}
+
+					// create new dir risize
+					if(!file_exists($target_dir_resize)) {
+						mkdir($target_dir_resize,0777);
+					}
+
+					// resize image
+					$target_file_open = fopen($target_file_resize, "w");
+
+					if (!image_resize($target_file_origin, $target_file_open, 260, 175, 1)) {
+						throw new Exception("Error when resize " . $_FILES["image-upload"]["name"][$i]);
+					}
+
+					// insert to database
+					$image = $this->image->insert(array('path' => $target_file_origin, 'thumbnail' => $target_file_resize, 'user_id' => $data['user']['id']));
+					
+					if (!$image) {
+						throw new Exception("Insert " . $_FILES["image-upload"]["name"][$i] ." to database error");
+					}
+
+					$image = $this->image->get_insert();
+					$msg_success[] = "Upload " . $_FILES["image-upload"]["name"][$i] . " success";
+					$images_data[] = array("thumbnail" => $target_file_resize, "path" => $target_file_origin, 'id' => $image['id']);
+
+				} catch (Exception $e) {
+					$flag = true;
+					$msg_error[] = $e->getMessage();
+				}
+				
 			}
-			
-			$target_dir = 'public/data/'.date('Ymd');
-			$extension = pathinfo( $_FILES['image-upload']['name'],PATHINFO_EXTENSION);
-			$target_name = time().'_'.rand(100,500).'.'.$extension;
-			$target_file = $target_dir.'/'.$target_name;
-			
-			// validate image
-			if(($extension != "jpg") && ($extension != "png") && ($extension != "jpeg") && ($extension != "gif")) {
-				throw new Exception("Image type invalid");
-			}
-			
-			if ($_FILES["image-upload"]["size"] > 10485760) {
-			    echo "Sorry, your file is too large.";
-			    throw new Exception("Image too large");
-			}
-			
-			// create new dir 
-			if(!file_exists($target_dir)) {
-				mkdir($target_dir,0777);
-			}
-			
-			// move file
-			if (!move_uploaded_file($_FILES["image-upload"]["tmp_name"], $target_file)) {
-				throw new Exception("Upload Error");
-			}
-			
-			// insert to database
-			$image = $this->image->insert(array('path' => $target_file, 'user_id' => $data['user']['id']));
-			
-			if (!$image) {
-				throw new Exception("Insert to database error");
-			}
-			
+
 			$result['error'] = false;
-			$result['path'] = $target_file;
+			$result['images_data'] = $images_data;
+			$result['msg_success'] = $msg_success;
+			$result['msg_error'] = $msg_error;
 		} catch (Exception $e) {
 			$result = array('error' => true, 'message' => $e->getMessage());
 		}
@@ -117,6 +153,9 @@ class ImageController extends Controller
 				throw new Exception("Image not exist");
 			} 
 			
+			if ($data['user']['avatar'] == $image['path']) {
+				throw new Exception("Not delete avatar");
+			}
 			if ($image['user_id'] != $data['user']['id']) {
 				throw new Exception("Not owner");
 			}
@@ -126,6 +165,10 @@ class ImageController extends Controller
 			
 			if(file_exists($image['path'])) {
 				unlink($image['path']);
+			}
+
+			if(file_exists($image['thumbnail'])) {
+				unlink($image['thumbnail']);
 			}
 			
 			$result = array('error' => false);

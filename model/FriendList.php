@@ -84,8 +84,9 @@ class FriendList extends BaseModel
      *
      */
     public function suggest_friend($id) {
-        $query_not_exist = "SELECT * FROM `friend_relation` WHERE (friend_relation.user_id = $id AND friend_relation.user_id_to = user.id) OR (friend_relation.user_id = user.id AND friend_relation.user_id_to = $id)";
-        $result = $this->query("SELECT * FROM `user` WHERE user.id != $id AND NOT EXISTS ($query_not_exist) ORDER BY RAND() LIMIT 6");
+        $not_exist_relation = "SELECT * FROM `friend_relation` WHERE (friend_relation.user_id = $id AND friend_relation.user_id_to = user.id) OR (friend_relation.user_id = user.id AND friend_relation.user_id_to = $id)";
+        $not_exist_request = "SELECT * FROM `friend_request` WHERE (friend_request.user_id = $id AND friend_request.user_id_to = user.id) OR (friend_request.user_id = user.id AND friend_request.user_id_to = $id)";
+        $result = $this->query("SELECT * FROM `user` WHERE user.id != $id AND NOT EXISTS ($not_exist_relation) AND NOT EXISTS ($not_exist_request) ORDER BY RAND() LIMIT 6");
         return $result;
     }
 }

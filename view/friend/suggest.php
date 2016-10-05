@@ -1,5 +1,6 @@
 <h4>Friend suggestion list</h4>
 <div class="row">
+<?php if (isset($users)): ?>
 	<?php foreach ($users as $user): ?>
 	<div class="col-md-6 friend-block">
 		<div class="row">
@@ -13,4 +14,7 @@
 		</div>
 	</div>
 	<?php endforeach ?>
+<?php else: ?>
+	<p class="text-center">Not found</p>
+<?php endif ?>
 </div>

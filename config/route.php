@@ -44,3 +44,4 @@ $router->post("/favorite/remove","FavoriteController@remove");
 $router->post("/follow/add","FollowController@add");
 $router->post("/follow/remove","FollowController@remove");
 $router->get("/follow/index","FollowController@index");
+$router->post("/follow/read","FollowController@read");

@@ -27,4 +27,15 @@ class DBMysql implements DB
     {
     	return $this->db->query($query);
     }
+
+    /**
+     * run query
+     *
+     * @return  result
+     *
+     */
+    public function lastInsertId()
+    {
+        return $this->db->lastInsertId();
+    }
 }

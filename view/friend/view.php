@@ -134,7 +134,7 @@
 			</div>
 		</div>
 	</div>
-<?php if ($permisson && !$is_owner && true): ?>
+<?php if ($permisson && !$is_owner && false): ?>
 	<div class="row">
 		<div class="col-md-6">
 
@@ -212,12 +212,10 @@
 					<!-- INTRODUCTION TAB -->
 				    <div role="tabpanel" class="tab-pane active" id="intro">
 				    	<p class="info-output" name-part="introduction">
-				    		<span><?php echo $profile['introduction'] ? : 'Nothing'; ?></span> 
-
 				    	<?php if ($is_owner): ?>
 				    		<a class="open-edit" href="#"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
 				    	<?php endif ?>
-
+				    		<span><?php echo $profile['introduction'] ? : 'Nothing'; ?></span> 
 				    	</p>
 				    	<form class="form info-input hide" name-part="introduction">
 					    	<div class="form-group">
@@ -233,7 +231,7 @@
 					    <?php if ($is_owner): ?>	
 					    	<div class="m-b-10 col-md-3">
 					    		<form class="picture-block upload-block">
-					    		<input type="file" name="image-upload" id="image-upload">
+					    			<input type="file" name="image-upload[]" id="image-upload" accept="image/gif, image/jpeg, image/png" multiple="">
 					    		</form>
 					    		<div class="progress hide">
 								  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" >
@@ -246,7 +244,9 @@
 					    <?php foreach ($images as $image): ?>	    	
 					    	<div class="m-b-10 col-md-3">
 					    		<div class="picture-block <?php echo $is_friend ? 'picture-block-friend' : ''; ?> <?php echo $is_owner ? 'picture-block-owner' : ''; ?>">
-					    			<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>" style="background-image:url('/lesson/<?php echo $image['path'] ?>')"></div>
+					    			<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>" >
+					    				<img src="/lesson/<?php echo $image['thumbnail']; ?>">
+					    			</div>
 					    			<ul class="list-group text-center">
 
 					    			<?php if ($is_owner): ?>
@@ -257,8 +257,8 @@
 						    		
 						    		<?php if ($is_friend || $is_owner): ?>
 						    			<li class="list-group-item">
-						    				<a class="unlike-btn <?php echo $image['is_like'] ? '' : 'hide'; ?>" id-value="<?php echo $image['id']; ?>">Unlike <span>(<?php echo $image['like']; ?>)</span></a>
-						    				<a class="like-btn <?php echo $image['is_like'] ? 'hide' : ''; ?>" id-value="<?php echo $image['id']; ?>">Like <span>(<?php echo $image['like']; ?>)</span></a>
+						    				<a class="unlike-btn ready-btn <?php echo $image['is_like'] ? '' : 'hide'; ?>" id-value="<?php echo $image['id']; ?>">Unlike <span>(<?php echo $image['like']; ?>)</span></a>
+						    				<a class="like-btn ready-btn <?php echo $image['is_like'] ? 'hide' : ''; ?>" id-value="<?php echo $image['id']; ?>">Like <span>(<?php echo $image['like']; ?>)</span></a>
 						    			</li>
 						    		<?php endif ?>
 
@@ -366,10 +366,28 @@
 		      	<form>
 		      		<input type="hidden" name="user-id" value="<?php echo $profile['id']; ?>">
 		      	</form>
-		        <p>Do you want to change address?</p>
+		        <p>Do you want change location to "<span class="new-address"></span>"?</p>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-primary submit-location">Yes</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- END MAP MODAL -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="confirm-image">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		      	<form>
+		      		<input type="hidden" name="user-id" value="<?php echo $profile['id']; ?>">
+		      		<input type="hidden" name="image-id" value="0">
+		      	</form>
+		        <p>Do you want to delete image?</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-danger submit-image">Yes</button>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 		      </div>
 		    </div>
@@ -392,7 +410,8 @@
 
 			    	<?php foreach ($images as $image): ?>	    	
 				    	<div class="m-b-10 col-md-6">
-				    		<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>" style="background-image:url('/lesson/<?php echo $image['path'] ?>')">
+				    		<div class="picture-thumbnail" id-value="<?php echo $image['id']; ?>" source-image="/lesson/<?php echo $image['path'] ?>">
+				    			<img src="/lesson/<?php echo $image['thumbnail']; ?>">
 				    			<i class="glyphicon glyphicon-ok"></i>
 				    		</div>
 				    	</div>
