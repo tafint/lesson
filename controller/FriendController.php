@@ -24,7 +24,7 @@ class FriendController extends Controller
 		$this->_helper->load('functions');
 		$this->_helper->load('exception');
 		
-		//check session
+		// check session
 		try {
 			if (!isset($_SESSION['user_id'])) {
 				throw new Exception("Error");

@@ -10,7 +10,7 @@ $router = new Router;
 
 require_once PATH . '/config/route.php';
 
-// parse controller and method from uri
+// parse controller, method and argument from uri
 $server = $_SERVER;
 
 $server['REQUEST_URI'] = str_replace("/lesson","",$server['REQUEST_URI']);

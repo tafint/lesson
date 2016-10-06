@@ -63,8 +63,9 @@ class ImageController extends Controller
 						throw new Exception($_FILES["image-upload"]["name"][$i] . " not is image");
 					}
 					
-					$target_dir_original = 'public/data/'.date('Ymd').'/original';
-					$target_dir_resize = 'public/data/'.date('Ymd').'/resize';
+					$date = date('Ymd');
+					$target_dir_original = "public/data/$date/original";
+					$target_dir_resize = "public/data/$date/resize";
 					$extension = pathinfo( $_FILES['image-upload']['name'][$i],PATHINFO_EXTENSION);
 					$target_name = time().'_'.rand(100,500).'.'.$extension;
 					$target_file_origin = $target_dir_original.'/'.$target_name;
@@ -78,10 +79,10 @@ class ImageController extends Controller
 					if ($_FILES["image-upload"]["size"][$i] > 10485760) {
 					    throw new Exception($_FILES["image-upload"]["name"][$i] . " too large");
 					}
-					
+
 					// create new dir 
 					if(!file_exists($target_dir_original)) {
-						mkdir($target_dir_original,0777);
+						mkdir($target_dir_original, 0777, true);
 					}
 					
 					// move file
@@ -91,7 +92,7 @@ class ImageController extends Controller
 
 					// create new dir risize
 					if(!file_exists($target_dir_resize)) {
-						mkdir($target_dir_resize,0777);
+						mkdir($target_dir_resize, 0777, true);
 					}
 
 					// resize image
