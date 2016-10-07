@@ -319,8 +319,7 @@ class FriendController extends Controller
 		} 
 		
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 
 	/**
@@ -388,8 +387,7 @@ class FriendController extends Controller
 		}
 		
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 
 	/**
@@ -441,8 +439,7 @@ class FriendController extends Controller
 		}
 		
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 
 	/**

@@ -19,6 +19,7 @@ class FollowController extends Controller
 		$this->_model->load('user_log_view');
 		$this->_model->load('follow');
 		
+		$this->_helper->load('functions');
 		//check session
 		try {
 
@@ -122,8 +123,7 @@ class FollowController extends Controller
 		}
 
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 
 	/**
@@ -160,8 +160,7 @@ class FollowController extends Controller
 		}
 
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 
 	/**
@@ -211,7 +210,6 @@ class FollowController extends Controller
 		}
 
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 }

@@ -17,6 +17,7 @@ class MessageController extends Controller
 		$this->_model->load('favorite');
 		$this->_model->load('follow');
 		$this->_model->load('user_log');
+		
 		$this->_helper->load('functions');
 		$this->_helper->load('exception');
 		
@@ -137,8 +138,7 @@ class MessageController extends Controller
 		}
 		
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 
 	/**
@@ -182,7 +182,6 @@ class MessageController extends Controller
 		}
 		
 		$this->_view->reset();
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 }

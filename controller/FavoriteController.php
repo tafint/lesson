@@ -13,6 +13,7 @@ class FavoriteController extends Controller
 		$this->_model->load('user');
 		$this->_model->load('favorite');
 
+		$this->_helper->load('functions');
 		//check session
 		try {
 			if (!isset($_SESSION['user_id'])) {
@@ -76,8 +77,7 @@ class FavoriteController extends Controller
 			$result = array('error' => true, 'message' => $e->getMessage());
 		}
 
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 
 	/**
@@ -119,7 +119,6 @@ class FavoriteController extends Controller
 			$result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		header('Content-Type: application/json');
-		echo json_encode($result);
+		return_json($result);
 	}
 }

@@ -79,7 +79,7 @@ function mail_header() {
 }
 
 /**
-  * @return return resize
+  * @return return image have resizer
   *
   */
 function image_resize($src, $dst, $width, $height, $crop = 0){
@@ -162,3 +162,11 @@ function image_resize($src, $dst, $width, $height, $crop = 0){
 	return true;
 }
 
+/**
+  * @return export data json
+  *
+  */
+function return_json($result) {
+	header('Content-Type: application/json');
+	echo json_encode($result);
+}

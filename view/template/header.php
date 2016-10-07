@@ -49,7 +49,9 @@
 				    <?php if (true) : ?>
 				        <li><a href="/lesson/follow/index">Follow list (<?php echo isset($count_follow) ? $count_follow : 0; ?>)</a></li>
 				    <?php endif; ?>
+				    <?php if (false) : ?>
 				        <li><a href="/lesson/message/index">Message (<?php echo isset($count_message) ? $count_message : 0; ?>)</a></li>
+				    <?php endif; ?>
 				    <?php if (($user['group_id'] ==1) && false) { ?>
 				   		<li><a href="/lesson/user/manage">Management users</a></li> 
 				    <?php } ?>
