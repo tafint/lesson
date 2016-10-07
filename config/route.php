@@ -11,22 +11,24 @@ $router->get("/user/profile/{:id}","UserController@profile");
 $router->any("/user/changeemail","UserController@change_email");
 $router->any("/user/changepassword","UserController@change_password");
 $router->get("/user/manage","UserController@manage");
-$router->post("/user/changegroup","UserController@change_group");
-$router->delete("/user/delete/{:id}","UserController@delete");
-$router->get("/user/info/{:id}","UserController@info");
-$router->post("/user/update","UserController@update");
-$router->post("/user/dynamicupdate","UserController@dynamicupdate");
 $router->get("/user/confirm/{:any}","UserController@confirm");
 $router->any("/user/search","UserController@search");
+
+$router->post("/user/changegroup","UserApiController@change_group");
+$router->delete("/user/delete/{:id}","UserApiController@delete");
+$router->get("/user/info/{:id}","UserApiController@info");
+$router->post("/user/update","UserApiController@update");
+$router->post("/user/dynamicupdate","UserApiController@dynamicupdate");
 
 $router->get("/friend/index","FriendController@index");
 $router->get("/friend/view/{:id}","FriendController@view");
 $router->get("/friend/request","FriendController@request");
-$router->get("/friend/index","FriendController@index");
-$router->post("/friend/add","FriendController@add");
-$router->post("/friend/remove","FriendController@remove");
 $router->get("/friend/suggest","FriendController@suggest");
-$router->post("/friend/handle","FriendController@handle");
+
+$router->post("/friend/add","FriendApiController@add");
+$router->post("/friend/remove","FriendApiController@remove");
+$router->post("/friend/handle","FriendApiController@handle");
+
 
 $router->get("/message/index","MessageController@index");
 $router->post("/message/create","MessageController@create");

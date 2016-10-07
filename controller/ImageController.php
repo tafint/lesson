@@ -72,7 +72,7 @@ class ImageController extends Controller
 					$target_file_resize = $target_dir_resize.'/'.$target_name;
 					
 					// validate image
-					if(($extension != "jpg") && ($extension != "png") && ($extension != "jpeg") && ($extension != "gif")) {
+					if(($extension != "bmp") && ($extension != "jpg") && ($extension != "png") && ($extension != "jpeg") && ($extension != "gif")) {
 						throw new Exception($_FILES["image-upload"]["name"][$i] . " type invalid");
 					}
 					

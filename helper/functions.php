@@ -103,12 +103,15 @@ function image_resize($src, $dst, $width, $height, $crop = 0){
 		case 'gif': 
 		    $img = imagecreatefromgif($src); 
 		    break;
+
 		case 'jpg': 
 		    $img = imagecreatefromjpeg($src); 
 		    break;
+
 		case 'png': 
 		    $img = imagecreatefrompng($src); 
 		    break;
+
 		default : 
 		    return "Unsupported picture type!";
 	}
@@ -148,12 +151,15 @@ function image_resize($src, $dst, $width, $height, $crop = 0){
 		case 'bmp': 
 		    imagewbmp($new, $dst); 
 		    break;
+
 		case 'gif': 
 		    imagegif($new, $dst); 
 		    break;
+
 		case 'jpg': 
 		    imagejpeg($new, $dst); 
 		    break;
+		    
 		case 'png': 
 		    imagepng($new, $dst); 
 		    break;
