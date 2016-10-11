@@ -1,4 +1,6 @@
 <?php
+namespace Controller;
+use Core\Controller as Controller;
 /**
  * This is a class UserController
  */

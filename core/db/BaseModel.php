@@ -1,8 +1,10 @@
 <?php
+namespace Core\DB;
+use \PDO;
 /**
  * This is a class BaseModel
  */
-class BaseModel
+abstract class BaseModel
 {	
     /** @var string|null $_table set table in database */
 	protected $_table;

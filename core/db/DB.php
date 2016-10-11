@@ -1,4 +1,5 @@
 <?php 
+namespace Core\DB;
 /**
  * This is a interface DB
  */

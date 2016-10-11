@@ -1,9 +1,9 @@
 <?php
+namespace Core;
 /**
  * This is a class View
  */
 class View
-
 {   
     /** @var array $_content contains content to body view */
     protected $_content = array();

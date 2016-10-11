@@ -4,11 +4,12 @@
 session_start();
 define('PATH', __DIR__);
 
-// init router
-require_once PATH . '/core/Router.php';
-$router = new Router;
+require_once PATH . "/vendor/autoload.php";
 
-require_once PATH . '/config/route.php';
+// init router
+$router = new Core\Router;
+$route = new Config\Route($router);
+$router = $route->getRoute();
 
 // parse controller, method and argument from uri
 $server = $_SERVER;
@@ -17,33 +18,32 @@ $server['REQUEST_URI'] = str_replace("/lesson","",$server['REQUEST_URI']);
 $app = $router->match($server);
 
 if ($app ===null) {
-	$controller = "IndexController";
+	$controller_file = "IndexController";
 	$method = "error_404";
 	$args = [];
 } else {
-	$controller = $app['controller'];
+	$controller_file = $app['controller'];
 	$method = $app['method'];
 	$args = $app['args'];
 }
+$controller = "Controller\\" . $controller_file;
+$controller_file = str_replace("\\","/",$controller_file);
 
 // init database
-require_once PATH . "/config/db.php";
-require_once PATH . "/core/db/DB.php";
-require_once PATH . "/core/db/DB" .ucfirst(strtolower(DB_TYPE)). ".php";
-require_once PATH . "/core/db/BaseModel.php";
+$DB_driver = "DB" . ucfirst(strtolower(Config\DB::DB_TYPE));
+$DB_driver_class = "Core\\DB\\$DB_driver";
+$db = new $DB_driver_class();
+$db->connect("mysql:host=" . Config\DB::DB_HOST . ";dbname=". Config\DB::DB_NAME, Config\DB::DB_USER, Config\DB::DB_PASS);
 
-$db = new DBMysql();
-$db->connect("mysql:host=" . DB_HOST . ";dbname=". DB_NAME, DB_USER, DB_PASS);
-
-// init controller
+// call instance
 function get_instance(){
 	global $controller;
 	return $controller::get_instance();
 }
 
-require_once PATH . "/core/Controller.php";
-if (file_exists(PATH . '/controller/' . $controller .'.php')) {
-	require_once PATH . '/controller/' . $controller .'.php';
+// call controller and run behavie
+if (file_exists(PATH . '/controller/' . $controller_file .'.php')) {
+	require_once PATH . '/controller/' . $controller_file .'.php';
 
 	$ctrl= new $controller();
 

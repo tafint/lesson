@@ -1,4 +1,6 @@
 <?php 
+namespace Core\DB;
+use \PDO;
 /**
  * This is a class DBMysql inplements DB
  */

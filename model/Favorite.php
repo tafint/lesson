@@ -1,9 +1,11 @@
 <?php
+namespace Model;
+use Core\DB\BaseModel as BaseModel;
+use Core\DB\DB as DB;
 /**
  * This is a class Favorite
  */
 class Favorite extends BaseModel
-
 {
 	public function __construct(DB $db)
 	{

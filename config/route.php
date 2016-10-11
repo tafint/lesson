@@ -1,49 +1,67 @@
 <?php 
+namespace Config;
+/**
+ * This is a class Route
+ */
+class Route
+{
+	private $_router;
 
-$router->get("/","IndexController@index");
+	public function __construct($router){
+		
+		$this->_router = $router;
 
-$router->any("/user/registration","UserController@registration");
-$router->any("/user/login","UserController@login");
-$router->get("/user/logout","UserController@logout");
-$router->get("/user/successful","UserController@successful");
-$router->get("/user/home","UserController@home");
-$router->get("/user/profile/{:id}","UserController@profile");
-$router->any("/user/changeemail","UserController@change_email");
-$router->any("/user/changepassword","UserController@change_password");
-$router->get("/user/manage","UserController@manage");
-$router->get("/user/confirm/{:any}","UserController@confirm");
-$router->any("/user/search","UserController@search");
+        $this->_router->get("/","IndexController@index");
 
-$router->post("/user/changegroup","UserApiController@change_group");
-$router->delete("/user/delete/{:id}","UserApiController@delete");
-$router->get("/user/info/{:id}","UserApiController@info");
-$router->post("/user/update","UserApiController@update");
-$router->post("/user/dynamicupdate","UserApiController@dynamicupdate");
+		$this->_router->any("/user/registration","UserController@registration");
+		$this->_router->any("/user/login","UserController@login");
+		$this->_router->get("/user/logout","UserController@logout");
+		$this->_router->get("/user/successful","UserController@successful");
+        $this->_router->get("/user/home","UserController@home");
+        $this->_router->get("/user/profile/{:id}","UserController@profile");
+        $this->_router->any("/user/changeemail","UserController@change_email");
+        $this->_router->any("/user/changepassword","UserController@change_password");
+        $this->_router->get("/user/manage","UserController@manage");
+        $this->_router->get("/user/confirm/{:any}","UserController@confirm");
+        $this->_router->any("/user/search","UserController@search");
 
-$router->get("/friend/index","FriendController@index");
-$router->get("/friend/view/{:id}","FriendController@view");
-$router->get("/friend/request","FriendController@request");
-$router->get("/friend/suggest","FriendController@suggest");
+        $this->_router->post("/user/changegroup","Api\UserApiController@change_group");
+        $this->_router->delete("/user/delete/{:id}","Api\UserApiController@delete");
+        $this->_router->get("/user/info/{:id}","Api\UserApiController@info");
+        $this->_router->post("/user/update","Api\UserApiController@update");
+        $this->_router->post("/user/dynamicupdate","Api\UserApiController@dynamicupdate");
 
-$router->post("/friend/add","FriendApiController@add");
-$router->post("/friend/remove","FriendApiController@remove");
-$router->post("/friend/handle","FriendApiController@handle");
+        $this->_router->get("/friend/index","FriendController@index");
+        $this->_router->get("/friend/view/{:id}","FriendController@view");
+        $this->_router->get("/friend/request","FriendController@request");
+        $this->_router->get("/friend/suggest","FriendController@suggest");
+
+        $this->_router->post("/friend/add","Api\FriendApiController@add");
+        $this->_router->post("/friend/remove","Api\FriendApiController@remove");
+        $this->_router->post("/friend/handle","Api\FriendApiController@handle");
 
 
-$router->get("/message/index","MessageController@index");
-$router->post("/message/create","MessageController@create");
-$router->post("/message/load","MessageController@load");
+        $this->_router->get("/message/index","MessageController@index");
+        $this->_router->post("/message/create","MessageController@create");
+        $this->_router->post("/message/load","MessageController@load");
 
-$router->post("/image/upload","ImageController@upload");
-$router->post("/image/like","ImageController@like");
-$router->post("/image/unlike","ImageController@unlike");
-$router->post("/image/view","ImageController@view");
-$router->post("/image/delete","ImageController@delete");
+        $this->_router->post("/image/upload","Api\ImageApiController@upload");
+        $this->_router->post("/image/like","Api\ImageApiController@like");
+        $this->_router->post("/image/unlike","Api\ImageApiController@unlike");
+        $this->_router->post("/image/view","Api\ImageApiController@view");
+        $this->_router->post("/image/delete","Api\ImageApiController@delete");
 
-$router->post("/favorite/add","FavoriteController@add");
-$router->post("/favorite/remove","FavoriteController@remove");
+        $this->_router->post("/favorite/add","Api\FavoriteApiController@add");
+        $this->_router->post("/favorite/remove","Api\FavoriteApiController@remove");
 
-$router->post("/follow/add","FollowController@add");
-$router->post("/follow/remove","FollowController@remove");
-$router->get("/follow/index","FollowController@index");
-$router->post("/follow/read","FollowController@read");
+        $this->_router->post("/follow/add","FollowController@add");
+        $this->_router->post("/follow/remove","FollowController@remove");
+        $this->_router->get("/follow/index","FollowController@index");
+        $this->_router->post("/follow/read","FollowController@read");
+    }
+
+    public function getRoute()
+    {
+    	return $this->_router;
+    }
+}

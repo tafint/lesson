@@ -1,4 +1,5 @@
 <?php
+namespace Core;
 /**
  * This is a class Model
  */
@@ -8,7 +9,7 @@ class Model
 	protected $_conn;
 
 
-    public function __construct(DB $db)
+    public function __construct(DB\DB $db)
     {   
         $this->_conn = $db;
     }
@@ -28,10 +29,10 @@ class Model
         }
 
         $model_name=implode('', $model_name);
-    	require_once PATH . '/model/'. $model_name .'.php';
 
         $object = get_instance();
-        $object->$model = new $model_name($this->_conn);
+        $new_class = "Model\\$model_name";
+        $object->$model = new $new_class($this->_conn);
     }
 
 }

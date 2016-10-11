@@ -1,9 +1,9 @@
 <?php 
+namespace Core;
 /**
  * This is a class Helper
  */
 class Helper
-
 {	
 	/**
       * load new helper file from folder /helper

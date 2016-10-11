@@ -1,4 +1,6 @@
 <?php
+namespace Model;
+use Core\DB\BaseModel as BaseModel;
 /**
  * This is a class UserLogView
  */

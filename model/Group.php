@@ -1,4 +1,7 @@
 <?php
+namespace Model;
+use Core\DB\BaseModel as BaseModel;
+use Core\DB\DB as DB;
 /**
  * This is a class Group
  */

@@ -1,8 +1,10 @@
 <?php
+namespace Core;
 /**
  * This is a class Router
  */
-class Router{
+class Router
+{
 
     /** @var array|null $_routes store route config */
     protected $_routes = [
