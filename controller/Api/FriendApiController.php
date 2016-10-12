@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Api;
 use Core\Controller as Controller;
+use \Exception;
 /**
  * This is a class FriendApiController
  */
@@ -182,7 +183,7 @@ class FriendApiController extends Controller
 				throw new Exception("Please login");
 			}
 			
-			$user_id = $_POST['user_id_to'];
+			$user_id = $_POST['user_id'];
 
 			$user = $this->user->find_id($user_id);
 			

@@ -1,6 +1,7 @@
 <?php
 namespace Controller;
 use Core\Controller as Controller;
+use \Exception;
 /**
  * This is a class UserController
  */

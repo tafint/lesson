@@ -1,6 +1,7 @@
 <?php
 namespace Controller\Api;
 use Core\Controller as Controller;
+use \Exception;
 /**
  * This is a class FavoriteController
  */
