@@ -24,8 +24,6 @@ abstract class Controller
 
         global $db;
         $this->_model = new Model($db);
-
-        $this->_helper = new Helper;
     }
 
     public function load_template_before($view,$data = array())

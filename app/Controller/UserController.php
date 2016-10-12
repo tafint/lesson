@@ -47,20 +47,18 @@ class UserController extends Controller
 
 			if (isset($_POST['fullname'])) {
 				$data = array(
-						    'code' => htmlspecialchars($_POST['code']),
-						    'fullname' => trim(htmlspecialchars($_POST['fullname'])),
-						    'username' => htmlspecialchars($_POST['username']),
-						    'email' => htmlspecialchars($_POST['email']),
-						    'password' => htmlspecialchars($_POST['password']),
-						    're_password' => htmlspecialchars($_POST['re-password']),
-						    'address' => htmlspecialchars($_POST['address']),
-						    'sex' => $_POST['sex'],
-						    'birthday' => $_POST['birthday'],
-						    'error' => false,
-						    'message' => array()
+                            'code' => htmlspecialchars($_POST['code']),
+                            'fullname' => trim(htmlspecialchars($_POST['fullname'])),
+                            'username' => htmlspecialchars($_POST['username']),
+                            'email' => htmlspecialchars($_POST['email']),
+                            'password' => htmlspecialchars($_POST['password']),
+                            're_password' => htmlspecialchars($_POST['re-password']),
+                            'address' => htmlspecialchars($_POST['address']),
+                            'sex' => $_POST['sex'],
+                            'birthday' => $_POST['birthday'],
+                            'error' => false,
+                            'message' => array()
 					    );
-
-				//validate
 				if (!validate($data['fullname'], 'fullname')) {
 					$data['error'] = true;
 					$data['message'][] = 'Fullname a-Z, length 4-30';
@@ -142,14 +140,13 @@ class UserController extends Controller
 						 	//create token
 						 	$token_code = md5(time());
 						 	$data_token = array(
-						 		              'user_id' => $current_user['id'],
-						 		              'token' => $token_code,
-						 		              'type' => 1,
-						 		              'status' => 0
+                                              'user_id' => $current_user['id'],
+                                              'token' => $token_code,
+                                              'type' => 1,
+                                              'status' => 0
 						 		          );
 						 	if ($this->token->insert($data_token)) {
-						 		//send mail
-						 		$header = mail_header();
+                                $header = mail_header();
 							    $content_email = "Click <a href='http://dev.lampart.com.vn/user/confirm/$token_code'>here</a> to active account in <a href='http://dev.lampart.com.vn'>http://dev.lampart.com.vn</a> \n ";
 							    mail('thanh_tai@lampart-vn.com', 'Active account', $content_email, $header);
 						 	} 

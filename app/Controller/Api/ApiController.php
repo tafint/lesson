@@ -14,8 +14,7 @@ abstract class ApiController extends Api
 	{	
 		parent::__construct();
 		$this->_model->load('user');
-
-		$this->_helper->load('functions');
+		
 		//check session
 		try {
 			if (!isset($_SESSION['user_id'])) {
