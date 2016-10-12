@@ -20,8 +20,6 @@ abstract class Api
 
         global $db;
         $this->_model = new Model($db);
-
-        $this->_helper = new Helper;
     }
 
 	public static function get_instance()
