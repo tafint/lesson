@@ -1,6 +1,5 @@
 <?php
 namespace Controller;
-use Core\Controller as Controller;
 use \Exception;
 /**
  * This is a class IndexController
@@ -9,22 +8,8 @@ class IndexController extends Controller
 
 {	
 	public function __construct()
-	{
+	{	
 		parent::__construct();
-		
-		$this->_model->load('user');
-		$this->_helper->load('functions');
-		
-		$this->load_template_before('header');
-		$this->load_template_after('footer');
-		
-		//check session
-		if (isset($_SESSION['user_id'])) {
-			$user = $this->user->find_id($_SESSION['user_id']);
-			if($user) {
-				$this->_data['user'] = $user ;
-			}
-		}
 	}
 
 	/**
@@ -33,7 +18,8 @@ class IndexController extends Controller
      */
 	public function index()
 	{	
-		if (isset($_SESSION['user_id'])) {
+		$data = $this->_data;
+		if (!isset($data['error'])) {
 			redirect('/user/home');
 		}
 		

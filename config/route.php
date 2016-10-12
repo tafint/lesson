@@ -42,8 +42,8 @@ class Route
 
 
         $this->_router->get("/message/index","MessageController@index");
-        $this->_router->post("/message/create","MessageController@create");
-        $this->_router->post("/message/load","MessageController@load");
+        $this->_router->post("/message/create","Api\MessageApiController@create");
+        $this->_router->post("/message/load","Api\MessageApiController@load");
 
         $this->_router->post("/image/upload","Api\ImageApiController@upload");
         $this->_router->post("/image/like","Api\ImageApiController@like");
@@ -54,10 +54,9 @@ class Route
         $this->_router->post("/favorite/add","Api\FavoriteApiController@add");
         $this->_router->post("/favorite/remove","Api\FavoriteApiController@remove");
 
-        $this->_router->post("/follow/add","FollowController@add");
-        $this->_router->post("/follow/remove","FollowController@remove");
+        $this->_router->post("/follow/add","Api\FollowApiController@add");
+        $this->_router->post("/follow/remove","Api\FollowApiController@remove");
         $this->_router->get("/follow/index","FollowController@index");
-        $this->_router->post("/follow/read","FollowController@read");
     }
 
     public function getRoute()

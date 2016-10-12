@@ -1,26 +1,27 @@
 <?php
 namespace Controller\Api;
 use \Exception;
+use \Exception\UserException as UserException;
+use \Exception\CheckException as CheckException;
 /**
- * This is a class FavoriteController
+ * This is a class FollowApiController
  */
-class FavoriteApiController extends ApiController
+class FollowApiController extends ApiController
 
 {	
 	public function __construct()
 	{	
 		parent::__construct();
-		$this->_model->load('favorite');
+		$this->_model->load('follow');
 	}
 
 	/**
-     * api delete image
+     * api add follow
      *
      */
 	public function add()
 	{	
 		try {
-
 			$data = $this->_data;
 			$user_id = $_POST['user_id'];
 			$user = $this->user->find_id($user_id);
@@ -33,15 +34,15 @@ class FavoriteApiController extends ApiController
 				throw new Exception("Not follow yourself");
 			} 
 			
-			$is_favorite = $this->favorite->is_favorite($data['user']['id'], $user_id);
+			$is_follow = $this->follow->is_follow($data['user']['id'], $user_id);
 			
-			if ($is_favorite) {
-				throw new Exception("Have favorite");
+			if ($is_follow) {
+				throw new Exception("Have follow");
 			}
-
-			$favorite = $this->favorite->insert(array('user_id' => $data['user']['id'], 'user_id_to' => $user_id));
 			
-			if (!$favorite) {
+			$follow = $this->follow->insert(array('user_id' => $data['user']['id'], 'user_id_to' => $user_id));
+			
+			if (!$follow) {
 				throw new Exception("Insert error");
 			}
 
@@ -55,39 +56,33 @@ class FavoriteApiController extends ApiController
 	}
 
 	/**
-     * api delete image
+     * api unfollow
      *
      */
 	public function remove()
 	{	
 		try {
-
 			$data = $this->_data;
 			$user_id = $_POST['user_id'];
-			$user = $this->user->find_id($user_id);
+			$follow = $this->follow->is_follow($data['user']['id'], $user_id);
 			
-			if (!$user) {
-				throw new Exception("User not exist");
-			}
-
-			$favorite = $this->favorite->is_favorite($data['user']['id'], $user_id);
-			
-			if (!$favorite) {
-				throw new Exception("Favorite user not exist");
+			if (!$follow) {
+				throw new Exception("Follow user not exist");
 			} 
-
-			$delete = $this->favorite->where('user_id',$data['user']['id'])->where('user_id_to', $user_id)->delete();
+			
+			$delete = $this->follow->where('user_id',$data['user']['id'])->where('user_id_to', $user_id)->delete();
 			
 			if (!$delete) {
 				throw new Exception("Delete error");
 			}
-
+			
 			$this->_result = array('error' => false);
-
+			
 		} catch (Exception $e) {
 			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
-		
+
+		$this->_view->reset();
 		$this->response();
 	}
 }

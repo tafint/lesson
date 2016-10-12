@@ -1,50 +1,19 @@
 <?php
 namespace Controller\Api;
-use Core\Controller as Controller;
 use \Exception;
 /**
  * This is a class FriendApiController
  */
-class FriendApiController extends Controller
+class FriendApiController extends ApiController
 
 {	
-	protected $_data = array ();
-
 	public function __construct()
 	{	
 		parent::__construct();
-		$this->_model->load('user');
 		$this->_model->load('friend_list');
 		$this->_model->load('friend_request');
-		$this->_model->load('message_log');
-		$this->_model->load('group');
-		$this->_model->load('image');
-		$this->_model->load('image_like');
 		$this->_model->load('favorite');
-		$this->_model->load('follow');
 		$this->_model->load('user_log');
-		
-		$this->_helper->load('functions');
-		$this->_helper->load('exception');
-		
-		// check session
-		try {
-			if (!isset($_SESSION['user_id'])) {
-				throw new Exception("Error");
-			}
-
-			$user = $this->user->find_id($_SESSION['user_id']);
-
-			if(!$user) {
-				session_unset('user_id');
-				throw new Exception("Error");
-			}
-
-			$this->_data['user'] = $user ;
-			$data = $this->_data;
-		} catch (Exception $e) {
-			$this->_data['error'] = true;
-		}
 	}
 
 	/**
@@ -54,12 +23,7 @@ class FriendApiController extends Controller
 	public function add()
 	{	
 		try {
-			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
+			$data = $this->_data;		
 			$user_id = $_POST['user_id_to'];
 			$is_friend = $this->friend_list->is_friend($data['user']['id'], $user_id);
 			
@@ -95,12 +59,12 @@ class FriendApiController extends Controller
 				            'type' => 'send request make friend'
 				            );
 			$user_log = $this->user_log->insert($log_data);
-			$result = array('error' => false);
+			$this->_result = array('error' => false);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		} 
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -111,11 +75,6 @@ class FriendApiController extends Controller
 	{	
 		try {
 			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
 			$id = $_POST['id'];
 			$type = $_POST['type'];
 			$user_request = $this->friend_request->where('id', $id)->first();
@@ -161,13 +120,13 @@ class FriendApiController extends Controller
 	            $result = array('error' => false);
 			} else {
 				$this->friend_request->where('id',$id)->delete();
-				$result = array('error' => false);
+				$this->_result = array('error' => false);
 			}
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -177,12 +136,7 @@ class FriendApiController extends Controller
 	public function remove()
 	{	
 		try {
-			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
+			$data = $this->_data;		
 			$user_id = $_POST['user_id'];
 
 			$user = $this->user->find_id($user_id);
@@ -213,12 +167,12 @@ class FriendApiController extends Controller
 				            'type' => 'unfriend'
 				            );
 			$user_log = $this->user_log->insert($log_data);
-			$result['error'] = false;
+			$this->_result = array("error" => false);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 }

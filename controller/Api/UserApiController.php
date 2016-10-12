@@ -1,11 +1,10 @@
 <?php
 namespace Controller\Api;
-use Core\Controller as Controller;
 use \Exception;
 /**
  * This is a class UserApiController
  */
-class UserApiController extends Controller
+class UserApiController extends ApiController
 
 {	
 	/** @var $_data store info */
@@ -18,9 +17,6 @@ class UserApiController extends Controller
 	public function __construct()
 	{	
 		parent::__construct();
-
-		$this->_model->load('user');
-		$this->_model->load('token');
 		$this->_model->load('image');
 		$this->_model->load('friend_list');
 		$this->_model->load('friend_request');
@@ -28,19 +24,6 @@ class UserApiController extends Controller
 		$this->_model->load('group');
 		$this->_model->load('follow');
 		$this->_model->load('message_log');
-
-		$this->_helper->load('functions');
-		$this->_helper->load('exception');
-		
-		//check session
-		if (isset($_SESSION['user_id'])) {
-			$user = $this->user->find_id($_SESSION['user_id']);
-			if($user) {
-				$this->_data['user'] = $user ;
-			}
-			$this->_data['user'] = $user ;
-			$data = $this->_data;
-		}
 	}
 
 
@@ -50,12 +33,7 @@ class UserApiController extends Controller
      */
 	public function update()
 	{	
-		try {
-
-			if(!isset($_SESSION['user_id'])) {
-				throw new Exception("Please login");
-			}
-			
+		try {	
 			$user_id = $_POST['user_id'];
 			$user = $this->user->find_id($user_id);
 			
@@ -120,12 +98,12 @@ class UserApiController extends Controller
 				throw new Exception("Update profile have error");
 			}
 			
-			$result['error'] = false;
+			$this->_result = array("error" => false);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -135,10 +113,6 @@ class UserApiController extends Controller
 	public function delete($params)
 	{	
 		try {
-			if(!isset($_SESSION['user_id'])) {
-				throw new Exception("Please login");
-			}
-			
 			$data = $this->_data;
 			
 			if ($data['user']['group_id'] != 1) {
@@ -167,12 +141,12 @@ class UserApiController extends Controller
 			$image = $this->image->where('user_id', $id)->delete();
 			$user_change = $this->user->where('id', $id)->delete();
 
-			$result = array('error' => false);
+			$this->_result = array('error' => false);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -198,13 +172,12 @@ class UserApiController extends Controller
 			if (!$user) {
 				throw new Exception("User not exist");
 			} 
-			$result['data'] = $user;
-			$result['error'] = false;
+			$this->_result = array("error" => false, "data" => $user);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -213,11 +186,7 @@ class UserApiController extends Controller
      */
 	public function dynamicupdate()
 	{	
-		try {
-			if(!isset($_SESSION['user_id'])) {
-				throw new Exception("Please login");
-			}
-			
+		try {		
 			$data = $this->_data;
 			$type = $_POST['type'];
 			$content = trim(htmlspecialchars($_POST['content']));
@@ -298,14 +267,12 @@ class UserApiController extends Controller
 				throw new Exception("Update error");
 			}
 
-			$result['data'] = $content;
-			$result['error'] = false;
-			$result['value'] = $edit_data['value'];
+			$this->_result = array("error" => false, "value" => $edit_data["value"], "data" =>$content);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -317,15 +284,10 @@ class UserApiController extends Controller
 		try {
 			$data = $this->_data;
 			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
 			if ($this->_data['user']['group_id'] != 1) {
 				throw new Exception("Not have permisson");
 			}
-			
-			$data = $this->_data;
+
 			$id = $_POST['user_id'];
 			$group_id = $_POST['group_id'];
 			
@@ -347,12 +309,12 @@ class UserApiController extends Controller
 			}
 			
 			$user_change = $this->user->update_id($id, array('group_id' => $group_id));
-			$result = array('error' => false);
+			$this->_result = array('error' => false);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 }

@@ -1,56 +1,17 @@
 <?php
 namespace Controller;
-use Core\Controller as Controller;
 use \Exception;
+use \Exception\UserException as UserException;
+use \Exception\CheckException as CheckException;
 /**
  * This is a class UserController
  */
 class UserController extends Controller
 
 {	
-	/** @var $_data store info */
-	protected $_data = array ();
-	
-	/**
-     * construct fuction.
-     *
-     */
 	public function __construct()
 	{	
 		parent::__construct();
-
-		$this->_model->load('user');
-		$this->_model->load('token');
-		$this->_model->load('image');
-		$this->_model->load('friend_list');
-		$this->_model->load('friend_request');
-		$this->_model->load('image_like');
-		$this->_model->load('group');
-		$this->_model->load('follow');
-		$this->_model->load('message_log');
-		$this->_helper->load('functions');
-		$this->_helper->load('exception');
-		
-		//check session
-		if (isset($_SESSION['user_id'])) {
-			$user = $this->user->find_id($_SESSION['user_id']);
-			if($user) {
-				$this->_data['user'] = $user ;
-			}
-			$this->_data['user'] = $user ;
-			$data = $this->_data;
-			$data['navbar'] = true;
-			$data['count_friend'] = $this->friend_list->count_all($data['user']['id']);
-			$data['count_request'] = $this->friend_request->count_all($data['user']['id']);
-			$data['count_message'] = $this->message_log->count_all($data['user']['id']);
-			$data['count_follow'] = $this->follow->count_all($data['user']['id']);
-			
-			$this->load_template_before('header', $data);
-			$this->load_template_after('footer');
-		}
-
-		$this->load_template_before('header');
-		$this->load_template_after('footer');
 	}
 
 	/**

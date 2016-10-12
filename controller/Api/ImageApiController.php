@@ -1,41 +1,18 @@
 <?php
 namespace Controller\Api;
-use Core\Controller as Controller;
 use \Exception;
 /**
  * This is a class ImageController
  */
-class ImageApiController extends Controller
+class ImageApiController extends ApiController
 
 {	
-	protected $_data = array ();
-
 	public function __construct()
 	{	
 		parent::__construct();
-		$this->_model->load('user');
 		$this->_model->load('friend_list');
 		$this->_model->load('image');
 		$this->_model->load('image_like');
-		$this->_helper->load('functions');
-		//check session
-		try {
-			if (!isset($_SESSION['user_id'])) {
-				throw new Exception("Error");
-			}
-			
-			$user = $this->user->find_id($_SESSION['user_id']);
-			
-			if(!$user) {
-				session_unset('user_id');
-				throw new Exception("Error");
-			}
-			
-			$this->_data['user'] = $user ;
-			$data = $this->_data;
-		} catch (Exception $e) {
-			$this->_data['error'] = true;
-		}
 	}
 
 	/**
@@ -45,12 +22,7 @@ class ImageApiController extends Controller
 	public function upload()
 	{	
 		try {
-			if (!isset($_SESSION['user_id'])) {
-			    throw new Exception("Please login");
-			} 
-			
 			$data = $this->_data;
-
 			$msg_success = array();
 			$msg_error = array();
 			$images_data = array();
@@ -122,16 +94,17 @@ class ImageApiController extends Controller
 				}
 				
 			}
-
-			$result['error'] = false;
-			$result['images_data'] = $images_data;
-			$result['msg_success'] = $msg_success;
-			$result['msg_error'] = $msg_error;
+			$this->_result = array(
+				                 "error" => false,
+                                 "images_data" => $images_data,
+                                 "msg_success" => $msg_success,
+                                 "msg_error" => $msg_error
+				             );
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -141,12 +114,7 @@ class ImageApiController extends Controller
 	public function delete()
 	{	
 		try {
-			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
+			$data = $this->_data;		
 			$data = $this->_data;
 			$image_id = $_POST['image_id'];
 			$image = $this->image->find_id($image_id);
@@ -173,12 +141,12 @@ class ImageApiController extends Controller
 				unlink($image['thumbnail']);
 			}
 			
-			$result = array('error' => false);
+			$this->_result = array('error' => false);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -189,11 +157,6 @@ class ImageApiController extends Controller
 	{	
 		try {
 			$data = $this->_data;
-			
-			if (isset($data['error'])) {
-				throw new Exception("Please login");
-			}
-			
 			$data = $this->_data;
 			$image_id = $_POST['image_id'];
 			$image = $this->image->find_id($image_id);
@@ -219,12 +182,12 @@ class ImageApiController extends Controller
 			}
 			
 			$like = $this->image_like->count_all($image_id);
-			$result = array('error' => false, 'like' => $like);
+			$this->_result = array('error' => false, 'like' => $like);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -259,12 +222,12 @@ class ImageApiController extends Controller
 			}
 			
 			$like = $this->image_like->count_all($image_id);
-			$result = array('error' => false, 'like' => $like);
+			$this->_result = array('error' => false, 'like' => $like);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 
 	/**
@@ -287,11 +250,11 @@ class ImageApiController extends Controller
 			}
 			
 			$increase_view = $this->image->where('id',$image_id)->update(array('view' => ($image['view']+1)));
-			$result = array('error' => false, 'view' => $image['view']+1);
+			$this->_result = array('error' => false, 'view' => $image['view']+1);
 		} catch (Exception $e) {
-			$result = array('error' => true, 'message' => $e->getMessage());
+			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 		
-		return_json($result);
+		$this->response();
 	}
 }

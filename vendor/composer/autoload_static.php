@@ -23,6 +23,10 @@ class ComposerStaticInitf59c349a069da2ffd376658a38870563
         array (
             'Model\\' => 6,
         ),
+        'H' => 
+        array (
+            'Helper\\' => 7,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -54,6 +58,10 @@ class ComposerStaticInitf59c349a069da2ffd376658a38870563
         'Model\\' => 
         array (
             0 => __DIR__ . '/../..' . '/model',
+        ),
+        'Helper\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/helper',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

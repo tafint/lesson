@@ -4,7 +4,8 @@
             "Core\\": "core/",
             "Model\\": "model/",
             "Controller\\": "controller/",
-            "Config\\" : "config/"
+            "Config\\" : "config/",
+            "Helper\\" : "helper/"
         }       
     },
     "require-dev": {

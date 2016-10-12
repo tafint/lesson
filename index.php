@@ -1,6 +1,6 @@
 <?php 
 
-// start sesson and define PATH
+// start session and define PATH
 session_start();
 define('PATH', __DIR__);
 
@@ -11,13 +11,13 @@ $router = new Core\Router;
 $route = new Config\Route($router);
 $router = $route->getRoute();
 
-// parse controller, method and argument from uri
+// parse uri to controller, method and argument
 $server = $_SERVER;
 
 $server['REQUEST_URI'] = str_replace("/lesson","",$server['REQUEST_URI']);
 $app = $router->match($server);
 
-if ($app ===null) {
+if ($app === null) {
 	$controller_file = "IndexController";
 	$method = "error_404";
 	$args = [];

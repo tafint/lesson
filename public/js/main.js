@@ -52,7 +52,7 @@ $( document ).ready(function() {
     	var c_month = input_month.val();
     	var c_year = input_year.val();
 
-    	$("#birthday").val(current_year + "-" + ((c_month < 10) ? ("0" + c_month) : c_month) + "-" + ((c_date < 10) ? ("0" + c_date) : c_date));
+    	$("#birthday").val(c_year + "-" + ((c_month < 10) ? ("0" + c_month) : c_month) + "-" + ((c_date < 10) ? ("0" + c_date) : c_date));
     	$('#register-form').submit();
     });
 
@@ -61,7 +61,7 @@ $( document ).ready(function() {
         var c_month = input_month.val();
         var c_year = input_year.val();
 
-        $("#birthday").val(current_year + "-" + ((c_month < 10) ? ("0" + c_month) : c_month) + "-" + ((c_date < 10) ? ("0" + c_date) : c_date));
+        $("#birthday").val(c_year + "-" + ((c_month < 10) ? ("0" + c_month) : c_month) + "-" + ((c_date < 10) ? ("0" + c_date) : c_date));
     	$("#edit-form").submit();
     });
 
