@@ -2,7 +2,7 @@
 namespace Core;
 
 /**
- * This is a class Controller
+ * This is a class Api
  */
 abstract class Api
 {	

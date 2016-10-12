@@ -14,20 +14,18 @@ $router = $route->getRoute();
 // parse uri to controller, method and argument
 $server = $_SERVER;
 
-$server['REQUEST_URI'] = str_replace("/lesson","",$server['REQUEST_URI']);
+$server['REQUEST_URI'] = str_replace("/lesson", "", $server['REQUEST_URI']);
 $app = $router->match($server);
 
 if ($app === null) {
-	$controller_file = "IndexController";
+	$controller = "App\\Controller\\IndexController";
 	$method = "error_404";
 	$args = [];
 } else {
-	$controller_file = $app['controller'];
+	$controller = "App\\Controller\\" . $app['controller'];
 	$method = $app['method'];
 	$args = $app['args'];
 }
-$controller = "Controller\\" . $controller_file;
-$controller_file = str_replace("\\","/",$controller_file);
 
 // init database
 $DB_driver = "DB" . ucfirst(strtolower(Config\DB::DB_TYPE));
@@ -42,9 +40,7 @@ function get_instance(){
 }
 
 // call controller and run behavie
-if (file_exists(PATH . '/controller/' . $controller_file .'.php')) {
-	require_once PATH . '/controller/' . $controller_file .'.php';
-
+if (class_exists ($controller)) {
 	$ctrl= new $controller();
 
 	if (count($args) == 0) {
@@ -53,5 +49,5 @@ if (file_exists(PATH . '/controller/' . $controller_file .'.php')) {
 		$ctrl->{$method}($args);
 	}
 } else {
-	die("Error");
+	die("Error : Not exist controller");
 }
