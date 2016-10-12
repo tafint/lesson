@@ -9,14 +9,14 @@ class Route
 
 	public function __construct($router){
 		
-		$this->_router = $router;
+	    $this->_router = $router;
 
         $this->_router->get("/","IndexController@index");
 
-		$this->_router->any("/user/registration","UserController@registration");
-		$this->_router->any("/user/login","UserController@login");
-		$this->_router->get("/user/logout","UserController@logout");
-		$this->_router->get("/user/successful","UserController@successful");
+	    $this->_router->any("/user/registration","UserController@registration");
+	    $this->_router->any("/user/login","UserController@login");
+	    $this->_router->get("/user/logout","UserController@logout");
+	    $this->_router->get("/user/successful","UserController@successful");
         $this->_router->get("/user/home","UserController@home");
         $this->_router->get("/user/profile/{:id}","UserController@profile");
         $this->_router->any("/user/changeemail","UserController@change_email");

@@ -6,13 +6,13 @@ namespace Core;
  */
 abstract class Api
 {	
-	protected static $_instance;
+    protected static $_instance;
 
-	protected $_config;
+    protected $_config;
 
-	protected $_model;
+    protected $_model;
 
-	protected $_helper;
+    protected $_helper;
 	
     public function __construct()
     {	

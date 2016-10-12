@@ -5,6 +5,6 @@ namespace Core\DB;
  */
 interface DB
 {
-	public function connect($dsn, $user = '', $pass = '');
+    public function connect($dsn, $user = '', $pass = '');
     public function query($query);
 }

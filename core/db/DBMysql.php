@@ -6,7 +6,7 @@ use \PDO;
  */
 class DBMysql implements DB
 {
-	protected  $db;
+    protected  $db;
 
 	/**
      * connect databse
@@ -14,10 +14,10 @@ class DBMysql implements DB
      * @param  $dsn, $user, $pass info to connect MYSQL DATABASE
      *
      */
-	public function connect($dsn, $user = '', $pass = '')
-	{	
-		$this->db = new PDO($dsn, $user, $pass);
-	}
+    public function connect($dsn, $user = '', $pass = '')
+    {	
+        $this->db = new PDO($dsn, $user, $pass);
+    }
 
 	/**
      * run query
@@ -27,7 +27,7 @@ class DBMysql implements DB
      */
     public function query($query)
     {
-    	return $this->db->query($query);
+        return $this->db->query($query);
     }
 
     /**

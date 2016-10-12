@@ -8,11 +8,11 @@ class Router
 
     /** @var array|null $_routes store route config */
     protected $_routes = [
-    				    'GET'    => [],
-    					'POST'   => [],
-    				    'PUT'    => [],
-    					'DELETE' => [],   
-    					];
+                             'GET'    => [],
+                             'POST'   => [],
+                             'PUT'    => [],
+                             'DELETE' => [],   
+    					 ];
 
     public $patterns = [
         ':any'  => '.*',

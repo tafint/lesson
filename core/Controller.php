@@ -6,15 +6,15 @@ namespace Core;
  */
 abstract class Controller
 {	
-	protected static $_instance;
+    protected static $_instance;
 
-	protected $_config;
+    protected $_config;
 
-	protected $_view;
+    protected $_view;
 
-	protected $_model;
+    protected $_model;
 
-	protected $_helper;
+    protected $_helper;
 	
     public function __construct()
     {	
@@ -29,21 +29,21 @@ abstract class Controller
     }
 
     public function load_template_before($view,$data = array())
-	{
-		$this->_view->load_template_before($view, $data);
-	}
+    {
+        $this->_view->load_template_before($view, $data);
+    }
 
 	public function load_template_after($view,$data = array())
-	{
-		$this->_view->load_template_after($view, $data);
-	}
+    {
+        $this->_view->load_template_after($view, $data);
+    }
 
 	public function __destruct()
-	{
-		$this->_view->show();
-	}
+    {
+        $this->_view->show();
+    }
 
-	public static function get_instance()
+    public static function get_instance()
     {	
         return self::$_instance;
     }

@@ -6,9 +6,8 @@ namespace Core;
 class Model
 {	
     /** @var string|null $_conn store connection */
-	protected $_conn;
-
-
+    protected $_conn;
+    
     public function __construct(DB\DB $db)
     {   
         $this->_conn = $db;

@@ -7,27 +7,27 @@ use \PDO;
 abstract class BaseModel
 {	
     /** @var string|null $_table set table in database */
-	protected $_table;
+    protected $_table;
 
     /** @var string|null $_db_host, $_db_name, $_db_user, $_db_pass config param to connect database */
-	protected $_db_host;
+    protected $_db_host;
 
-	protected $_db_name;
+    protected $_db_name;
 
-	protected $_db_user;
+    protected $_db_user;
 
-	protected $_db_pass;
+    protected $_db_pass;
 
     /** @var string|null $_conn store connection */
-	protected $_conn;
+    protected $_conn;
 
     /** @var string|null $_result store result after run query */
-	protected $_result = array ();
+    protected $_result = array ();
 
     /** @var store all param before run query */
-	protected $_query;
+    protected $_query;
 
-	protected $_num_row;
+    protected $_num_row;
 
     protected $_select = '*';
 
