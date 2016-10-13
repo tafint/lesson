@@ -316,7 +316,7 @@
 									<?php echo $favorite['user_info']['fullname']; ?>
 								</a>
 							</div>
-							<div class="col-xs-2 thumbnail"><img src="/lesson/public/images/avatar.png"></div>
+							<div class="col-xs-2 thumbnail"><img src="<?php echo ($favorite['user_info']['avatar'] != '') ? ('/lesson/'.$favorite['user_info']['avatar']) : '/lesson/public/images/avatar.png'?>"></div>
 							<div class="col-xs-6 friend-action">
 
 							<?php if ($favorite['user_info']['id'] != $user['id']): ?>

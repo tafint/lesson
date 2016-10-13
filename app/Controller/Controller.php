@@ -24,6 +24,8 @@ abstract class Controller extends BaseController
 		$this->_model->load('user_log');
 		$this->_model->load('user_log_view');
 		$this->_model->load('follow');
+		$this->_model->load('group');
+		$this->_model->load('token');
 		//check session
 		try {
 

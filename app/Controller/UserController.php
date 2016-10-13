@@ -22,113 +22,94 @@ class UserController extends Controller
     public function home()
     {
     	try {
-    		if (!isset($_SESSION['user_id'])) {
-    			throw new Exception('');
-    		}
-    		$data = $this->_data;
-    		$this->_view->load_content('home',$data);
-    	} catch (Exception $e) {
-		 		redirect();
-		}
+            if (isset($this->_data["error"])) {
+                throw new Exception('');
+            }
+            $data = $this->_data;
+            $this->_view->load_content('home',$data);
+        } catch (Exception $e) {
+            redirect();
+        }
     }
 
 	/**
      * action registration
      *
      */
-	public function registration()
-	{	
-		try {
-			if (isset($_SESSION['user_id'])) {
+    public function registration()
+    {	
+        try {
+            if (isset($_SESSION['user_id'])) {
 				throw new Exception("");
-			}
+        }
+            $data = array();
+            
+            if (isset($_POST['fullname'])) {
+                $data = array(
+                    'code' => htmlspecialchars($_POST['code']),
+                    'fullname' => trim(htmlspecialchars($_POST['fullname'])),
+                    'username' => htmlspecialchars($_POST['username']),
+                    'email' => htmlspecialchars($_POST['email']),
+                    'password' => htmlspecialchars($_POST['password']),
+                    're_password' => htmlspecialchars($_POST['re-password']),
+                    'address' => htmlspecialchars($_POST['address']),
+                    'sex' => $_POST['sex'],
+                    'birthday' => $_POST['birthday'],
+                );
+                $user_service = new UserService;
+                $data = $user_service->registration($data);
+                if ($data["error"] == false) {
+                    redirect("/successful");
+                }
+            }
+            $this->_view->load_content('registration', $data);
+        } catch (Exception $e) {
+            redirect('/user/home');
+        }
+    }
 
-			$data = array();
-
-			if (isset($_POST['fullname'])) {
-				$data = array(
-                            'code' => htmlspecialchars($_POST['code']),
-                            'fullname' => trim(htmlspecialchars($_POST['fullname'])),
-                            'username' => htmlspecialchars($_POST['username']),
-                            'email' => htmlspecialchars($_POST['email']),
-                            'password' => htmlspecialchars($_POST['password']),
-                            're_password' => htmlspecialchars($_POST['re-password']),
-                            'address' => htmlspecialchars($_POST['address']),
-                            'sex' => $_POST['sex'],
-                            'birthday' => $_POST['birthday'],
-					    );
-				$user_service = new UserService;
-				$data = $user_service->registration($data);
-				if ($data["error"] == false) {
-					redirect("/successful");
-				}
-			}
-
-			$this->_view->load_content('registration', $data);
-		} catch (Exception $e) {
-			redirect('/user/home');
-		}
-	}
-
-	/**
+    /**
      * action successfull after regist
      *
      */
-	public function successful()
-	{	
-		try {
-			if (isset($_SESSION['user_id'])) {
-				throw new Exception("Error");
-			} 
+    public function successful()
+    {	
+        try {
+            if (!isset($this->_data["error"])) {
+                throw new Exception("Error");
+            } 
+            $data = $this->_data;
+            $this->_view->load_content('successful');
+        } catch (Exception $e) {
+            redirect('/user/home');
+        }
+    }
 
-			$data = $this->_data;
-
-			$this->_view->load_content('successful');
-		} catch (Exception $e) {
-			redirect('/user/home');
-		}
-	}
-
-	/**
+    /**
      * action login
      *
      */
-	public function login()
-	{	
-		try {
-			if (isset($_SESSION['user_id'])) {
-				throw new Exception("Error");
-			}
-			$data = $this->_data;
+    public function login()
+    {	
+        try {
+            if (!isset($this->_data["error"])) {
+                throw new Exception("Error");
+            }
+            $data = array();
 
-			if (isset($_POST['username'])) {
-				$data['username'] = htmlspecialchars($_POST['username']);
-				$data['password'] = htmlspecialchars($_POST['password']);
-				
-				try {
-					//validate
-					if(!(validate($data['username'], 'username') && validate($data['password'], 'password'))) {
-						throw new Exception("Username or password invalid");
-					}
+            if (isset($_POST['username'])) {
 
-					//check user exist
-					$user = $this->user->login($data['username'], $data['password']);
-					if (!$user) {
-						throw new Exception("Username or password invalid");
-					}
+				$user_service = new UserService();
+		        $user_info = array(
+		            "username" => htmlspecialchars($_POST['username']),
+		            "password" => htmlspecialchars($_POST['password'])
+		        );
+		        $data = $user_service->login($user_info);
 
-					// check active status
-					if ($user['status'] == 0) {
-						throw new Exception("Please active account before login");
-					}
-
-					//save session if login success
-					$_SESSION['user_id'] = $user['id'];
-					
-					redirect('/friend/index');
-				} catch (Exception $e) {
-					$data['message'][]= $e->getMessage();
-				}
+                if ($data["error"] == false) {
+                    $_SESSION['user_id'] = $data["user"]["id"];
+                    redirect('/friend/index');
+		        }
 			}
 			
 			$this->_view->load_content('login', $data);
@@ -155,45 +136,23 @@ class UserController extends Controller
 			if (isset($_POST['fullname'])) {
 				$id = $this->_data['user']['id'];
 				$edit_data = array(
-	                             'fullname' => htmlspecialchars($_POST['fullname']),
-	                             'address' => htmlspecialchars($_POST['address']),
-	                             'birthday' => $_POST['birthday'],
-	                             'sex' => $_POST['sex']
-							 );
-				// validate
-				if (!validate($edit_data['fullname'], 'fullname')) {
-					$data['edit_status'] = true;
-					$data['message'][] = 'Fullname a-Z, length 4-30';
-				}
+	                'fullname' => htmlspecialchars($_POST['fullname']),
+	                'address' => htmlspecialchars($_POST['address']),
+	                'birthday' => $_POST['birthday'],
+	                'sex' => $_POST['sex']
+	            );
+				
+				$user_service = new UserService();
+				$change_result = $user_service->change_profile($id, $edit_data);
 
-				if (strlen($edit_data['address']) == 0) {
-					$data['edit_status'] = true;
-					$data['message'][] = 'Address is required';
-				}
-
-				if (!(($edit_data['sex'] ==1) || ($edit_data['sex'] ==2))) {
-					$data['edit_status'] = true;
-					$data['message'][] = 'Sex invalid';
-				}
-
-				if(!(checkdate(explode('-',$edit_data['birthday'])[1], explode('-',$edit_data['birthday'])[2],explode('-',$edit_data['birthday'])[0]) && (strtotime($edit_data['birthday'])<time()))) {
-					$data['edit_status'] = true;
-					$data['message'][] = 'Birthday invalid';
-				}
-
-				// update
-				if($data['edit_status'] == false) {
-					if($this->user->update_id($id, $edit_data)) {
-						$data['edit_status'] = false;
-						$data['user']['fullname'] = $edit_data['fullname'];
-						$data['user']['address'] = $edit_data['address'];
-						$data['user']['birthday'] = $edit_data['birthday'];
-						$data['user']['sex'] = $edit_data['sex'];
-					}
-					else {
-						$data['edit_status'] = true;
-						$data['message'][] = 'Update profile have error';
-					}
+				if($change_result["error"]) {
+					$data["edit_status"] = true;
+					$data["message"] = $change_result["message"];
+				} else {
+					$data['user']['fullname'] = $change_result['fullname'];
+					$data['user']['address'] = $change_result['address'];
+					$data['user']['birthday'] = $change_result['birthday'];
+					$data['user']['sex'] = $change_result['sex'];
 				}
 			}
 			
@@ -219,45 +178,13 @@ class UserController extends Controller
 			if (isset($_POST['email'])) {
 			    $id = $this->_data['user']['id'];
 			    $email = $_POST['email'];
-			    try {
-			    	// validate
-			    	if ($email == '') {
-			        	throw new Exception("Email not empty");
-				    } 
-				    
-				    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				    	throw new Exception("Email fomat invalid");
-				    }
-				   
-				    $result = $this->user->where('email', $email)->first ();
-				    
-				    if ($result) {
-					    throw new Exception("Email is exist");
-					} 
-					
-					// create token
-				    $token_code = md5(time());
-				    $data_token = array(
-                                      'token' => $token_code,
-                                      'user_id' => $id,
-                                      'content' => $email,
-                                      'type' => 2,
-                                      'status' => 0
-				    	          );
-				    $result = $this->token->insert($data_token);
-				    
-				    if (!$result){
-				    	throw new Exception("Change email have error");
-				    }
-				    
-				    $data['edit_status'] = false;
-				    
-				    // send mail
-				    $header = mail_header();
-				    $content_email = "Click <a href='http://dev.lampart.com.vn/lesson/user/confirm/$token_code'>here</a> to agree change email to $email \n ";
-				    mail('thanh_tai@lampart-vn.com', 'Change email', $content_email, $header);
-			    } catch (Exception $e) {
-			    	$data['message'][] = $e->getMessage();
+			    $user_service = new UserService();
+			    $change_result = $user_service->change_email($id, $email);
+
+			    if (!$change_result["error"]) {
+			    	$data['edit_status'] = false;
+			    } else {
+			    	$data['message'][] = $change_result["message"];
 			    }
 			}
 		    
@@ -285,43 +212,19 @@ class UserController extends Controller
 		    
 		    if (isset($_POST['password'])) {
 		    	try {
-		    		
 		    		$data['edit_status'] = false;
-			    	$id = $this->_data['user']['id'];
-			    	
-			    	$password = htmlspecialchars($_POST['password']);
-			    	$new_password = htmlspecialchars($_POST['new-password']);
-			    	$confirm_password = htmlspecialchars($_POST['confirm-password']);
+			    	$data_change = array(
+			    		"id" => $this->_data['user']['id'],
+			    		"password" =>  htmlspecialchars($_POST['password']),
+			    		"new_password" => htmlspecialchars($_POST['new-password']),
+			    		"confirm_password" => htmlspecialchars($_POST['confirm-password'])
+			    	);
 
-			    	// validate
-			    	if (($password == '') || ($new_password == '') ||($confirm_password == '') ) {
-			    	    throw new Exception("Please enter all fields");
+			    	$user_service = new UserService();
+			    	$change_result = $user_service->change_password($data_change);
+			    	if($change_result["error"]) {
+			    		throw new Exception($change_result["message"]);
 			    	}
-			    	
-			    	if (!(validate($password, 'password') && validate($new_password, 'password'))) {
-			    		throw new Exception("Password a-Z0-9, special characters !@#$%, length 3-20");
-			    	}
-			    	
-			    	if ($new_password != $confirm_password) {
-			    		throw new Exception("Confirm password invalid");
-			    	}
-		    		
-		    		$result = $this->user->where('id', $id)->where('password', md5($password))->first();
-		    		
-		    		if (!$result) {
-		    			throw new Exception("Current password invalid");
-		    		}
-	    			
-	    			if ($password == $new_password) {
-			    		throw new Exception("New password is current password");
-			    	}
-			    	
-			    	// update
-	    			$result = $this->user->where('id', $id)->update(array('password' => md5($new_password)));
-	    			
-	    			if (!$result) {
-	    				throw new Exception("Change password have error");
-	    			}
 		    	} catch (Exception $e) {
 		    		$data['edit_status'] = true;
 		    		$data['message'][] = $e->getMessage();
@@ -350,53 +253,36 @@ class UserController extends Controller
      */
 	public function confirm($params)
 	{	
-		$data = $this->_data;
 		try {
-			$key = $_GET['key'];
-			
-			if (!validate($key, 'token')) {
-				throw new Exception("Token invalid");
+			if (!isset($this->_data['error'])) {
+				throw new Exception("Error");
 			}
-	        
-	        $result = $this->token->where('token', $key)->where('status', 0)->first();
-	        
-	        if (!$result) {
-	        	throw new Exception("Token not exists");
-	        }
-        	
-        	switch ($result['type']) {
-        		case 1:
-        			//active account
-        			$this->user->update_id($result['user_id'], array('status' => 1));
-        			$this->token->where('id', $result['id'])->update(array('status' => 1));
-        			
-        			throw new Exception("Active account success");
-        			break;
-        		
-        		case 2:
-        		    //change email
-        			$user = $this->user->where('email', $result['content'])->first();
-        			
-        			if ($user) {
-        				throw new Exception("Email is exist");
-        			} else {
-        				$this->user->update_id($result['user_id'], array('email'=>$result['content']));
-        			    $this->token->where('user_id', $result['user_id'])->where('status', 0)->update(array('status' => 1));
-        			    throw new Exception("Change email success");
-        			}
-        			
-        			break;
+			$data = $this->_data;
+			try {
+				$key = $params[0];
+				
+				if (!validate($key, 'token')) {
+					throw new Exception("Token invalid");
+				}
+		        
+				$user_service = new UserService;
+				$confirm_result = $user_service->confirm($key);
 
-        		default:
-        			throw new Exception("Type token not exist");
-        			break;
-        	}
+				if ($confirm_result["error"]) {
+					throw new Exception($confirm_result["message"]);
+				}
 
+				$data["error"] = false;
+				$data['message'][] = $confirm_result["message"];
+			} catch (Exception $e) {
+				$data["error"] = true;
+				$data['message'][] = $e->getMessage();
+			}
+			
+			$this->_view->load_content('confirm.result',$data);
 		} catch (Exception $e) {
-			$data['message'][] = $e->getMessage();
+			redirect('/user/home');
 		}
-		
-		$this->_view->load_content('confirm.result',$data);
 	}
 
 	/**
@@ -412,19 +298,18 @@ class UserController extends Controller
 				throw new UserException("Please login");
 			}
 			
-			if ($this->_data['user']['group_id'] !=1) {
-				throw new CheckException("Error group permisson");
+			$user_service = new UserService;
+			$user_info = array(
+				"group_id" => $data["user"]["group_id"]
+			);
+			$result = $user_service->manage($user_info);
+
+			if ($result["error"] == true) {
+				throw new CheckException("Not have permisson");
 			}
-			
-			$users = $this->user->get();
-			
-			if ($users) {
-			    $data['users'] = $users;
-			    $groups = $this->group->get();
-			    $data['groups'] = $groups;
-			} else {
-				$data['message'][] = 'Not have user';
-			}
+
+			$data['users'] = $result["users"];
+			$data['groups'] = $result["groups"];
 		} catch (CheckException $e) {
 			redirect('/friend/index');
 		} catch (UserException $e) {
@@ -452,22 +337,14 @@ class UserController extends Controller
 			}
 			
 			$id = $data['user']['id'];
-			$content = htmlspecialchars($_POST['s']);
-			if ($content == "") {
+			$key = htmlspecialchars($_POST['s']);
+			if ($key == "") {
 				throw new CheckException("Not have content search");
 			}
-			$data['search_content'] = $content;
-            $result = $this->user->search_not_friend($id, $content);
-            
-            if (!$result) {
-            	throw new CheckException("Not found");
-            }
-        	
-        	foreach ($result as $key => $value) {	
-        		$user_request = $this->friend_request->have_request($id, $value['id']);
-        		$value['request_status'] = $user_request ? true : false;
-        		$data['users'][$key] = $value;
-        	}
+
+			$user_service = new UserService;
+			$data["users"] = $user_service->search($id, $key);
+			$data['search_content'] = $key;
 		} catch (CheckException $e) {
 			$data['message'][]=$e->getMessage();
 		} catch (UserException $e) {

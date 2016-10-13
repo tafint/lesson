@@ -29,5 +29,8 @@
             <testsuite name="all">
                 <directory>tests/</directory>
             </testsuite>
+            <testsuite name="user-service">
+                <directory suffix="UserServiceTest.php">tests/</directory>
+            </testsuite>
         </testsuites>
 </phpunit>

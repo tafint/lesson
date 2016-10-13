@@ -9,7 +9,7 @@
 	<div class="panel-heading"><span class="edit-hide hide">Edit </span>Profile</div>
   <div class="panel-body">
   	<div></div>
-     <form id="edit-form" class="form-horizontal" method="POST" action="/lesson/user/profile">
+     <form id="edit-form" class="form-horizontal" method="POST" action="/lesson/user/profile/<?php echo $user["id"] ?>">
      	<input type="hidden" name="edit-status" id="edit-status" value="<?php echo ($edit_status==false) ? 0 :1; ?>">
  		<?php
  		if (isset($message)) :

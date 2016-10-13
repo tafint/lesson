@@ -1,4 +1,5 @@
 <h4>Management users</h4>
+<?php  if (sizeof($users) > 0) : ?>
 <table class="table table-hover" id="management-table">
 	<tr>
 		<th>Name</th>
@@ -8,10 +9,7 @@
 		<th></th>
 		<th></th>
 	</tr>
-	<?php 
-	if (isset($users)) :
-		foreach ($users as $user) :
-	?>
+	<?php foreach ($users as $user) : ?>
 			<tr id-value="<?php echo $user['id']; ?>">
 				<td><a href="/lesson/friend/view/<?php echo $user['id']; ?>"><?php echo $user['fullname']; ?></a></td>
 				<td><?php echo ($user['sex'] == 1) ? 'Male' : 'Female'; ?></td>
@@ -29,10 +27,10 @@
 					<button class="btn btn-default delete-user" id-value="<?php echo $user['id']; ?>">Delete</button>
 				</td>
 			</tr>
-	<?php 
-		endforeach;
-	endif;
-	?>
+	<?php  endforeach; ?>
+	<?php else: ?>
+		<p class="text-center">Not have user</p>
+	<?php endif; ?>
 </table>
 <div class="modal fade" tabindex="-1" role="dialog" id="management-modal">
   <div class="modal-dialog" role="document">

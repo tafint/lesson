@@ -18,7 +18,7 @@ class Route
 	    $this->_router->get("/user/logout","UserController@logout");
 	    $this->_router->get("/user/successful","UserController@successful");
         $this->_router->get("/user/home","UserController@home");
-        $this->_router->get("/user/profile/{:id}","UserController@profile");
+        $this->_router->any("/user/profile/{:id}","UserController@profile");
         $this->_router->any("/user/changeemail","UserController@change_email");
         $this->_router->any("/user/changepassword","UserController@change_password");
         $this->_router->get("/user/manage","UserController@manage");

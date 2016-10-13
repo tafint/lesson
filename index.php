@@ -8,7 +8,7 @@ use Config\DB;
 use Config\Route;
 use Core\Router;
 
-// // init router
+// init router
 $router = new Router;
 $route = new Route($router);
 $router = $route->getRoute();
