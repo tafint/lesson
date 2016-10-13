@@ -1,13 +1,14 @@
 <?php
 namespace App\Controller;
+
 use \Exception;
 use App\Exception\UserException as UserException;
 use App\Exception\CheckException as CheckException;
+
 /**
  * This is a class FriendController
  */
 class FriendController extends Controller
-
 {   
     public function __construct()
     {   

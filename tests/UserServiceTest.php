@@ -1,6 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use App\Service\UserService;
+
 /**
  * this is class test UserService
  */
@@ -9,13 +10,12 @@ class UserServiceTest extends TestCase
     /**
      * @dataProvider dataRegistration
      */
-    // public function testRegistration($array)
-    // {    
-    //     $user_service = new UserService();
-    //     $result = $user_service->registration($array);
-    //     $this->assertEquals(['error' => false], $result);
-        
-    // }
+    public function testRegistration($array)
+    {    
+        $user_service = new UserService();
+        $result = $user_service->registration($array);
+        $this->assertNotEmpty($result);
+    }
 
     public function dataRegistration()
     {   
@@ -37,50 +37,50 @@ class UserServiceTest extends TestCase
         );
     }
 
-    // /**
-    //  * test login true
-    //  */
-    // public function testLoginTrue()
-    // {   
-    //     $user_service = new UserService();
-    //     $data = array(
-    //         "username" => "admin",
-    //         "password" => "aaaa"
-    //     );
-    //     $result = $user_service->login($data);
-    //     $this->assertArraySubset(["error" => false], $result);
+    /**
+     * test login true
+     */
+    public function testLoginTrue()
+    {   
+        $user_service = new UserService();
+        $data = array(
+            "username" => "admin",
+            "password" => "aaaa"
+        );
+        $result = $user_service->login($data);
+        $this->assertArraySubset(["error" => false], $result);
         
-    // }
+    }
 
-    // /**
-    //  * test login false
-    //  */
-    // public function testLoginFalse()
-    // {   
-    //     $user_service = new UserService();
-    //     $data = array(
-    //         "username" => "admin",
-    //         "password" => "aaaaa"
-    //     );
-    //     $result = $user_service->login($data);
-    //     $this->assertArraySubset(["error" => true], $result);
+    /**
+     * test login false
+     */
+    public function testLoginFalse()
+    {   
+        $user_service = new UserService();
+        $data = array(
+            "username" => "admin",
+            "password" => "aaaaa"
+        );
+        $result = $user_service->login($data);
+        $this->assertArraySubset(["error" => true], $result);
         
-    // }
+    }
 
 
-    // /**
-    //  * test management
-    //  */
-    // public function testManagement()
-    // {   
-    //     $user_service = new UserService();
-    //     $data = array(
-    //         "group_id" => 1
-    //     );
-    //     $result = $user_service->manage($data);
-    //     $this->assertNotEmpty($result);
+    /**
+     * test management
+     */
+    public function testManagement()
+    {   
+        $user_service = new UserService();
+        $data = array(
+            "group_id" => 1
+        );
+        $result = $user_service->manage($data);
+        $this->assertNotEmpty($result);
         
-    // }
+    }
 
     /**
      * test search

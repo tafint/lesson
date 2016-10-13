@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller\Api;
+
 use \Exception;
+
 /**
  * This is a class FollowApiController
  */
 class FollowApiController extends ApiController
-
 {   
     public function __construct()
     {   

@@ -1,15 +1,16 @@
 <?php
 namespace App\Controller;
+
 use Core\Controller as BaseController;
 use App\Service\HeaderService;
 use \Exception;
 use \Exception\UserException as UserException;
 use \Exception\CheckException as CheckException;
+
 /**
  * This is a class FollowController
  */
 abstract class Controller extends BaseController
-
 {   
     protected $_data = array ();
 

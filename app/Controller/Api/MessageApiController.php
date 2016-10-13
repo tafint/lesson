@@ -1,13 +1,15 @@
 <?php
 namespace App\Controller\Api;
-use Core\Controller as Controller;
+
+use App\Service\MessageService;
 use \Exception;
 use App\Exception\UserException as UserException;
 use App\Exception\CheckException as CheckException;
+
 /**
  * This is a class MessageApiController
  */
-class MessageApiController extends Controller
+class MessageApiController extends ApiController
 {   
     public function __construct()
     {   

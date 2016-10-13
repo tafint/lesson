@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller;
+
 use \Exception;
+
 /**
  * This is a class IndexController
  */
 class IndexController extends Controller
-
 {   
     public function __construct()
     {   

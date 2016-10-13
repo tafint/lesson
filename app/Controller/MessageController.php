@@ -1,8 +1,11 @@
 <?php
 namespace App\Controller;
+
+use App\Service\MessageService;
 use \Exception;
 use App\Exception\UserException as UserException;
 use App\Exception\CheckException as CheckException;
+
 /**
  * This is a class MessageController
  */
@@ -22,20 +25,19 @@ class MessageController extends Controller
         $data = $this->_data;
         try {
             if (isset($data['error'])) {
-                throw new UserException("Please login");
+                throw new Exception("Please login");
+            }
+
+            $message_service = new MessageService();
+            $message_data = $message_service->data($data['user']['id']);
+
+            if ($message_data) {
+                $data['data_messages'] = $message_data;
+            } else {
+                $data["message"] = "Not have message";
             }
             
-            $messages = $this->message_log->get_all_message($data['user']['id']);
-            
-            if (!$messages) {
-                throw new CheckException("Not have message");
-                
-            }
-            
-            $data['data_messages'] = $messages;
-        } catch (CheckException $e) {
-            $data['message'][] = $e->getMessage();
-        } catch (UserException $e) {
+        } catch (Exception $e) {
             redirect();
         }
         

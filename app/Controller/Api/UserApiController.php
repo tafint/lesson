@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller\Api;
+
 use \Exception;
+
 /**
  * This is a class UserApiController
  */
 class UserApiController extends ApiController
-
 {   
     /** @var $_data store info */
     protected $_data = array ();

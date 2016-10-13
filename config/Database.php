@@ -1,8 +1,10 @@
 <?php 
 namespace Config;
+
 use Illuminate\Database\Capsule\Manager as Capsule; 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
+
 /**
  * This is a class DB
  */

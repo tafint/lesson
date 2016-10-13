@@ -1,5 +1,6 @@
 <?php 
 namespace Config;
+
 /**
  * This is a class Route
  */

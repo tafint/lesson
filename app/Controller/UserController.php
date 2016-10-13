@@ -1,14 +1,15 @@
 <?php
 namespace App\Controller;
+
 use App\Service\UserService;
 use \Exception;
 use App\Exception\UserException as UserException;
 use App\Exception\CheckException as CheckException;
+
 /**
  * This is a class UserController
  */
 class UserController extends Controller
-
 {	
     public function __construct()
     {

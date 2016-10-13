@@ -379,19 +379,18 @@ class UserService extends Service
             $result['message'][] = 'Sex invalid';
         }
 
-        if(!(checkdate(explode('-',$params['birthday'])[1], explode('-',$params['birthday'])[2],explode('-',$params['birthday'])[0]) && (strtotime($params['birthday'])<time()))) {
+        if (!(checkdate(explode('-',$params['birthday'])[1], explode('-',$params['birthday'])[2],explode('-',$params['birthday'])[0]) && (strtotime($params['birthday']) < time()))) {
             $flag = true;
             $result['message'][] = 'Birthday invalid';
         }
 
         // update
-        if(!$flag) {
+        if (!$flag) {
             $user = new User();
-            if($user->update_id($id, $params)) {
+            if ($user->update_id($id, $params)) {
                 $result = $params;
                 $result['error'] = false;
-            }
-            else {
+            } else {
                 $result['error'] = false;
                 $result['message'][] = 'Update profile have error';
             }

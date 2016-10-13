@@ -1,11 +1,12 @@
 <?php
 namespace App\Controller\Api;
+
 use \Exception;
+
 /**
  * This is a class FavoriteController
  */
 class FavoriteApiController extends ApiController
-
 {   
     public function __construct()
     {   

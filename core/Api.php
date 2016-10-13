@@ -1,5 +1,6 @@
 <?php
 namespace Core;
+
 /**
  * This is a class Api
  */

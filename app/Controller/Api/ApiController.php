@@ -1,7 +1,9 @@
 <?php
 namespace App\Controller\Api;
+
 use Core\Api as Api;
 use \Exception;
+
 /**
  * This is a class ApiController
  */
