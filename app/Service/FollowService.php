@@ -4,6 +4,7 @@ namespace App\Service;
 use Model\User;
 use Model\Follow;
 use Model\UserLogView;
+use \Exception;
 
 /**
  * This is a class FollowService
@@ -42,9 +43,38 @@ class FollowService extends Service
      * add new follow
      *
      */
-    public function add($id)
+    public function add($user_id, $user_id_to)
     {	
+        try {
+            $user = new User();
+            $user_info = $user->find_id($user_id);
+            
+            if (!$user_info) {
+                throw new Exception("User not exist");
+            } 
 
+            if ($user_id == $user_id_to) {
+                throw new Exception("Not follow yourself");
+            } 
+            
+            $follow = new Follow();
+            $is_follow = $follow->is_follow($user_id, $user_id_to);
+            
+            if ($is_follow) {
+                throw new Exception("Have follow");
+            }
+            
+            $follow_insert = $follow->insert(array('user_id' => $user_id, 'user_id_to' => $user_id_to));
+            
+            if (!$follow_insert) {
+                throw new Exception("Insert error");
+            }
+
+            $result = array('error' => false);
+        } catch (Exception $e) {
+            $result = array("error" =>true, "message" => $e->getMessage());
+        }
+        
         return $result;
     }
 
@@ -52,8 +82,27 @@ class FollowService extends Service
      * remove follow
      *
      */
-    public function remove($id)
+    public function remove($user_id, $user_id_to)
     {	
+        try {
+            $follow = new Follow();
+            $follow_info = $follow->is_follow($user_id, $user_id_to);
+            
+            if (!$follow_info) {
+                throw new Exception("Follow user not exist");
+            } 
+            
+            $delete = $follow->where('user_id', $user_id)->where('user_id_to', $user_id_to)->delete();
+            
+            if (!$delete) {
+                throw new Exception("Delete error");
+            }
+            
+            $result = array('error' => false);
+            
+        } catch (Exception $e) {
+            $result = array('error' => true, 'message' => $e->getMessage());
+        }
 
         return $result;
     }
