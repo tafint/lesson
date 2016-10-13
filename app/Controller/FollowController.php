@@ -1,20 +1,14 @@
 <?php
 namespace App\Controller;
 
+use App\Service\FollowService;
 use \Exception;
-use App\Exception\UserException as UserException;
-use App\Exception\CheckException as CheckException;
 
 /**
  * This is a class FollowController
  */
 class FollowController extends Controller
 {   
-    public function __construct()
-    {   
-        parent::__construct();
-    }
-
     /**
      * action follow list
      *
@@ -25,21 +19,16 @@ class FollowController extends Controller
             $data = $this->_data;
             
             if (isset($data['error'])) {
-                throw new UserException("Please login");
+                throw new Exception("Please login");
             }
 
-            $follows = $this->follow->get_all($data['user']['id']);
+            $follow_service = new FollowService();
+            $follow_data = $follow_service->data($data["user"]["id"]);
 
-            foreach ($follows as $follow) {
-                if ($this->user_log_view->is_view($data['user']['id'], $follow['log_id'])) {
-                    $follow['is_view'] = true;
-                } else {
-                    $follow['is_view'] = false;
-                    $this->user_log_view->insert(array("user_id" => $data['user']['id'], "log_id" => $follow['log_id']));
-                }
-                $data['follows'][] = $follow;
+            if (count($follow_data) > 0) {
+                $data["follows"] = $follow_data;
             }
-        } catch (UserException $e) {
+        } catch (Exception $e) {
             $data['error'] = true;
         }
     

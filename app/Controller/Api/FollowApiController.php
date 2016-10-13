@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller\Api;
 
+use App\Service\FollowService;
 use \Exception;
 
 /**
@@ -8,12 +9,6 @@ use \Exception;
  */
 class FollowApiController extends ApiController
 {   
-    public function __construct()
-    {   
-        parent::__construct();
-        $this->_model->load('follow');
-    }
-
     /**
      * api add follow
      *

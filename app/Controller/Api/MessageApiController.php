@@ -38,10 +38,6 @@ class MessageApiController extends ApiController
             if ((!$is_friend && ($data['user']['group_id']) != 1) && ($data['user']['group_id'] != $user_to['group_id'])) {
                 throw new Exception("Not have permisson");
             }
-
-            // if(($user_to['group_id'] == 1) && ($data['user']['group_id'] != 1)) {
-            //  throw new Exception("Not send message to admin");
-            // }
             
             $message = htmlspecialchars($_POST['message']);
             $current_message = htmlspecialchars($_POST['current_message']);
