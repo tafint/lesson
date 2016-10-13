@@ -3,8 +3,8 @@ namespace App\Controller\Api;
 
 use App\Service\MessageService;
 use \Exception;
-use App\Exception\UserException as UserException;
-use App\Exception\CheckException as CheckException;
+use App\Exception\UserException;
+use App\Exception\CheckException;
 
 /**
  * This is a class MessageApiController

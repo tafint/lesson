@@ -3,8 +3,8 @@ namespace App\Controller;
 
 use App\Service\UserService;
 use \Exception;
-use App\Exception\UserException as UserException;
-use App\Exception\CheckException as CheckException;
+use App\Exception\UserException;
+use App\Exception\CheckException;
 
 /**
  * This is a class UserController

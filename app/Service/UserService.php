@@ -379,7 +379,7 @@ class UserService extends Service
             $result['message'][] = 'Sex invalid';
         }
 
-        if (!(checkdate(explode('-',$params['birthday'])[1], explode('-',$params['birthday'])[2],explode('-',$params['birthday'])[0]) && (strtotime($params['birthday']) < time()))) {
+        if (!(checkdate(explode('-', $params['birthday'])[1], explode('-', $params['birthday'])[2], explode('-', $params['birthday'])[0]) && (strtotime($params['birthday']) < time()))) {
             $flag = true;
             $result['message'][] = 'Birthday invalid';
         }
