@@ -7,14 +7,14 @@ use Core\DB\DB as DB;
  */
 class Favorite extends BaseModel
 {
-	public function __construct()
-	{
-		parent::__construct();
-		// set table
-		$this->_table = 'favorite';
-	}
+    public function __construct()
+    {
+        parent::__construct();
+        // set table
+        $this->_table = 'favorite';
+    }
 
-	/**
+    /**
      * get all favorite
      *
      * @param  $id is user id need get friend.
@@ -22,12 +22,12 @@ class Favorite extends BaseModel
      * @return array or false.
      *
      */
-	public function get_all($id) 
-	{
+    public function get_all($id) 
+    {
         return $this->where('user_id', $id)->get();
-	}
+    }
 
-	/**
+    /**
      * count all favorite
      *
      * @param  $id is user id need get friend.
@@ -35,10 +35,10 @@ class Favorite extends BaseModel
      * @return number.
      *
      */
-	public function count_all($id) 
-	{
+    public function count_all($id) 
+    {
         return $this->where('user_id', $id)->count();
-	}
+    }
 
     /**
      * find row id
@@ -58,7 +58,7 @@ class Favorite extends BaseModel
         }
     }
 
-	/**
+    /**
      * check is favorite
      *
      * @param  $id is user id need get friend.
@@ -66,13 +66,13 @@ class Favorite extends BaseModel
      * @return true is $user_id favorite $user_id_to, false is not
      *
      */
-	public function is_favorite($user_id, $user_id_to) 
-	{	
-		$result = $this->where('user_id', $user_id)->where('user_id_to', $user_id_to)->first();
+    public function is_favorite($user_id, $user_id_to) 
+    {   
+        $result = $this->where('user_id', $user_id)->where('user_id_to', $user_id_to)->first();
         if ($result) {
-        	return true;
+            return true;
         } else {
-        	return false;
+            return false;
         }
-	}
+    }
 }

@@ -6,16 +6,15 @@ use Core\DB\DB as DB;
  * This is a class ImageLike
  */
 class ImageLike extends BaseModel
-
 {
-	public function __construct()
-	{
-		parent::__construct();
-		// set table
-		$this->_table = 'image_like';
-	}
+    public function __construct()
+    {
+        parent::__construct();
+        // set table
+        $this->_table = 'image_like';
+    }
 
-	/**
+    /**
      * get all friend
      *
      * @param  $id is user id need get friend.
@@ -23,12 +22,12 @@ class ImageLike extends BaseModel
      * @return array or false.
      *
      */
-	public function get_all($id) 
-	{
+    public function get_all($id) 
+    {
         return $this->where('user_id', $id)->or_where('user_id_to', $id)->get();
-	}
+    }
 
-	/**
+    /**
      * count all friend
      *
      * @param  $id is user id need get friend.
@@ -36,12 +35,12 @@ class ImageLike extends BaseModel
      * @return number.
      *
      */
-	public function count_all($id) 
-	{
+    public function count_all($id) 
+    {
         return $this->where('image_id', $id)->count();
-	}
+    }
 
-	/**
+    /**
      * action like image
      *
      * @param  $user_id and $image_id.

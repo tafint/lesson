@@ -102,11 +102,11 @@ class UserService extends Service
                     //create token
                     $token_code = md5(time());
                     $data_token = array(
-                                      'user_id' => $current_user['id'],
-                                      'token' => $token_code,
-                                      'type' => "account",
-                                      'status' => 0
-                                  );
+                        'user_id' => $current_user['id'],
+                        'token' => $token_code,
+                        'type' => "account",
+                        'status' => 0
+                    );
                     $token = new Token;
                     if ($token->insert($data_token)) {
                         $header = mail_header();

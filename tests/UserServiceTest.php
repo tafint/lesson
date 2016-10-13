@@ -5,12 +5,12 @@ use App\Service\UserService;
  * this is class test UserService
  */
 class UserServiceTest extends TestCase
-{	
-	/**
+{   
+    /**
      * @dataProvider dataRegistration
      */
     // public function testRegistration($array)
-    // {	
+    // {    
     //     $user_service = new UserService();
     //     $result = $user_service->registration($array);
     //     $this->assertEquals(['error' => false], $result);
@@ -20,7 +20,7 @@ class UserServiceTest extends TestCase
     public function dataRegistration()
     {   
         $_SESSION['code_capcha'] = "----capcha----";
-    	return array(
+        return array(
             array( 
                 array(
                     "fullname" => "Admin",

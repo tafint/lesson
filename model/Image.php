@@ -6,16 +6,15 @@ use Core\DB\DB as DB;
  * This is a class Image
  */
 class Image extends BaseModel
-
 {
-	public function __construct()
-	{
-		parent::__construct();
-		// set table
-		$this->_table = 'image';
-	}
+    public function __construct()
+    {
+        parent::__construct();
+        // set table
+        $this->_table = 'image';
+    }
 
-	/**
+    /**
      * get all friend
      *
      * @param  $id is user id need get friend.
@@ -23,12 +22,12 @@ class Image extends BaseModel
      * @return array or false.
      *
      */
-	public function get_all($id) 
-	{
+    public function get_all($id) 
+    {
         return $this->where('user_id', $id)->sort_by('id','DESC')->get();
-	}
+    }
 
-	/**
+    /**
      * count all friend
      *
      * @param  $id is user id need get friend.
@@ -36,10 +35,10 @@ class Image extends BaseModel
      * @return number.
      *
      */
-	public function count_all($id) 
-	{
+    public function count_all($id) 
+    {
         return $this->where('user_id', $id)->or_where('user_id_to', $id)->count();
-	}
+    }
 
 
     /**

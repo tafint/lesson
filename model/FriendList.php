@@ -6,16 +6,15 @@ use Core\DB\DB as DB;
  * This is a class FriendList
  */
 class FriendList extends BaseModel
-
 {
-	public function __construct()
-	{
-		parent::__construct();
-		// set table
-		$this->_table = 'friend_relation';
-	}
+    public function __construct()
+    {
+        parent::__construct();
+        // set table
+        $this->_table = 'friend_relation';
+    }
 
-	/**
+    /**
      * get all friend
      *
      * @param  $id is user id need get friend.
@@ -23,12 +22,12 @@ class FriendList extends BaseModel
      * @return array or false.
      *
      */
-	public function get_all($id) 
-	{
+    public function get_all($id) 
+    {
         return $this->where('user_id', $id)->or_where('user_id_to', $id)->get();
-	}
+    }
 
-	/**
+    /**
      * count all friend
      *
      * @param  $id is user id need get friend.
@@ -36,12 +35,12 @@ class FriendList extends BaseModel
      * @return number.
      *
      */
-	public function count_all($id) 
-	{
+    public function count_all($id) 
+    {
         return $this->where('user_id', $id)->or_where('user_id_to', $id)->count();
-	}
+    }
 
-	/**
+    /**
      * check relation of two users
      *
      * @param  $id is user id need get friend.
@@ -49,16 +48,16 @@ class FriendList extends BaseModel
      * @return true is friend, false is not friend.
      *
      */
-	public function is_friend($user_id, $user_id_to) 
-	{	
-		$result = $this->where('user_id', $user_id)->where('user_id_to', $user_id_to)->or_where('user_id', $user_id_to)->or_where('user_id_to', $user_id)->first();
+    public function is_friend($user_id, $user_id_to) 
+    {   
+        $result = $this->where('user_id', $user_id)->where('user_id_to', $user_id_to)->or_where('user_id', $user_id_to)->or_where('user_id_to', $user_id)->first();
        
         if ($result) {
-        	return true;
+            return true;
         } else {
-        	return false;
+            return false;
         }
-	}
+    }
 
     /**
      * return row friend of two user
