@@ -32,9 +32,9 @@ abstract class ApiController extends Api
 
 		} catch (Exception $e) {
 			$this->_result = array(
-				                 "error" => true,
-			                     "message" => "Please login"
-			                 );
+			    "error" => true,
+			    "message" => "Please login"
+			);
 		}
 	}
 

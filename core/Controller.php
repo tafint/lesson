@@ -22,8 +22,7 @@ abstract class Controller
 
         $this->_view = new View;
 
-        global $db;
-        $this->_model = new Model($db);
+        $this->_model = new Model();
     }
 
     public function load_template_before($view,$data = array())

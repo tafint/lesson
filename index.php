@@ -1,14 +1,16 @@
 <?php 
-
 // start session and define PATH
 session_start();
 define('PATH', __DIR__);
 
 require_once PATH . "/vendor/autoload.php";
+use Config\DB;
+use Config\Route;
+use Core\Router;
 
-// init router
-$router = new Core\Router;
-$route = new Config\Route($router);
+// // init router
+$router = new Router;
+$route = new Route($router);
 $router = $route->getRoute();
 
 // parse uri to controller, method and argument
@@ -28,10 +30,10 @@ if ($app === null) {
 }
 
 // init database
-$DB_driver = "DB" . ucfirst(strtolower(Config\DB::DB_TYPE));
+$DB_driver = "DB" . ucfirst(strtolower(DB::DB_TYPE));
 $DB_driver_class = "Core\\DB\\$DB_driver";
 $db = new $DB_driver_class();
-$db->connect("mysql:host=" . Config\DB::DB_HOST . ";dbname=". Config\DB::DB_NAME, Config\DB::DB_USER, Config\DB::DB_PASS);
+$db->connect("mysql:host=" . DB::DB_HOST . ";dbname=". DB::DB_NAME, DB::DB_USER, DB::DB_PASS);
 
 // call instance
 function get_instance(){

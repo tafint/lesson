@@ -1,8 +1,8 @@
 <?php
 namespace App\Controller;
 use \Exception;
-use \Exception\UserException as UserException;
-use \Exception\CheckException as CheckException;
+use App\Exception\UserException as UserException;
+use App\Exception\CheckException as CheckException;
 /**
  * This is a class FriendController
  */

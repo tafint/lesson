@@ -117,7 +117,7 @@ class FriendApiController extends ApiController
 				            );
 				$user_log = $this->user_log->insert($log_data);
 	            $this->friend_request->where('id',$id)->delete();
-	            $result = array('error' => false);
+	            $this->_result = array('error' => false);
 			} else {
 				$this->friend_request->where('id',$id)->delete();
 				$this->_result = array('error' => false);

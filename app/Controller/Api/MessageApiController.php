@@ -2,8 +2,8 @@
 namespace App\Controller\Api;
 use Core\Controller as Controller;
 use \Exception;
-use \Exception\UserException as UserException;
-use \Exception\CheckException as CheckException;
+use App\Exception\UserException as UserException;
+use App\Exception\CheckException as CheckException;
 /**
  * This is a class MessageApiController
  */

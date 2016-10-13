@@ -8,9 +8,9 @@ use Core\DB\DB as DB;
 class FriendRequest extends BaseModel
 
 {
-	public function __construct(DB $db)
+	public function __construct()
 	{
-		parent::__construct($db);
+		parent::__construct();
 		// set table
 		$this->_table = 'friend_request';
 	}

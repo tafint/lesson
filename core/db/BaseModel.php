@@ -52,8 +52,9 @@ abstract class BaseModel
     /** @var bool insert status flag */
     protected $_insert_status = false;
 
-    public function __construct(DB $db)
+    public function __construct()
     {   
+        global $db;
         $this->_conn = $db;
     }
 

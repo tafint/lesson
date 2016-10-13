@@ -7,9 +7,9 @@ use Core\DB\DB as DB;
  */
 class Favorite extends BaseModel
 {
-	public function __construct(DB $db)
+	public function __construct()
 	{
-		parent::__construct($db);
+		parent::__construct();
 		// set table
 		$this->_table = 'favorite';
 	}

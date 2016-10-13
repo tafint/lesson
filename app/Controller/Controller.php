@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 use Core\Controller as BaseController;
+use App\Service\HeaderService;
 use \Exception;
 use \Exception\UserException as UserException;
 use \Exception\CheckException as CheckException;
@@ -30,21 +31,15 @@ abstract class Controller extends BaseController
 				throw new Exception("Error");
 			}
 
-			$user = $this->user->find_id($_SESSION['user_id']);
+			$header_service = new HeaderService();
+			$data = $header_service->load_data($_SESSION['user_id']);
 
-			if(!$user) {
+			if ($data["error"] == true) {
 				session_unset('user_id');
 				throw new Exception("Error");
-			}
+			} 
 
-			$this->_data['user'] = $user ;
-			$data = $this->_data;
-			$data['navbar'] = true;
-			$data['count_friend'] = $this->friend_list->count_all($data['user']['id']);
-			$data['count_request'] = $this->friend_request->count_all($data['user']['id']);
-			$data['count_message'] = $this->message_log->count_all($data['user']['id']);
-			$data['count_follow'] = $this->follow->count_all($data['user']['id']);
-			
+			$this->_data['user'] = $data["user"];
 			$this->load_template_before('header', $data);
 			$this->load_template_after('footer');
 		} catch (Exception $e) {

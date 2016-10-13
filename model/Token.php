@@ -8,8 +8,8 @@ use Core\DB\DB as DB;
 class Token extends BaseModel
 
 {
-	public function __construct(DB $db){
-		parent::__construct($db);
+	public function __construct(){
+		parent::__construct();
 		// set table
 		$this->_table = 'token';
 	}

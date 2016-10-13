@@ -1,8 +1,6 @@
 <?php
 namespace App\Controller\Api;
 use \Exception;
-use \Exception\UserException as UserException;
-use \Exception\CheckException as CheckException;
 /**
  * This is a class FollowApiController
  */
@@ -82,7 +80,6 @@ class FollowApiController extends ApiController
 			$this->_result = array('error' => true, 'message' => $e->getMessage());
 		}
 
-		$this->_view->reset();
 		$this->response();
 	}
 }

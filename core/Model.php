@@ -8,9 +8,9 @@ class Model
     /** @var string|null $_conn store connection */
     protected $_conn;
     
-    public function __construct(DB\DB $db)
+    public function __construct()
     {   
-        $this->_conn = $db;
+        //
     }
 
     /**
@@ -31,7 +31,7 @@ class Model
 
         $object = get_instance();
         $new_class = "Model\\$model_name";
-        $object->$model = new $new_class($this->_conn);
+        $object->$model = new $new_class();
     }
 
 }
