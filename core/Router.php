@@ -7,19 +7,19 @@ class Router
 {
 
     /** @var array|null $_routes store route config */
-    protected $_routes = [
-                             'GET'    => [],
-                             'POST'   => [],
-                             'PUT'    => [],
-                             'DELETE' => [],   
-    					 ];
+    protected $_routes = array(
+        'GET'    => array(),
+        'POST'   => array(),
+        'PUT'    => array(),
+        'DELETE' => array(),   
+    );
 
-    public $patterns = [
+    public $patterns = array(
         ':any'  => '.*',
         ':id'   => '[0-9]+',
         ':slug' => '[a-z\-]+',
         ':name' => '[a-zA-Z]+',
-    ];
+    );
 
     const REGVAL = '/({:.+?})/';    
 
@@ -86,7 +86,7 @@ class Router
 
         foreach ($this->_routes[$method]  as $resource) {
 
-            $args    = []; 
+            $args    = array(); 
             $route   = key($resource); 
             $handler = reset($resource);
 
@@ -126,7 +126,7 @@ class Router
     protected function parse_regex_route($request_uri, $resource){
         $route = preg_replace_callback(self::REGVAL, function($matches) {
             $patterns = $this->patterns; 
-            $matches[0] = str_replace(['{', '}'], '', $matches[0]);
+            $matches[0] = str_replace(array('{', '}'), '', $matches[0]);
 
             if(in_array($matches[0], array_keys($patterns))){                       
                 return  $patterns[$matches[0]];
@@ -134,15 +134,10 @@ class Router
 
         }, $resource);
 
-
         $reg_uri = explode('/', $resource); 
 
-        $args = array_diff(
-                    array_replace($reg_uri, 
-                    explode('/', $request_uri)
-                ), $reg_uri
-            );  
+        $args = array_diff(array_replace($reg_uri, explode('/', $request_uri)), $reg_uri);  
 
-        return [array_values($args), $resource, $route]; 
+        return array(array_values($args), $resource, $route); 
     }
 }

@@ -4,7 +4,7 @@ namespace Core;
  * This is a class Model
  */
 class Model
-{	
+{   
     /** @var string|null $_conn store connection */
     protected $_conn;
     
@@ -20,7 +20,7 @@ class Model
      *
      */
     public function load($model)
-    {	
+    {   
         $model_name=explode('_', $model);
 
         foreach ($model_name as $key => $value) {

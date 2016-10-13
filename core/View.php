@@ -29,14 +29,14 @@ class View
             $view = implode("/", $view);
         }
 
-    	extract($data);
+        extract($data);
 
-    	ob_start();
-    	require_once PATH . "/view/$view.php";
-    	$content = ob_get_contents();
-    	ob_end_clean();
+        ob_start();
+        require_once PATH . "/view/$view.php";
+        $content = ob_get_contents();
+        ob_end_clean();
 
-    	$this->_content[] = $content;
+        $this->_content[] = $content;
     }
 
     /**
@@ -49,13 +49,13 @@ class View
      */
     public function load_template_before($view, $data = array())
     {
-    	extract($data);
-    	ob_start();
-    	require_once PATH . "/view/template/$view.php";
-    	$content = ob_get_contents();
-    	ob_end_clean();
+        extract($data);
+        ob_start();
+        require_once PATH . "/view/template/$view.php";
+        $content = ob_get_contents();
+        ob_end_clean();
 
-    	$this->_before_content[] = $content;
+        $this->_before_content[] = $content;
     }
 
     /**
@@ -86,9 +86,9 @@ class View
         foreach ($this->_before_content as $before_content) {
             echo $before_content;
         }
-    	foreach ($this->_content as $content) {
-    		echo $content;
-    	}
+        foreach ($this->_content as $content) {
+            echo $content;
+        }
         foreach ($this->_after_content as $after_content) {
             echo $after_content;
         }

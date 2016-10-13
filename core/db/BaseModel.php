@@ -5,7 +5,7 @@ use \PDO;
  * This is a class BaseModel
  */
 abstract class BaseModel
-{	
+{   
     /** @var string|null $_table set table in database */
     protected $_table;
 
@@ -70,18 +70,18 @@ abstract class BaseModel
     {
         if ($this->_table != '') {
 
-        	$query = 'INSERT INTO `'.$this->_table.'`(`'.implode('`, `',array_keys($params)).'`) VALUES ("' . implode('", "', $params) . '")';
-        	$result = $this->_conn->query($query);
+            $query = 'INSERT INTO `'.$this->_table.'`(`'.implode('`, `',array_keys($params)).'`) VALUES ("' . implode('", "', $params) . '")';
+            $result = $this->_conn->query($query);
 
-        	if ($result) {
+            if ($result) {
                 $this->_insert_status = true;
                 $this->_result = array();
-        		array_push($this->_result, $this->_conn->lastInsertId());
+                array_push($this->_result, $this->_conn->lastInsertId());
 
-        		return true;
-        	} else {
-        		return false;
-        	}
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -214,7 +214,7 @@ abstract class BaseModel
      */
     public function get()
     {   
-    	$where = (count($this->_where) != 0) ? $this->parse_where($this->_where) : '1';
+        $where = (count($this->_where) != 0) ? $this->parse_where($this->_where) : '1';
         $or_where = (($where != '1') && (count($this->_or_where) != 0)) ? 'OR '.$this->parse_where($this->_or_where) : '';
         $take = ($this->_take != 0) ? 'LIMIT ' . $this->_take : '';
         $skip = ($this->_limit != 0) ? 'OFFSET ' . $this->_limit : '';
@@ -326,7 +326,7 @@ abstract class BaseModel
     }
 
     public function update($params = array())
-    {	
+    {   
         if (count($params) > 0) {
             $update = "";
 
@@ -352,7 +352,7 @@ abstract class BaseModel
     }
 
     public function delete()
-    {	
+    {   
         if ($this->_table != "") {
             $where = (count($this->_where) != 0) ? $this->parse_where($this->_where) : "1";
             $or_where = (($where != "1") && (count($this->_or_where) != 0)) ? "OR ".$this->parse_where($this->_or_where) : "";
