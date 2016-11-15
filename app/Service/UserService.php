@@ -372,7 +372,7 @@ class UserService extends Service
         if (strlen($params['address']) == 0) {
             $flag = true;
             $result['message'][] = 'Address is required';
-    }
+        }
 
         if (!(($params['sex'] == 1) || ($params['sex'] == 2))) {
             $flag = true;

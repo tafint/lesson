@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Service\FriendService;
 use \Exception;
 use App\Exception\UserException;
 use App\Exception\CheckException;
@@ -162,12 +163,8 @@ class FriendController extends Controller
                 
                 // get conversation
                 if (($data['user']['group_id'] == 1) && ($data['user']['id'] != $data['profile']['id']) && ($data['profile']['group_id'] != 1)) {
-                    $conversations = $this->message_log->get_all_con($data['profile']['id']);
-                    
-                    foreach ($conversations as $key => $value) {
-                        $conver_user = $this->user->find_id($value);
-                        $data['conversations'][$key] = array('id' => $value, 'fullname' => $conver_user['fullname']);
-                    }
+                    $message_service = new MessageService();
+                    $data['conversations'] = $message_service->conversations($data["profile"]["id"]);
                 }
                 
                 // get group
@@ -175,20 +172,8 @@ class FriendController extends Controller
                 $data['groups'] = $groups;
                 
                 // get image
-                $images = $this->image->get_all($data['profile']['id']);
-                $data['images'] = [];
-                
-                foreach ($images as $image) {
-                    
-                    if ($this->image_like->is_like($data['user']['id'], $image['id'])) {
-                        $image['is_like'] = true;
-                    } else {
-                        $image['is_like'] = false;
-                    }
-
-                    $image['like'] = $this->image_like->count_all($image['id']);
-                    $data['images'][] = $image;
-                }
+                $image_service = new ImageService();
+                $data['images'] = $image_service->index($data["user"]["id"], $data["profile"]["id"]);
             }
         } catch (CheckException $e) {
             $data['error'] = true;
@@ -213,17 +198,16 @@ class FriendController extends Controller
                 throw new UserException("Please login");
             }
             
-            $result = $this->friend_list->suggest_friend($data['user']['id']);
-            
-            if (!$result) {
-                throw new CheckException("Not found");
+            $friend_service = new FriendService();
+            $suggest_data = $friend_service->suggest($data["user"]["id"]);
+
+
+            if($suggest_data["error"]) {
+                throw new Exception($suggest_data["message"]);
             }
-            
-            foreach ($result as $key => $value) {   
-                $user_request = $this->friend_request->have_request($id, $value['id']);
-                $value['request_status'] = $user_request ? true : false;
-                $data['users'][$key] = $value;
-            }
+
+            $data["users"] = $suggest_data["users"];
+
         } catch (CheckException $e) {
             $data['message'][]=$e->getMessage();
         } catch (UserException $e) {
@@ -245,20 +229,15 @@ class FriendController extends Controller
                 throw new UserException("Please login");
             }
             
-            $user_request = $this->friend_request->where('user_id_to', $data['user']['id'])->get();
-            
-            if (!$user_request) {
-                throw new CheckException("Not have friend request");
-            }
-            
-            foreach ($user_request as $key => $value) {
-                $user_info = $this->user->where('id',$value['user_id'])->first();
+            $friend_service = new FriendService();
+            $request_data = $friend_service->request($data["user"]["id"]);
 
-                if ($user_info) {
-                    $value['user_info'] = $user_info;
-                    $data['users'][$key] = $value;
-                }
+
+            if($request_data["error"]) {
+                throw new Exception($request_data["message"]);
             }
+
+            $data["users"] = $request_data["users"];
         } catch (CheckException $e) {
             $data['message'][] = $e->getMessage();
         } catch (UserException $e) {

@@ -26,8 +26,7 @@ class MessageService extends Service
      *
      */
     public function create($id)
-    {   
-       $data = $this->_data;       
+    {      
             $user_id_to = $_POST['user_id_to'];
             $user_to = $this->user->find_id($user_id_to);
             
@@ -61,6 +60,24 @@ class MessageService extends Service
                 $message['fullname'] = $user['fullname'];
                 $result['data'][] = $message;
             }
+        return $result;
+    }
+
+    /**
+     * conversation
+     *
+     */
+    public function conversations($user_id)
+    {   
+        $message_log = new MessageLog();
+        $conversations = $message_log->get_all_con($user_id);
+        $user = new User();
+
+        foreach ($conversations as $key => $value) {
+            $conver_user = $user->find_id($value);
+            $result[$key] = array('id' => $value, 'fullname' => $conver_user['fullname']);
+        }
+
         return $result;
     }
 }
