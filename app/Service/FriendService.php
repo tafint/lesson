@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <?php
 namespace App\Service;
 
@@ -233,4 +234,19 @@ class FriendService extends Service
 		
 		return $result;
 	}
+=======
+<?php
+namespace App\Service;
+
+use Model\User;
+use Model\FriendList;
+use Model\MessageLog;
+
+/**
+ * This is a class FriendService
+ */
+class FriendService extends Service
+{	
+	
+>>>>>>> Stashed changes
 }
